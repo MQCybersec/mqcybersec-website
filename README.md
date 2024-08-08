@@ -1,5 +1,5 @@
 # MQCybersec Website
-Static files are built using the Astro web framework and is deployed using a Flask backend.
+Project uses Astro framework for site
 
 ## Npm Commands
 
