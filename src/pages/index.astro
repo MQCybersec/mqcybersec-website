@@ -7,12 +7,13 @@ import Header from "~/components/header.astro";
 import AboutUs from "~/components/about-us.astro";
 import Showcase from "~/components/showcase.astro";
 import Splash from "~/components/splash.astro";
+import logoImage from "~/assets/logo.png";
 import "~/styles/index.css";
 
 const { generator, site } = Astro;
-const image = new URL("social.jpg", site);
+const image = new URL(logoImage.src, site);
 const description =
-  "Build fast websites, faster. Astro is a new kind of site builder for the modern web. Lightning-fast performance meets powerful developer experience.";
+  "MQCybersec";
 ---
 
 <!doctype html>
@@ -23,11 +24,11 @@ const description =
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="generator" content={generator} />
 
-    <title>Astro Landing Page</title>
+    <title>MQCybersec Club</title>
     <meta name="description" content={description} />
 
     <!-- social media -->
-    <meta property="og:title" content="Astro" />
+    <meta property="og:title" content="MQCybersec" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
@@ -65,12 +66,12 @@ const description =
   >
     <Header />
     <Splash />
-    <div class="space-y-24 px-8 py-32">
+    <!-- <div class="space-y-24 px-8 py-32"> -->
       <AboutUs />
       <HackHub />
       <!-- <Compatibility /> --> <!-- Maybe have CTF scores or some display of what we do. -->
       <Showcase />
-    </div>
+    <!-- </div> -->
     <Footer />
   </body>
 </html>
