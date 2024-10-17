@@ -2,14 +2,16 @@
 export interface Props {
   id: string;
   title: string;
+  backgroundColor?: string;
 }
 
-const { title, id } = Astro.props;
+const { title, id, backgroundColor } = Astro.props;
+let bgClass = backgroundColor ? ' '+backgroundColor : '';
 ---
 
 <section
   id={id}
-  class="flex scroll-mt-24 flex-col items-center gap-4 space-y-8"
+  class={`flex scroll-mt-24 flex-col items-center gap-4 space-y-8 py-16${bgClass}`}
 >
   <div class="flex flex-col items-center gap-4">
     <slot name="eyebrow" />
