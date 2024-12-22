@@ -1,0 +1,12 @@
+{
+    "name": "KnightCTF",
+    "image": "/src/content/ctfs/_images/knightctf.png",
+    "placements": [
+        {
+            "year": 2023,
+            "globalPlacement": 98,
+            "totalTeams": 848
+        }
+    ]
+
+}

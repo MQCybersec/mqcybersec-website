@@ -1,0 +1,12 @@
+{
+    "name": "NahamCon CTF",
+    "image": "/src/content/ctfs/_images/nahamcon.png",
+    "placements": [
+        {
+            "year": 2022,
+            "globalPlacement": 64,
+            "totalTeams": 3272
+        }
+    ]
+
+}

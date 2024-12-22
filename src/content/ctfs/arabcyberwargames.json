@@ -1,0 +1,12 @@
+{
+    "name": "Arab Security Cyber Wargames 2022 Qualifications",
+    "image": "/src/content/ctfs/_images/arabcyberwargames.png",
+    "placements": [
+        {
+            "year": 2022,
+            "globalPlacement": 67,
+            "totalTeams": 221
+        }
+    ]
+
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Jesse Nguyen",
+  "image": "/src/content/people/_images/jessenguyen.jpeg",
+  "enrollments": [
+    {
+      "year": 2024,
+      "role": "General Executive"
+    },
+    {
+      "year": 2023
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+    "name": "DiceCTF @ HOPE",
+    "image": "/src/content/ctfs/_images/dicectfhope.png",
+    "placements": [
+        {
+            "year": 2022,
+            "globalPlacement": 105,
+            "totalTeams": 410
+        }
+    ]
+
+}

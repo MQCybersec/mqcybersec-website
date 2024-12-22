@@ -1,0 +1,12 @@
+{
+    "name": "HITCON CTF",
+    "image": "/src/content/ctfs/_images/hitconctf.png",
+    "placements": [
+        {
+            "year": 2020,
+            "globalPlacement": 179,
+            "totalTeams": 710
+        }
+    ]
+
+}

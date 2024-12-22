@@ -1,0 +1,12 @@
+{
+    "name": "Hack.lu CTF",
+    "image": "/src/content/ctfs/_images/hacklu.png",
+    "placements": [
+        {
+            "year": 2021,
+            "globalPlacement": 154,
+            "totalTeams": 174
+        }
+    ]
+
+}

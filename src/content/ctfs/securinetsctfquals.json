@@ -1,0 +1,12 @@
+{
+    "name": "Securinets CTF Quals",
+    "image": "/src/content/ctfs/_images/securinetsctf.png",
+    "placements": [
+        {
+            "year": 2020,
+            "globalPlacement": 404,
+            "totalTeams": 429
+        }
+    ]
+
+}

@@ -1,0 +1,12 @@
+{
+    "name": "SHELLCTF",
+    "image": "/src/content/ctfs/_images/shellctf.png",
+    "placements": [
+        {
+            "year": 2022,
+            "globalPlacement": 621,
+            "totalTeams": 1093
+        }
+    ]
+
+}

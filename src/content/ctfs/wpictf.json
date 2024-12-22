@@ -1,0 +1,12 @@
+{
+    "name": "WPICTF",
+    "image": "/src/content/ctfs/_images/wpictf.png",
+    "placements": [
+        {
+            "year": 2021,
+            "globalPlacement": 76,
+            "totalTeams": 246
+        }
+    ]
+
+}

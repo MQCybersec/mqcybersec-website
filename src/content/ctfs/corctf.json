@@ -1,0 +1,12 @@
+{
+    "name": "corCTF",
+    "image": "/src/content/ctfs/_images/corctf.png",
+    "placements": [
+        {
+            "year": 2022,
+            "globalPlacement": 262,
+            "totalTeams": 978
+        }
+    ]
+
+}

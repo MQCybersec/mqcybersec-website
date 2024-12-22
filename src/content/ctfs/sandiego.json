@@ -1,0 +1,17 @@
+{
+    "name": "San Diego CTF",
+    "image": "/src/content/ctfs/_images/sandiego.png",
+    "placements": [
+        {
+            "year": 2022,
+            "globalPlacement": 36,
+            "totalTeams": 615
+        },
+        {
+            "year": 2021,
+            "globalPlacement": 284,
+            "totalTeams": 293
+        }
+    ]
+
+}

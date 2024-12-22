@@ -1,0 +1,12 @@
+{
+    "name": "Syskron Security CTF",
+    "image": "/src/content/ctfs/_images/syskronctf.png",
+    "placements": [
+        {
+            "year": 2020,
+            "globalPlacement": 148,
+            "totalTeams": 1029
+        }
+    ]
+
+}

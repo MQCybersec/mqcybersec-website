@@ -1,0 +1,22 @@
+{
+    "name": "UTCTF",
+    "image": "/src/content/ctfs/_images/utctf.png",
+    "placements": [
+        {
+            "year": 2022,
+            "globalPlacement": 300,
+            "totalTeams": 560
+        },
+        {
+            "year": 2021,
+            "globalPlacement": 227,
+            "totalTeams": 697
+        },
+        {
+            "year": 2020,
+            "globalPlacement": 211,
+            "totalTeams": 1001
+        }
+    ]
+
+}

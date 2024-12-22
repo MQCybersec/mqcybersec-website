@@ -1,0 +1,12 @@
+{
+    "name": "DCTF",
+    "image": "/src/content/ctfs/_images/dctf.png",
+    "placements": [
+        {
+            "year": 2021,
+            "globalPlacement": 596,
+            "totalTeams": 1084
+        }
+    ]
+
+}

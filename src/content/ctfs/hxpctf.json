@@ -1,0 +1,12 @@
+{
+    "name": "hxp CTF",
+    "image": "/src/content/ctfs/_images/hxpctf.png",
+    "placements": [
+        {
+            "year": 2021,
+            "globalPlacement": 93,
+            "totalTeams": 150
+        }
+    ]
+
+}

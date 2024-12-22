@@ -1,0 +1,274 @@
+---
+import { Icon } from "astro-icon/components";
+import ContentSection from "~/components/content-section.astro";
+import { getCollection } from "astro:content";
+
+const peopleData = await getCollection("people", ({ data }) => "name" in data);
+
+const roleOrder = [
+  "President",
+  "Vice President",
+  "Treasurer",
+  "Secretary",
+  "General Executive",
+];
+
+const teamsByYear = peopleData.reduce(
+  (acc, person) => {
+    if (person.data && Array.isArray(person.data.enrollments)) {
+      person.data.enrollments.forEach((enrollment) => {
+        const year = enrollment.year;
+        if (!acc[year]) {
+          acc[year] = [];
+        }
+        acc[year].push({
+          name: person.data.name,
+          role: enrollment.role || "",
+          image: person.data.image || null,
+        });
+      });
+    }
+    return acc;
+  },
+  {} as Record<
+    number,
+    Array<{ name: string; role: string; image: ImageMetadata | null }>
+  >,
+);
+
+// Sort members by role for each year
+Object.keys(teamsByYear).forEach((year) => {
+  teamsByYear[year].sort((a: { role: string; }, b: { role: string; }) => {
+    const indexA = roleOrder.indexOf(a.role);
+    const indexB = roleOrder.indexOf(b.role);
+    return indexA - indexB;
+  });
+});
+
+const teams = Object.entries(teamsByYear)
+  .map(([year, members]) => ({ year: parseInt(year), members }))
+  .sort((a, b) => b.year - a.year);
+---
+
+<ContentSection
+  title="Our Teams Through the Years"
+  id="teams-timeline"
+  altBackground={true}
+>
+  <Fragment slot="lead">
+    Explore the <span class="text-primary">evolution</span> of our cybersecurity
+    team, showcasing our <span class="text-primary">growth</span> and <span
+      class="text-primary">dedication</span
+    >
+    year by year.
+  </Fragment>
+  <div class="timeline-container">
+    <div class="year-buttons">
+      {
+        teams.map((team) => (
+          <button class="year-button" data-year={team.year}>
+            {team.year}
+          </button>
+        ))
+      }
+    </div>
+    <div id="teamDisplay" class="team-card mt-4">
+      <!-- Team info will be dynamically inserted here -->
+    </div>
+  </div>
+</ContentSection>
+
+<script define:vars={{ teams }}>
+const yearButtons = document.querySelectorAll(".year-button");
+const teamDisplay = document.getElementById("teamDisplay");
+
+// Track which items have already been animated
+const animatedItems = new WeakSet();
+
+// Intersection Observer setup
+const observerOptions = {
+  root: null,
+  rootMargin: '0px 0px 0px 0px', // Format is top right bottom left
+  threshold: 0.1
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !animatedItems.has(entry.target)) {
+      // Add to animated set so it doesn't trigger again
+      animatedItems.add(entry.target);
+      
+      // Start the animation
+      entry.target.style.opacity = '0';
+      entry.target.style.transform = 'translateY(20px)';
+      
+      entry.target.animate([
+        { 
+          opacity: 0,
+          transform: 'translateY(20px)'
+        },
+        { 
+          opacity: 1,
+          transform: 'translateY(0)'
+        }
+      ], {
+        duration: 300,
+        easing: 'ease-out',
+        fill: 'forwards'
+      });
+      
+      // Unobserve after animation is triggered
+      observer.unobserve(entry.target);
+    }
+  });
+}, observerOptions);
+
+async function fadeInItems(items, isFirstLoad = false) {
+  if (items.length === 0) return;
+
+  // For first load, observe items for scroll
+  if (isFirstLoad) {
+    items.forEach(item => {
+      item.style.opacity = '0';
+      item.style.transform = 'translateY(20px)';
+      observer.observe(item);
+    });
+    return;
+  }
+
+  // For year changes, animate immediately
+  items.forEach((item, index) => {
+    item.style.opacity = '0';
+    item.style.transform = 'translateY(20px)';
+    
+    item.animate([
+      { 
+        opacity: 0,
+        transform: 'translateY(20px)'
+      },
+      { 
+        opacity: 1,
+        transform: 'translateY(0)'
+      }
+    ], {
+      duration: 300,
+      delay: index * 50,
+      easing: 'ease-out',
+      fill: 'forwards'
+    });
+  });
+}
+
+async function updateTeamDisplay(year, isFirstLoad = false) {
+  const team = teams.find((t) => t.year === parseInt(year));
+
+  if (team && team.members) {
+    teamDisplay.innerHTML = `
+    <div class="team-content">
+      <h3 class="text-xl font-bold mb-4">${team.year} Team</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        ${team.members.map((member) => `
+          <div class="team-member" style="text-align: center; padding: 1rem; border: 1px solid var(--color-border); border-radius: 8px;">
+            <div style="width: 64px; height: 64px; margin: 0 auto 0.5rem auto;">
+              ${member.image 
+                ? `<img src="${member.image.src}" alt="${member.name}" style="width: 64px; height: 64px; border-radius: 50%;">` 
+                : `<svg style="width: 64px; height: 64px;" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                  </svg>`
+              }
+            </div>
+            <div>
+              <div style="font-weight: 600;">${member.name}</div>
+              <div style="color: #666; font-size: 0.875rem;">${member.role}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    `;
+
+    // Get all team members and animate them
+    const teamMembers = teamDisplay.querySelectorAll('.team-member');
+    fadeInItems(teamMembers, isFirstLoad);
+  } else {
+    teamDisplay.innerHTML = `<p class="team-member">No team data for ${year}</p>`;
+    const message = teamDisplay.querySelector('.team-member');
+    fadeInItems([message], isFirstLoad);
+  }
+}
+
+yearButtons.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    yearButtons.forEach((btn) => btn.classList.remove("active"));
+    event.target.classList.add("active");
+    updateTeamDisplay(event.target.dataset.year, false); // false = not first load
+  });
+});
+
+// Initialize with the latest year
+document.addEventListener('DOMContentLoaded', () => {
+  if (yearButtons.length > 0) {
+    yearButtons[0].classList.add("active");
+    updateTeamDisplay(yearButtons[0].dataset.year, true); // true = first load
+  }
+});
+</script>
+
+<style>
+.timeline-container {
+  padding: 20px 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.year-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.year-button {
+  padding: 8px 16px;
+  border: 2px solid var(--color-primary);
+  border-radius: 20px;
+  background-color: transparent;
+  color: var(--color-text);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.year-button:hover,
+.year-button.active {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.team-card {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 20px;
+  background-color: var(--color-background);
+  width: 100%;
+}
+
+.team-member {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+@media (max-width: 768px) {
+  .team-grid-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .team-grid-container {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+</style>
