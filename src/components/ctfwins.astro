@@ -222,7 +222,31 @@ const getSortPriority = (comp: typeof competitions[0], year: number) => {
       }
     </div>
 </ContentSection>
-
+<script>
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -20% 0px',
+      threshold: 0
+    };
+  
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('achievement-item-visible');
+          entry.target.classList.remove('achievement-item-hidden');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+  
+    document.addEventListener('DOMContentLoaded', () => {
+      const section = document.querySelector('.timeline-container');
+      if (section) {
+        section.classList.add('achievement-item-hidden');
+        observer.observe(section);
+      }
+    });
+  </script>
 <script>
     const yearButtons = document.querySelectorAll(".ctf-year-button");
     const achievementGrids = document.querySelectorAll(".achievement-grid");
@@ -398,33 +422,38 @@ const getSortPriority = (comp: typeof competitions[0], year: number) => {
 </script>
 
 <style>
-.achievement-item {
-  will-change: opacity, transform;
-}
-
-.achievement-item-hidden {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.achievement-item-visible {
-  animation: fadeInUp 300ms ease-out forwards;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.achievement-grid,
-.achievement-page {
-  opacity: 1 !important;
-  transform: none !important;
-}
-</style>
+    .timeline-container {
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      transform: translateY(20px);
+    }
+    
+    .achievement-item {
+      will-change: opacity, transform;
+    }
+    
+    .achievement-item-hidden {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    .achievement-item-visible {
+      animation: fadeInUp 300ms ease-out forwards;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .achievement-grid,
+    .achievement-page {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    </style>

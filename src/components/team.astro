@@ -52,7 +52,7 @@ const teams = Object.entries(teamsByYear)
 
 <ContentSection
   title="Our Teams Through the Years"
-  id="teams-timeline"
+  id="teams"
   altBackground={true}
 >
   <Fragment slot="lead">
@@ -81,14 +81,10 @@ const teams = Object.entries(teamsByYear)
 <script define:vars={{ teams }}>
 const yearButtons = document.querySelectorAll(".year-button");
 const teamDisplay = document.getElementById("teamDisplay");
-
-// Track which items have already been animated
 const animatedItems = new WeakSet();
-
-// Intersection Observer setup
 const observerOptions = {
   root: null,
-  rootMargin: '0px 0px 0px 0px', // Format is top right bottom left
+  rootMargin: '-10% 0px -10% 0px', // Format is top right bottom left
   threshold: 0.1
 };
 

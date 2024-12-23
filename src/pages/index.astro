@@ -57,7 +57,7 @@ const teamsData = [
 const { generator, site } = Astro;
 const image = new URL(logoImage.src, site);
 const description =
-  "MQCybersec";
+  "MQCyberSec";
 const ctfWins = [
   { competition: "DEF CON CTF", place: 1, year: 2024, iconUrl: "https://example.com/icons/defcon.png" },
   { competition: "HITCON CTF", place: 2, year: 2023, iconUrl: "https://example.com/icons/hitcon.png" },
@@ -73,11 +73,11 @@ const ctfWins = [
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="generator" content={generator} />
 
-    <title>MQCybersec Club</title>
+    <title>MQCyberSec Club</title>
     <meta name="description" content={description} />
 
     <!-- social media -->
-    <meta property="og:title" content="MQCybersec" />
+    <meta property="og:title" content="MQCyberSec" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
@@ -121,7 +121,7 @@ const ctfWins = [
       <CTFWins wins={ctfWins} />
       <TeamTimeline teams={teamsData} />
       <!-- <Compatibility /> --> <!-- Maybe have CTF scores or some display of what we do. -->
-      <Showcase />
+      <!-- <Showcase /> -->
     <!-- </div> -->
     <Footer />
   </body>
