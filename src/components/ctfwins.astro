@@ -1,10 +1,12 @@
 ---
 import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
 import ContentSection from "~/components/content-section.astro";
 import { getCollection } from "astro:content";
 
 const competitions = await getCollection("ctfs");
 
+// Rest of the imports and constants remain the same until the return statement
 const years = [...new Set(
   competitions.flatMap(comp => 
     comp.data.placements.map(p => p.year)
@@ -120,7 +122,7 @@ const getSortPriority = (comp: typeof competitions[0], year: number) => {
             >
               <h3 class="text-2xl font-bold text-center mb-8">{year} Achievements</h3>
               
-              <div class="min-h-[2400px] md:min-h-[1200px] lg:min-h-[850px]"> <!-- Adjusted mobile height -->
+              <div class="min-h-[2400px] md:min-h-[1200px] lg:min-h-[850px]">
                 {Array.from({ length: totalPages }).map((_, pageIndex) => (
                   <div 
                     class="achievement-page hidden w-full"
@@ -154,10 +156,13 @@ const getSortPriority = (comp: typeof competitions[0], year: number) => {
                               <div class="relative size-16">
                                 {competition.data.image ? (
                                   <div class="absolute inset-0 rounded-full border-2 border-current overflow-hidden">
-                                    <img
+                                    <Image
                                       src={competition.data.image}
                                       alt={`${competition.data.name} Icon`}
+                                      width={64}
+                                      height={64}
                                       class="size-full object-cover"
+                                      loading="eager"
                                     />
                                   </div>
                                 ) : (
@@ -200,22 +205,23 @@ const getSortPriority = (comp: typeof competitions[0], year: number) => {
                 ))}
               </div>
               
-              {totalPages > 1 && (<div class="flex justify-center items-center gap-4 mt-8">
-                <button 
-                  class="prev-page px-4 py-2 border-2 border-primary rounded-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled
-                >
-                  ←
-                </button>
-                <span class="page-indicator font-medium">Page 1/{totalPages}</span>
-                <button 
-                  class="next-page px-4 py-2 border-2 border-primary rounded-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={totalPages <= 1}
-                >
-                  →
-                </button>
-              </div>)}
-              
+              {totalPages > 1 && (
+                <div class="flex justify-center items-center gap-4 mt-8">
+                  <button 
+                    class="prev-page px-4 py-2 border-2 border-primary rounded-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled
+                  >
+                    ←
+                  </button>
+                  <span class="page-indicator font-medium">Page 1/{totalPages}</span>
+                  <button 
+                    class="next-page px-4 py-2 border-2 border-primary rounded-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={totalPages <= 1}
+                  >
+                    →
+                  </button>
+                </div>
+              )}
             </div>
           );
         })

@@ -11,17 +11,37 @@ const showcase = defineCollection({
     }),
 });
 
+const gridImages = defineCollection({
+  type: "data",
+  schema: ({ image }) =>
+    z.object({
+      title: z.string().min(1),
+      image: image()
+    }),
+});
+
 const people = defineCollection({
   type: "data",
   schema: ({ image }) =>
     z.object({
       name: z.string().min(1),
       image: image().optional(),
-      enrollments: z.array(z.object({
-        year: z.number().int().positive(),
-        role: z.string().min(1).optional()
-      }))
-    }),
+      socials: z
+        .array(
+          z.object({
+            platform: z.string(),
+            url: z.string().url(),
+            icon: z.string()
+          })
+        )
+        .optional(),
+      enrollments: z.array(
+        z.object({
+          year: z.number().int().positive(),
+          role: z.string().min(1).optional()
+        })
+      )
+    })
 });
 
 const placementSchema = z.object({
@@ -44,5 +64,6 @@ export const ctfs = defineCollection({
 export const collections = {
   showcase,
   people,
-  ctfs
+  ctfs,
+  gridImages
 };

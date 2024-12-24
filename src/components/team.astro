@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
 import ContentSection from "~/components/content-section.astro";
 import { getCollection } from "astro:content";
 
@@ -25,6 +26,7 @@ const teamsByYear = peopleData.reduce(
           name: person.data.name,
           role: enrollment.role || "",
           image: person.data.image || null,
+          socials: person.data.socials || [],
         });
       });
     }
@@ -32,13 +34,17 @@ const teamsByYear = peopleData.reduce(
   },
   {} as Record<
     number,
-    Array<{ name: string; role: string; image: ImageMetadata | null }>
+    Array<{
+      name: string;
+      role: string;
+      image: ImageMetadata | null;
+      socials: Array<{ platform: string; url: string; icon: string }>;
+    }>
   >,
 );
 
-// Sort members by role for each year
 Object.keys(teamsByYear).forEach((year) => {
-  teamsByYear[year].sort((a: { role: string; }, b: { role: string; }) => {
+  teamsByYear[year].sort((a: { role: string }, b: { role: string }) => {
     const indexA = roleOrder.indexOf(a.role);
     const indexB = roleOrder.indexOf(b.role);
     return indexA - indexB;
@@ -48,164 +54,154 @@ Object.keys(teamsByYear).forEach((year) => {
 const teams = Object.entries(teamsByYear)
   .map(([year, members]) => ({ year: parseInt(year), members }))
   .sort((a, b) => b.year - a.year);
+
+const currentYear = teams[0]?.year;
 ---
 
-<ContentSection
-  title="Our Teams Through the Years"
-  id="teams"
-  altBackground={true}
->
+<ContentSection title="Our Teams Through the Years" id="teams" altBackground={true}>
   <Fragment slot="lead">
     Explore the <span class="text-primary">evolution</span> of our cybersecurity
     team, showcasing our <span class="text-primary">growth</span> and <span
-      class="text-primary">dedication</span
-    >
+      class="text-primary">dedication</span>
     year by year.
   </Fragment>
+
   <div class="timeline-container">
-    <div class="year-buttons">
+    <div class="year-buttons" id="yearTabs" role="tablist">
       {
         teams.map((team) => (
-          <button class="year-button" data-year={team.year}>
+          <button
+            class:list={[
+              "year-button",
+              { active: team.year === currentYear }
+            ]}
+            role="tab"
+            aria-selected={team.year === currentYear}
+            aria-controls={`team-${team.year}`}
+            data-year={team.year}
+          >
             {team.year}
           </button>
         ))
       }
     </div>
-    <div id="teamDisplay" class="team-card mt-4">
-      <!-- Team info will be dynamically inserted here -->
+
+    <div class="team-cards-container">
+      {teams.map((team) => (
+        <div
+          id={`team-${team.year}`}
+          role="tabpanel"
+          class:list={[
+            "team-card",
+            "mt-4",
+            { hidden: team.year !== currentYear }
+          ]}
+        >
+          <div class="team-content">
+            <h3 class="text-xl font-bold mb-4">{team.year} Team</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {team.members.map((member) => (
+                <div class="team-member text-center p-4 border border-[--color-border] rounded-lg">
+                  <div class="w-16 h-16 mx-auto mb-2">
+                    {member.image ? (
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        width={64}
+                        height={64}
+                        class="rounded-full"
+                        loading="eager"
+                      />
+                    ) : (
+                      <svg class="w-16 h-16 fill-current" viewBox="0 0 20 20">
+                        <path
+                          fill-rule="evenodd"
+                          d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                  <div class="font-semibold">{member.name}</div>
+                  <div class="text-sm text-gray-600">{member.role}</div>
+                  {member.socials && member.socials.length > 0 && (
+                    <ul class="flex justify-center mt-2 space-x-2">
+                      {member.socials.map((social) => (
+                        <li>
+                          <a
+                            class="flex size-8 items-center justify-center rounded-full border-2 border-current p-2"
+                            href={social.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <span class="sr-only">{social.platform}</span>
+                            <Icon class="size-full" name={social.icon} />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   </div>
 </ContentSection>
 
-<script define:vars={{ teams }}>
-const yearButtons = document.querySelectorAll(".year-button");
-const teamDisplay = document.getElementById("teamDisplay");
-const animatedItems = new WeakSet();
-const observerOptions = {
-  root: null,
-  rootMargin: '-10% 0px -10% 0px', // Format is top right bottom left
-  threshold: 0.1
-};
+<script>
+const yearTabs = document.querySelectorAll('.year-button');
+const teamPanels = document.querySelectorAll('.team-card');
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting && !animatedItems.has(entry.target)) {
-      // Add to animated set so it doesn't trigger again
-      animatedItems.add(entry.target);
-      
-      // Start the animation
-      entry.target.style.opacity = '0';
-      entry.target.style.transform = 'translateY(20px)';
-      
-      entry.target.animate([
-        { 
-          opacity: 0,
-          transform: 'translateY(20px)'
-        },
-        { 
-          opacity: 1,
-          transform: 'translateY(0)'
-        }
-      ], {
-        duration: 300,
-        easing: 'ease-out',
-        fill: 'forwards'
-      });
-      
-      // Unobserve after animation is triggered
-      observer.unobserve(entry.target);
-    }
-  });
-}, observerOptions);
+function hideItem(item) {
+  item.classList.add('achievement-item-hidden');
+  item.classList.remove('achievement-item-visible');
+}
 
-async function fadeInItems(items, isFirstLoad = false) {
+function showItem(item) {
+  item.classList.remove('achievement-item-hidden');
+  item.classList.add('achievement-item-visible');
+}
+
+async function fadeInItems(items) {
   if (items.length === 0) return;
-
-  // For first load, observe items for scroll
-  if (isFirstLoad) {
-    items.forEach(item => {
-      item.style.opacity = '0';
-      item.style.transform = 'translateY(20px)';
-      observer.observe(item);
-    });
-    return;
-  }
-
-  // For year changes, animate immediately
-  items.forEach((item, index) => {
-    item.style.opacity = '0';
-    item.style.transform = 'translateY(20px)';
-    
-    item.animate([
-      { 
-        opacity: 0,
-        transform: 'translateY(20px)'
-      },
-      { 
-        opacity: 1,
-        transform: 'translateY(0)'
-      }
-    ], {
-      duration: 300,
-      delay: index * 50,
-      easing: 'ease-out',
-      fill: 'forwards'
-    });
+  Array.from(items).forEach((item, index) => {
+    hideItem(item);
+    setTimeout(() => showItem(item), index * 50);
   });
 }
 
-async function updateTeamDisplay(year, isFirstLoad = false) {
-  const team = teams.find((t) => t.year === parseInt(year));
-
-  if (team && team.members) {
-    teamDisplay.innerHTML = `
-    <div class="team-content">
-      <h3 class="text-xl font-bold mb-4">${team.year} Team</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        ${team.members.map((member) => `
-          <div class="team-member" style="text-align: center; padding: 1rem; border: 1px solid var(--color-border); border-radius: 8px;">
-            <div style="width: 64px; height: 64px; margin: 0 auto 0.5rem auto;">
-              ${member.image 
-                ? `<img src="${member.image.src}" alt="${member.name}" style="width: 64px; height: 64px; border-radius: 50%;">` 
-                : `<svg style="width: 64px; height: 64px;" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                  </svg>`
-              }
-            </div>
-            <div>
-              <div style="font-weight: 600;">${member.name}</div>
-              <div style="color: #666; font-size: 0.875rem;">${member.role}</div>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-    `;
-
-    // Get all team members and animate them
-    const teamMembers = teamDisplay.querySelectorAll('.team-member');
-    fadeInItems(teamMembers, isFirstLoad);
-  } else {
-    teamDisplay.innerHTML = `<p class="team-member">No team data for ${year}</p>`;
-    const message = teamDisplay.querySelector('.team-member');
-    fadeInItems([message], isFirstLoad);
-  }
-}
-
-yearButtons.forEach((button) => {
-  button.addEventListener("click", (event) => {
-    yearButtons.forEach((btn) => btn.classList.remove("active"));
-    event.target.classList.add("active");
-    updateTeamDisplay(event.target.dataset.year, false); // false = not first load
+yearTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const year = tab.getAttribute('data-year');
+    
+    yearTabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    
+    teamPanels.forEach(panel => {
+      panel.classList.add('hidden');
+      panel.querySelectorAll('.team-member').forEach(hideItem);
+    });
+    
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    
+    const selectedPanel = document.getElementById(`team-${year}`);
+    if (selectedPanel) {
+      selectedPanel.classList.remove('hidden');
+      fadeInItems(selectedPanel.querySelectorAll('.team-member'));
+    }
   });
 });
 
-// Initialize with the latest year
 document.addEventListener('DOMContentLoaded', () => {
-  if (yearButtons.length > 0) {
-    yearButtons[0].classList.add("active");
-    updateTeamDisplay(yearButtons[0].dataset.year, true); // true = first load
+  const visiblePanel = document.querySelector('.team-card:not(.hidden)');
+  if (visiblePanel) {
+    fadeInItems(visiblePanel.querySelectorAll('.team-member'));
   }
 });
 </script>
@@ -251,20 +247,26 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 .team-member {
+  will-change: opacity, transform;
+}
+
+.achievement-item-hidden {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 
-@media (max-width: 768px) {
-  .team-grid-container {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.achievement-item-visible {
+  animation: fadeInUp 300ms ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-}
-
-@media (max-width: 480px) {
-  .team-grid-container {
-    grid-template-columns: minmax(0, 1fr);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>

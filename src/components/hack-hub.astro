@@ -16,85 +16,128 @@ const orderedSites = featuredSites.sort(
 
 <ContentSection title="Hack Hub" id="hackhub" altBackground={true}>
   <Fragment slot="lead">
-    We host <span class="text-primary">weekly</span> CTF challenges from 
-    <span class="text-primary">4-6pm</span> at <span class="text-primary">102 4RPD</span>. With these weekly meetups, 
-    <span class="text-primary">anyone</span> can attend them.
+    Join our <span class="font-bold text-primary" >weekly</span> 
+    cybersecurity challenges every <span class="font-bold text-primary">Wednesday from 4-6 PM</span> 
+    in <span class="font-bold text-primary">Room 102, 4RPD</span>. <span
+      class="font-bold text-primary">Open to all skill levels</span
+    > - discover the exciting
+    world of <span class="text-primary">ethical hacking</span>.
   </Fragment>
-  <div id="default-carousel" class="relative w-full max-w-5xl h-full space-y-2" data-carousel="slide">
+  <div
+    id="default-carousel"
+    class="relative h-full w-full max-w-5xl space-y-2"
+    data-carousel="slide"
+  >
     <!-- Carousel wrapper -->
-    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+    <div class="relative h-96 overflow-hidden rounded-lg">
       {orderedSites.map((site) => <ShowcaseCard site={site} />)}
     </div>
     <!-- Slider indicators -->
-    <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
-        {
-          orderedSites.map((site, index) => (
-            <button
-              type="button"
-              class="w-3 h-3 rounded-full"
-              aria-current={index === 0}
-              aria-label={`Slide ${index + 1}`}
-              data-carousel-slide-to={index}
-            ></button>
-          ))
-        }
+    <div
+      class="absolute bottom-5 left-1/2 z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse"
+    >
+      {
+        orderedSites.map((site, index) => (
+          <button
+            type="button"
+            class="h-3 w-3 rounded-full"
+            aria-current={index === 0}
+            aria-label={`Slide ${index + 1}`}
+            data-carousel-slide-to={index}
+          />
+        ))
+      }
     </div>
     <!-- Slider controls -->
-    <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-            </svg>
-            <span class="sr-only">Previous</span>
-        </span>
+    <button
+      type="button"
+      class="group absolute start-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+      data-carousel-prev
+    >
+      <span
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
+      >
+        <svg
+          class="h-4 w-4 text-white dark:text-gray-800 rtl:rotate-180"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 6 10"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 1 1 5l4 4"></path>
+        </svg>
+        <span class="sr-only">Previous</span>
+      </span>
     </button>
-    <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-            </svg>
-            <span class="sr-only">Next</span>
-        </span>
+    <button
+      type="button"
+      class="group absolute end-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+      data-carousel-next
+    >
+      <span
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
+      >
+        <svg
+          class="h-4 w-4 text-white dark:text-gray-800 rtl:rotate-180"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 6 10"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m1 9 4-4-4-4"></path>
+        </svg>
+        <span class="sr-only">Next</span>
+      </span>
     </button>
   </div>
-  <div id="imageModal" class="fixed inset-0 z-[9999] bg-black bg-opacity-50 flex items-center justify-center hidden overflow-y-auto">
-    <div class="relative max-w-[60vw] max-h-[60vh] flex items-center justify-center">
-      <img 
-        id="modalImage" 
-        src="" 
-        alt="Zoomed image" 
-        class="max-h-full max-w-full object-contain rounded-xl"
+  <div
+    id="imageModal"
+    class="fixed inset-0 z-[9999] flex hidden items-center justify-center overflow-y-auto bg-black bg-opacity-50"
+  >
+    <div
+      class="relative flex max-h-[60vh] max-w-[60vw] items-center justify-center"
+    >
+      <img
+        id="modalImage"
+        src=""
+        alt="Zoomed image"
+        class="max-h-full max-w-full rounded-xl object-contain"
       />
-      <button 
-        id="closeModal" 
-        class="hidden"
-      >
-      </button>
+      <button id="closeModal" class="hidden"> </button>
     </div>
   </div>
-  
 </ContentSection>
 
 <script>
-  const modal = document.getElementById('imageModal');
-  const modalImage = document.getElementById('modalImage');
-  const closeButton = document.getElementById('closeModal');
+  const modal = document.getElementById("imageModal");
+  const modalImage = document.getElementById("modalImage");
+  const closeButton = document.getElementById("closeModal");
 
   function openModal(imageSrc) {
-    modal.classList.remove('hidden');
+    modal.classList.remove("hidden");
     modalImage.src = imageSrc;
   }
 
   function closeModal() {
-    modal.classList.add('hidden');
+    modal.classList.add("hidden");
   }
 
-  document.querySelectorAll('.showcase-image').forEach(img => {
-    img.addEventListener('click', () => openModal(img.src));
+  document.querySelectorAll(".showcase-image").forEach((img) => {
+    img.addEventListener("click", () => openModal(img.src));
   });
 
-  closeButton.addEventListener('click', closeModal);
-  modal.addEventListener('click', (e) => {
+  closeButton.addEventListener("click", closeModal);
+  modal.addEventListener("click", (e) => {
     if (e.target === modal) closeModal();
   });
 </script>
