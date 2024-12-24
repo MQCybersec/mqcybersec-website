@@ -157,7 +157,7 @@ const getSortPriority = (comp: typeof competitions[0], year: number) => {
                                 {competition.data.image ? (
                                   <div class="absolute inset-0 rounded-full border-2 border-current overflow-hidden">
                                     <Image
-                                      src={competition.data.image}
+                                      src={competition.data.image.src}
                                       alt={`${competition.data.name} Icon`}
                                       width={64}
                                       height={64}
