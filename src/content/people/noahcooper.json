@@ -14,16 +14,6 @@
       "icon": "fa-brands:linkedin-in"
     },
     {
-      "platform": "GitHub",
-      "url": "https://github.com/sealldeveloper",
-      "icon": "fa-brands:github"
-    },
-    {
-      "platform": "Twitter",
-      "url": "https://twitter.com/sealldev",
-      "icon": "fa-brands:twitter"
-    },
-    {
       "platform": "Discord",
       "url": "https://discordapp.com/users/630874656198361099",
       "icon": "fa-brands:discord"
