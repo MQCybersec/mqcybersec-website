@@ -54,9 +54,9 @@ const placementSchema = z.object({
 
 export const ctfs = defineCollection({
   type: "data",
-  schema: z.object({
+  schema: ({ image }) => z.object({
     name: z.string(),
-    image: z.string().optional(),
+    image: image().optional(),
     placements: z.array(placementSchema),
   }),
 });

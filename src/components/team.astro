@@ -58,11 +58,16 @@ const teams = Object.entries(teamsByYear)
 const currentYear = teams[0]?.year;
 ---
 
-<ContentSection title="Our Teams Through the Years" id="teams" altBackground={true}>
+<ContentSection
+  title="Our Teams Through the Years"
+  id="teams"
+  altBackground={true}
+>
   <Fragment slot="lead">
     Explore the <span class="text-primary">evolution</span> of our cybersecurity
     team, showcasing our <span class="text-primary">growth</span> and <span
-      class="text-primary">dedication</span>
+      class="text-primary">dedication</span
+    >
     year by year.
   </Fragment>
 
@@ -71,10 +76,7 @@ const currentYear = teams[0]?.year;
       {
         teams.map((team) => (
           <button
-            class:list={[
-              "year-button",
-              { active: team.year === currentYear }
-            ]}
+            class:list={["year-button", { active: team.year === currentYear }]}
             role="tab"
             aria-selected={team.year === currentYear}
             aria-controls={`team-${team.year}`}
@@ -87,186 +89,190 @@ const currentYear = teams[0]?.year;
     </div>
 
     <div class="team-cards-container">
-      {teams.map((team) => (
-        <div
-          id={`team-${team.year}`}
-          role="tabpanel"
-          class:list={[
-            "team-card",
-            "mt-4",
-            { hidden: team.year !== currentYear }
-          ]}
-        >
-          <div class="team-content">
-            <h3 class="text-xl font-bold mb-4">{team.year} Team</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {team.members.map((member) => (
-                <div class="team-member text-center p-4 border border-[--color-border] rounded-lg">
-                  <div class="w-16 h-16 mx-auto mb-2">
-                    {member.image ? (
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        width={64}
-                        height={64}
-                        class="rounded-full"
-                        loading="eager"
-                      />
-                    ) : (
-                      <svg class="w-16 h-16 fill-current" viewBox="0 0 20 20">
-                        <path
-                          fill-rule="evenodd"
-                          d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                          clip-rule="evenodd"
+      {
+        teams.map((team) => (
+          <div
+            id={`team-${team.year}`}
+            role="tabpanel"
+            class:list={[
+              "team-card",
+              "mt-4",
+              { hidden: team.year !== currentYear },
+            ]}
+          >
+            <div class="team-content">
+              <h3 class="mb-4 font-bold text-xl">{team.year} Team</h3>
+              <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                {team.members.map((member) => (
+                  <div class="team-member rounded-lg border border-[--color-border] p-4 text-center">
+                    <div class="mx-auto mb-2 h-16 w-16">
+                      {member.image ? (
+                        <Image
+                          src={member.image}
+                          alt={member.name}
+                          width={64}
+                          height={64}
+                          class="rounded-full"
+                          loading="eager"
                         />
-                      </svg>
+                      ) : (
+                        <svg class="h-16 w-16 fill-current" viewBox="0 0 20 20">
+                          <path
+                            fill-rule="evenodd"
+                            d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                    <div class="font-semibold">{member.name}</div>
+                    <div class="text-gray-600 text-sm">{member.role}</div>
+                    {member.socials && member.socials.length > 0 && (
+                      <ul class="mt-2 flex justify-center space-x-2">
+                        {member.socials.map((social) => (
+                          <li>
+                            <a
+                              class="flex size-8 items-center justify-center rounded-full border-2 border-current p-2"
+                              href={social.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <span class="sr-only">{social.platform}</span>
+                              <Icon class="size-full" name={social.icon} />
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
                     )}
                   </div>
-                  <div class="font-semibold">{member.name}</div>
-                  <div class="text-sm text-gray-600">{member.role}</div>
-                  {member.socials && member.socials.length > 0 && (
-                    <ul class="flex justify-center mt-2 space-x-2">
-                      {member.socials.map((social) => (
-                        <li>
-                          <a
-                            class="flex size-8 items-center justify-center rounded-full border-2 border-current p-2"
-                            href={social.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <span class="sr-only">{social.platform}</span>
-                            <Icon class="size-full" name={social.icon} />
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </div>
 </ContentSection>
 
 <script>
-const yearTabs = document.querySelectorAll('.year-button');
-const teamPanels = document.querySelectorAll('.team-card');
+  const yearTabs = document.querySelectorAll(".year-button");
+  const teamPanels = document.querySelectorAll(".team-card");
 
-function hideItem(item) {
-  item.classList.add('achievement-item-hidden');
-  item.classList.remove('achievement-item-visible');
-}
+  function hideItem(item) {
+    item.classList.add("achievement-item-hidden");
+    item.classList.remove("achievement-item-visible");
+  }
 
-function showItem(item) {
-  item.classList.remove('achievement-item-hidden');
-  item.classList.add('achievement-item-visible');
-}
+  function showItem(item) {
+    item.classList.remove("achievement-item-hidden");
+    item.classList.add("achievement-item-visible");
+  }
 
-async function fadeInItems(items) {
-  if (items.length === 0) return;
-  Array.from(items).forEach((item, index) => {
-    hideItem(item);
-    setTimeout(() => showItem(item), index * 50);
+  async function fadeInItems(items) {
+    if (items.length === 0) return;
+    Array.from(items).forEach((item, index) => {
+      hideItem(item);
+      setTimeout(() => showItem(item), index * 50);
+    });
+  }
+
+  yearTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const year = tab.getAttribute("data-year");
+
+      yearTabs.forEach((t) => {
+        t.classList.remove("active");
+        t.setAttribute("aria-selected", "false");
+      });
+
+      teamPanels.forEach((panel) => {
+        panel.classList.add("hidden");
+        panel.querySelectorAll(".team-member").forEach(hideItem);
+      });
+
+      tab.classList.add("active");
+      tab.setAttribute("aria-selected", "true");
+
+      const selectedPanel = document.getElementById(`team-${year}`);
+      if (selectedPanel) {
+        selectedPanel.classList.remove("hidden");
+        fadeInItems(selectedPanel.querySelectorAll(".team-member"));
+      }
+    });
   });
-}
 
-yearTabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    const year = tab.getAttribute('data-year');
-    
-    yearTabs.forEach(t => {
-      t.classList.remove('active');
-      t.setAttribute('aria-selected', 'false');
-    });
-    
-    teamPanels.forEach(panel => {
-      panel.classList.add('hidden');
-      panel.querySelectorAll('.team-member').forEach(hideItem);
-    });
-    
-    tab.classList.add('active');
-    tab.setAttribute('aria-selected', 'true');
-    
-    const selectedPanel = document.getElementById(`team-${year}`);
-    if (selectedPanel) {
-      selectedPanel.classList.remove('hidden');
-      fadeInItems(selectedPanel.querySelectorAll('.team-member'));
+  document.addEventListener("DOMContentLoaded", () => {
+    const visiblePanel = document.querySelector(".team-card:not(.hidden)");
+    if (visiblePanel) {
+      fadeInItems(visiblePanel.querySelectorAll(".team-member"));
     }
   });
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  const visiblePanel = document.querySelector('.team-card:not(.hidden)');
-  if (visiblePanel) {
-    fadeInItems(visiblePanel.querySelectorAll('.team-member'));
-  }
-});
 </script>
 
 <style>
-.timeline-container {
-  padding: 20px 0;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+  .timeline-container {
+    padding: 20px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
-.year-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
+  .year-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
 
-.year-button {
-  padding: 8px 16px;
-  border: 2px solid var(--color-primary);
-  border-radius: 20px;
-  background-color: transparent;
-  color: var(--color-text);
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-}
+  .year-button {
+    padding: 8px 16px;
+    border: 2px solid var(--color-primary);
+    border-radius: 20px;
+    background-color: transparent;
+    color: var(--color-text);
+    font-weight: bold;
+    cursor: pointer;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
+  }
 
-.year-button:hover,
-.year-button.active {
-  background-color: var(--color-primary);
-  color: white;
-}
+  .year-button:hover,
+  .year-button.active {
+    background-color: var(--color-primary);
+    color: white;
+  }
 
-.team-card {
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 20px;
-  background-color: var(--color-background);
-  width: 100%;
-}
+  .team-card {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 20px;
+    background-color: var(--color-background);
+    width: 100%;
+  }
 
-.team-member {
-  will-change: opacity, transform;
-}
+  .team-member {
+    will-change: opacity, transform;
+  }
 
-.achievement-item-hidden {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.achievement-item-visible {
-  animation: fadeInUp 300ms ease-out forwards;
-}
-
-@keyframes fadeInUp {
-  from {
+  .achievement-item-hidden {
     opacity: 0;
     transform: translateY(20px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .achievement-item-visible {
+    animation: fadeInUp 300ms ease-out forwards;
   }
-}
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 </style>
