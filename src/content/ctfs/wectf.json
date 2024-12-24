@@ -1,0 +1,12 @@
+{
+    "name": "WeCTF",
+    "image": "/src/content/ctfs/_images/wectf.png",
+    "placements": [
+        {
+            "year": 2020,
+            "globalPlacement": 229,
+            "totalTeams": 257
+        }
+    ]
+
+}

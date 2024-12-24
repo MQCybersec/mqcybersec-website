@@ -1,0 +1,12 @@
+{
+    "name": "FireShell CTF",
+    "image": "/src/content/ctfs/_images/fireshell.png",
+    "placements": [
+        {
+            "year": 2020,
+            "globalPlacement": 94,
+            "totalTeams": 308
+        }
+    ]
+
+}

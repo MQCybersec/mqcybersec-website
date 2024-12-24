@@ -2,17 +2,67 @@
 import "@fontsource-variable/inter";
 import Compatibility from "~/components/compatibility.astro";
 import HackHub from "~/components/hack-hub.astro";
+import CTFWins from '../components/ctfwins.astro';
 import Footer from "~/components/footer.astro";
 import Header from "~/components/header.astro";
 import AboutUs from "~/components/about-us.astro";
 import Showcase from "~/components/showcase.astro";
 import Splash from "~/components/splash.astro";
+import logoImage from "~/assets/logo.png";
 import "~/styles/index.css";
+import TeamTimeline from '../components/team.astro';
+
+const teamsData = [
+  {
+    year: 2025,
+    members: [
+      { name: "Manav Thobhani", role: "General Executive" }
+    ]
+  },
+  {
+    year: 2024,
+    members: [
+      { name: "Noah Cooper", icon: "" },
+      { name: "Tenzin Shak", role: "General Executive" },
+      { name: "Charlie Brown", role: "Web Exploitation Expert" }
+    ]
+  },
+  {
+    year: 2023,
+    members: [
+      { name: "David Lee", role: "Team Lead" },
+      { name: "Eva Garcia", role: "Reverse Engineering Specialist" },
+      { name: "Frank Wilson", role: "Network Security Expert" }
+    ]
+  },
+  {
+    year: 2022,
+    members: [
+      { name: "David Lee", role: "Team Lead" },
+      { name: "Eva Garcia", role: "Reverse Engineering Specialist" },
+      { name: "Frank Wilson", role: "Network Security Expert" }
+    ]
+  },
+  {
+    year: 2021,
+    members: [
+      { name: "David Lee", role: "Team Lead" },
+      { name: "Eva Garcia", role: "Reverse Engineering Specialist" },
+      { name: "Frank Wilson", role: "Network Security Expert" }
+    ]
+  },
+  // Add more years as needed
+];
 
 const { generator, site } = Astro;
-const image = new URL("social.jpg", site);
+const image = new URL(logoImage.src, site);
 const description =
-  "Build fast websites, faster. Astro is a new kind of site builder for the modern web. Lightning-fast performance meets powerful developer experience.";
+  "MQCyberSec";
+const ctfWins = [
+  { competition: "DEF CON CTF", place: 1, year: 2024, iconUrl: "https://example.com/icons/defcon.png" },
+  { competition: "HITCON CTF", place: 2, year: 2023, iconUrl: "https://example.com/icons/hitcon.png" },
+  { competition: "PlaidCTF", place: 3, year: 2022, iconUrl: "https://example.com/icons/plaidctf.png" }
+];
 ---
 
 <!doctype html>
@@ -23,11 +73,11 @@ const description =
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="generator" content={generator} />
 
-    <title>Astro Landing Page</title>
+    <title>MQCyberSec Club</title>
     <meta name="description" content={description} />
 
     <!-- social media -->
-    <meta property="og:title" content="Astro" />
+    <meta property="og:title" content="MQCyberSec" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
@@ -57,18 +107,22 @@ const description =
           }
         });
     </script>
+    <!-- Initialise Flowbite -->
+    <script is:inline src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
   </head>
   <body
     class="h-full overflow-x-hidden bg-default text-default text-base selection:bg-secondary selection:text-white"
   >
     <Header />
     <Splash />
-    <div class="space-y-24 px-8 py-32">
+    <!-- <div class="space-y-24 px-8 py-32"> -->
       <AboutUs />
       <HackHub />
+      <CTFWins wins={ctfWins} />
+      <TeamTimeline teams={teamsData} />
       <!-- <Compatibility /> --> <!-- Maybe have CTF scores or some display of what we do. -->
       <!-- <Showcase /> -->
-    </div>
+    <!-- </div> -->
     <Footer />
   </body>
 </html>

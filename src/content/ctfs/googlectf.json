@@ -1,0 +1,17 @@
+{
+    "name": "Google Capture The Flag",
+    "image": "/src/content/ctfs/_images/googlectf.png",
+    "placements": [
+        {
+            "year": 2022,
+            "globalPlacement": 243,
+            "totalTeams": 382
+        },
+        {
+            "year": 2021,
+            "globalPlacement": 282,
+            "totalTeams": 379
+        }
+    ]
+
+}

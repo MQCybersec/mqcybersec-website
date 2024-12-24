@@ -1,0 +1,12 @@
+{
+    "name": "BackdoorCTF",
+    "image": "/src/content/ctfs/_images/backdoorctf.png",
+    "placements": [
+        {
+            "year": 2024,
+            "globalPlacement": 40,
+            "totalTeams": 476
+        }
+    ]
+
+}

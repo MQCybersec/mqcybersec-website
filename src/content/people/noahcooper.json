@@ -1,0 +1,42 @@
+{
+  "name": "Noah Cooper",
+  "image": "/src/content/people/_images/noahcooper.jpeg",
+  "enrollments": [
+    {
+      "year": 2024,
+      "role": "General Executive"
+    }
+  ],
+  "socials": [
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/in/noah-cooper-5442ab309/",
+      "icon": "fa-brands:linkedin-in"
+    },
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/sealldeveloper",
+      "icon": "fa-brands:github"
+    },
+    {
+      "platform": "Twitter",
+      "url": "https://twitter.com/sealldev",
+      "icon": "fa-brands:twitter"
+    },
+    {
+      "platform": "Discord",
+      "url": "https://discordapp.com/users/630874656198361099",
+      "icon": "fa-brands:discord"
+    },
+    {
+      "platform": "Website",
+      "url": "https://seall.dev/",
+      "icon": "mdi:home"
+    },
+    {
+      "platform": "Email",
+      "url": "mailto:seal@seall.dev",
+      "icon": "mdi:email"
+    }
+  ]
+}

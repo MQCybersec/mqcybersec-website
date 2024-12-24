@@ -1,0 +1,12 @@
+{
+    "name": "HSCTF",
+    "image": "/src/content/ctfs/_images/hsctf.png",
+    "placements": [
+        {
+            "year": 2020,
+            "globalPlacement": 705,
+            "totalTeams": 1466
+        }
+    ]
+
+}

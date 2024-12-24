@@ -1,0 +1,12 @@
+{
+    "name": "Wolverine Security CTF",
+    "image": "/src/content/ctfs/_images/wolverinectf.png",
+    "placements": [
+        {
+            "year": 2022,
+            "globalPlacement": 228,
+            "totalTeams": 516
+        }
+    ]
+
+}

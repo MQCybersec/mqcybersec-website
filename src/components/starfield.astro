@@ -1,74 +1,122 @@
-<div id="starfield" class="absolute inset-0">
+---
+const id = "starfield";
+---
+
+<div id={id} class="absolute inset-0">
   <canvas id="starfield-canvas"></canvas>
 </div>
 
 <script>
-  import invariant from "tiny-invariant";
+class Star {
+  x: number;
+  y: number;
+  z: number;
+  xPrev: number;
+  yPrev: number;
 
-  const COUNT = 800;
-  const SPEED = 0.1;
+  constructor(x = 0, y = 0, z = 0) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    this.xPrev = x;
+    this.yPrev = y;
+  }
 
-  class Star {
-    x: number;
-    y: number;
-    z: number;
-    xPrev: number;
-    yPrev: number;
+  update(width: number, height: number, speed: number) {
+    this.xPrev = this.x;
+    this.yPrev = this.y;
+    this.z += speed * 0.0675;
+    this.x += this.x * (speed * 0.0225) * this.z;
+    this.y += this.y * (speed * 0.0225) * this.z;
 
-    constructor(x = 0, y = 0, z = 0) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
-      this.xPrev = x;
-      this.yPrev = y;
-    }
-
-    update(width: number, height: number, speed: number) {
+    if (
+      this.x > width / 2 ||
+      this.x < -width / 2 ||
+      this.y > height / 2 ||
+      this.y < -height / 2
+    ) {
+      this.x = Math.random() * width - width / 2;
+      this.y = Math.random() * height - height / 2;
       this.xPrev = this.x;
       this.yPrev = this.y;
-      this.z += speed * 0.0675;
-      this.x += this.x * (speed * 0.0225) * this.z;
-      this.y += this.y * (speed * 0.0225) * this.z;
-      if (
-        this.x > width / 2 ||
-        this.x < -width / 2 ||
-        this.y > height / 2 ||
-        this.y < -height / 2
-      ) {
-        this.x = Math.random() * width - width / 2;
-        this.y = Math.random() * height - height / 2;
-        this.xPrev = this.x;
-        this.yPrev = this.y;
-        this.z = 0;
-      }
-    }
-
-    draw(ctx: CanvasRenderingContext2D) {
-      ctx.lineWidth = this.z;
-      ctx.beginPath();
-      ctx.moveTo(this.x, this.y);
-      ctx.lineTo(this.xPrev, this.yPrev);
-      ctx.stroke();
+      this.z = 0;
     }
   }
 
-  const stars = Array.from({ length: COUNT }, () => new Star(0, 0, 0));
-  let rafId = 0;
+  draw(ctx: CanvasRenderingContext2D) {
+    ctx.lineWidth = this.z;
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y);
+    ctx.lineTo(this.xPrev, this.yPrev);
+    ctx.stroke();
+  }
+}
 
-  const canvas = document.querySelector(
-    "#starfield-canvas",
-  ) as HTMLCanvasElement;
-  invariant(canvas, "canvas should not be null");
-  const ctx = canvas.getContext("2d");
+const COUNT = 300;
+const SPEED = 0.1;
+const FPS_THROTTLE = 30; // Throttled FPS when not fully visible
+const FPS_DEFAULT = 60;
 
-  const container = document.querySelector("#starfield") as HTMLElement;
-  invariant(container, "container should not be null");
-  const resizeObserver = new ResizeObserver(setup);
-  resizeObserver.observe(container);
+class StarfieldAnimation {
+  private stars: Star[] = [];
+  private rafId: number = 0;
+  private isAnimating: boolean = true;
+  private lastDrawTime: number = 0;
+  private canvas: HTMLCanvasElement;
+  private ctx: CanvasRenderingContext2D;
+  private container: HTMLElement;
+  private observer: IntersectionObserver;
+  private resizeObserver: ResizeObserver;
+  private throttled: boolean = false;
 
-  function setup() {
-    invariant(ctx, "canvas context should not be null");
-    rafId > 0 && cancelAnimationFrame(rafId);
+  constructor(canvas: HTMLCanvasElement, container: HTMLElement) {
+    this.canvas = canvas;
+    this.container = container;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Could not get canvas context");
+    this.ctx = ctx;
+
+    // Initialize stars
+    this.stars = Array.from({ length: COUNT }, () => new Star(0, 0, 0));
+
+    // Set up observers
+    this.setupIntersectionObserver();
+    this.setupResizeObserver();
+  }
+
+  private setupIntersectionObserver() {
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // Throttle when less than 50% visible
+          this.throttled = entry.intersectionRatio < 0.5;
+          this.isAnimating = entry.intersectionRatio > 0;
+
+          if (this.isAnimating && !this.rafId) {
+            this.rafId = requestAnimationFrame(this.frame.bind(this));
+          }
+        });
+      },
+      {
+        threshold: [0, 0.5]
+      }
+    );
+
+    this.observer.observe(this.container);
+  }
+
+  private setupResizeObserver() {
+    this.resizeObserver = new ResizeObserver(() => this.setup());
+    this.resizeObserver.observe(this.container);
+  }
+
+  private setup() {
+    const { ctx, canvas, container } = this;
+    
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = 0;
+    }
 
     const { clientWidth: width, clientHeight: height } = container;
     const dpr = window.devicePixelRatio || 1;
@@ -78,7 +126,7 @@
     canvas.style.height = `${height}px`;
     ctx.scale(dpr, dpr);
 
-    for (const star of stars) {
+    for (const star of this.stars) {
       star.x = Math.random() * width - width / 2;
       star.y = Math.random() * height - height / 2;
       star.z = 0;
@@ -87,19 +135,73 @@
     ctx.translate(width / 2, height / 2);
     ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
     ctx.strokeStyle = "white";
-    rafId = requestAnimationFrame(frame);
   }
 
-  function frame() {
-    invariant(ctx, "canvas context should not be null");
+  private frame(timestamp: number) {
+    if (!this.isAnimating) {
+      this.rafId = 0;
+      return;
+    }
+
+    // Apply FPS throttling when not fully visible
+    if (this.throttled) {
+      const elapsed = timestamp - this.lastDrawTime;
+      if (elapsed < 1000 / FPS_THROTTLE) {
+        this.rafId = requestAnimationFrame(this.frame.bind(this));
+        return;
+      }
+    } else {
+      const elapsed = timestamp - this.lastDrawTime;
+      if (elapsed < 1000 / FPS_DEFAULT) {
+        this.rafId = requestAnimationFrame(this.frame.bind(this));
+        return;
+      }
+    }
+
+    const { ctx, container } = this;
     const { clientWidth: width, clientHeight: height } = container;
 
-    for (const star of stars) {
+    for (const star of this.stars) {
       star.update(width, height, SPEED);
       star.draw(ctx);
     }
 
     ctx.fillRect(-width / 2, -height / 2, width, height);
-    rafId = requestAnimationFrame(frame);
+    this.lastDrawTime = timestamp;
+    this.rafId = requestAnimationFrame(this.frame.bind(this));
   }
+
+  public cleanup() {
+    this.observer.disconnect();
+    this.resizeObserver.disconnect();
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = 0;
+    }
+  }
+}
+
+// Initialize animation
+const container = document.querySelector("#starfield");
+const canvas = document.querySelector("#starfield-canvas");
+
+if (container instanceof HTMLElement && canvas instanceof HTMLCanvasElement) {
+  const animation = new StarfieldAnimation(canvas, container);
+
+  // Cleanup on page navigation
+  document.addEventListener("astro:before-preparation", () => {
+    animation.cleanup();
+  });
+}
 </script>
+
+<style>
+  .starfield {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+</style>

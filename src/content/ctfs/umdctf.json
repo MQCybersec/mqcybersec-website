@@ -1,0 +1,17 @@
+{
+    "name": "UMDCTF",
+    "image": "/src/content/ctfs/_images/umdctf.png",
+    "placements": [
+        {
+            "year": 2022,
+            "globalPlacement": 242,
+            "totalTeams": 552
+        },
+        {
+            "year": 2021,
+            "globalPlacement": 24,
+            "totalTeams": 484
+        }
+    ]
+
+}

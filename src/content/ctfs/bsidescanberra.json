@@ -1,0 +1,12 @@
+{
+    "name": "BSides Canberra CTF",
+    "image": "/src/content/ctfs/_images/bsides.png",
+    "placements": [
+        {
+            "year": 2021,
+            "globalPlacement": 49,
+            "totalTeams": 343
+        }
+    ]
+
+}

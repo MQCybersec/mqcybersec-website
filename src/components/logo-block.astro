@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import logoImage from "~/assets/mqcybersec-logo.png";
+import logoImage from "~/assets/logo.png";
 
 // LogoBlock component
 export interface Props {
@@ -10,4 +10,4 @@ export interface Props {
 const { inClass: inClass } = Astro.props;
 ---
 
-<Image src={logoImage} loading="eager" alt="MQCybersec Logo" class={inClass} id="logoblock"/>
+<Image src={logoImage} loading="eager" alt="MQCyberSec Logo" class={inClass} id="logoblock"/>

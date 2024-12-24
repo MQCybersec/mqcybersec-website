@@ -1,0 +1,12 @@
+{
+    "name": "UACTF",
+    "image": "/src/content/ctfs/_images/uactf.png",
+    "placements": [
+        {
+            "year": 2022,
+            "globalPlacement": 47,
+            "totalTeams": 431
+        }
+    ]
+
+}

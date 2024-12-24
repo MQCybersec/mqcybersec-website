@@ -1,0 +1,465 @@
+---
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import ContentSection from "~/components/content-section.astro";
+import { getCollection } from "astro:content";
+
+const competitions = await getCollection("ctfs");
+
+// Rest of the imports and constants remain the same until the return statement
+const years = [...new Set(
+  competitions.flatMap(comp => 
+    comp.data.placements.map(p => p.year)
+  ))
+].sort((a, b) => b - a);
+
+const getMedalInfo = (placement: number) => {
+  switch (placement) {
+    case 1:
+      return { emoji: "🥇", color: "text-yellow-400" };
+    case 2:
+      return { emoji: "🥈", color: "text-gray-400" };
+    case 3:
+      return { emoji: "🥉", color: "text-amber-700" };
+    default:
+      return null;
+  }
+};
+
+const calculatePercentage = (placement: number, total?: number) => {
+  if (!total) return null;
+  return (placement / total) * 100;
+};
+
+const getPlacementInfo = (placement: number, total?: number) => {
+  if (!total) return { display: `#${placement}`, percentage: null };
+  
+  const percentage = calculatePercentage(placement, total);
+  const isTopTen = placement <= 10;
+  const medalInfo = getMedalInfo(placement);
+  
+  let display = '';
+  if (isTopTen) {
+    display = `Global Rank: #${placement} / ${total}`;
+  } else {
+    display = `Global Rank: #${placement} / ${total}`;
+  }
+  
+  return {
+    display,
+    percentage: percentage !== null && (percentage <= 5 && !isTopTen) ? percentage.toFixed(1) : null,
+    medalInfo
+  };
+};
+
+const getSortPriority = (comp: typeof competitions[0], year: number) => {
+  const yearPlacements = comp.data.placements.filter(p => p.year === year);
+  
+  return yearPlacements.map(placement => {
+    const percentage = calculatePercentage(placement.globalPlacement, placement.totalTeams) || 100;
+    
+    let globalPriority = placement.globalPlacement <= 5 ? placement.globalPlacement : 999;
+    let australiaPriority = placement.australiaPlacement && placement.australiaPlacement <= 5 
+      ? placement.australiaPlacement + 5
+      : 999;
+      
+    return {
+      ...placement,
+      sortScore: Math.min(globalPriority, australiaPriority),
+      percentage
+    };
+  }).sort((a, b) => {
+    if (a.sortScore !== b.sortScore) {
+      return a.sortScore - b.sortScore;
+    }
+    return a.percentage - b.percentage;
+  })[0];
+};
+---
+
+<ContentSection title="CTF Achievements" id="ctf-achievements">
+    <Fragment slot="lead">
+      Our team has <span class="text-primary">excelled</span> in various Capture The Flag competitions,
+      demonstrating our <span class="text-primary">skills</span> and <span class="text-primary">expertise</span>
+      in cybersecurity challenges.
+    </Fragment>
+  
+    <div class="timeline-container max-w-6xl mx-auto relative pb-16">
+      <div class="ctf-year-buttons flex flex-wrap justify-center gap-4 mb-8">
+        {
+          years.map((year) => (
+            <button
+              class="ctf-year-button px-6 py-2 border-2 border-primary rounded-full font-bold hover:bg-primary hover:text-white transition-colors"
+              data-year={year}
+            >
+              {year}
+            </button>
+          ))
+        }
+      </div>
+  
+      {
+        years.map((year) => {
+          const yearCompetitions = competitions
+            .filter(comp => comp.data.placements.some(p => p.year === year))
+            .sort((a, b) => {
+              const aPriority = getSortPriority(a, year);
+              const bPriority = getSortPriority(b, year);
+              
+              if (aPriority.sortScore !== bPriority.sortScore) {
+                return aPriority.sortScore - bPriority.sortScore;
+              }
+              return aPriority.percentage - bPriority.percentage;
+            });
+  
+          const totalPages = Math.ceil(yearCompetitions.length / 9);
+  
+          return (
+            <div
+              class="achievement-grid hidden"
+              data-year={year}
+              data-total-pages={totalPages}
+            >
+              <h3 class="text-2xl font-bold text-center mb-8">{year} Achievements</h3>
+              
+              <div class="min-h-[2400px] md:min-h-[1200px] lg:min-h-[850px]">
+                {Array.from({ length: totalPages }).map((_, pageIndex) => (
+                  <div 
+                    class="achievement-page hidden w-full"
+                    data-page={pageIndex + 1}
+                  >
+                    <ul class="achievement-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                      {yearCompetitions
+                        .slice(pageIndex * 9, (pageIndex + 1) * 9)
+                        .map(competition => {
+                          const yearPlacements = competition.data.placements
+                            .filter(p => p.year === year)
+                            .sort((a, b) => {
+                              const aGlobalTop5 = a.globalPlacement < 6;
+                              const bGlobalTop5 = b.globalPlacement < 6;
+                              const aAusTop5 = a.australiaPlacement && a.australiaPlacement < 6;
+                              const bAusTop5 = b.australiaPlacement && b.australiaPlacement < 6;
+                              
+                              if (aGlobalTop5 !== bGlobalTop5) return aGlobalTop5 ? -1 : 1;
+                              if (aGlobalTop5 && bGlobalTop5) return a.globalPlacement - b.globalPlacement;
+                              
+                              if (aAusTop5 !== bAusTop5) return aAusTop5 ? -1 : 1;
+                              if (aAusTop5 && bAusTop5) return (a.australiaPlacement || 0) - (b.australiaPlacement || 0);
+                              
+                              const aPercentage = calculatePercentage(a.globalPlacement, a.totalTeams) || 100;
+                              const bPercentage = calculatePercentage(b.globalPlacement, b.totalTeams) || 100;
+                              return aPercentage - bPercentage;
+                            });
+
+                          return (
+                            <li class="achievement-item flex flex-col items-center gap-4 border border-default bg-offset p-6 rounded-lg w-full">
+                              <div class="relative size-16">
+                                {competition.data.image ? (
+                                  <div class="absolute inset-0 rounded-full border-2 border-current overflow-hidden">
+                                    <Image
+                                      src={competition.data.image}
+                                      alt={`${competition.data.name} Icon`}
+                                      width={64}
+                                      height={64}
+                                      class="size-full object-cover"
+                                      loading="eager"
+                                    />
+                                  </div>
+                                ) : (
+                                  <div class="size-full rounded-full border-2 border-current p-3">
+                                    <Icon name="mdi:trophy" class="size-full" />
+                                  </div>
+                                )}
+                              </div>
+                              <p class="text-center font-extrabold text-xl">{competition.data.name}</p>
+                              <div class="text-center text-offset text-sm space-y-3">
+                                {yearPlacements.map(placement => {
+                                  const placementInfo = getPlacementInfo(placement.globalPlacement, placement.totalTeams);
+                                  const aussieMedalInfo = placement.australiaPlacement ? getMedalInfo(placement.australiaPlacement) : null;
+
+                                  return (
+                                    <div class="space-y-1">
+                                      {placement.teamName && (
+                                        <p class="font-medium text-base">{placement.teamName}</p>
+                                      )}
+                                      {placement.australiaPlacement && (
+                                        <p class={`${aussieMedalInfo?.color || ''}`}>
+                                          {aussieMedalInfo?.emoji} Australia Rank: #{placement.australiaPlacement}
+                                        </p>
+                                      )}
+                                      <p class={placementInfo.medalInfo?.color}>
+                                        {placementInfo.medalInfo?.emoji} {placementInfo.display}
+                                      </p>
+                                      {placementInfo.percentage && (
+                                        <p class="text-primary">Top {placementInfo.percentage}%</p>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </li>
+                          );
+                        })}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+              
+              {totalPages > 1 && (
+                <div class="flex justify-center items-center gap-4 mt-8">
+                  <button 
+                    class="prev-page px-4 py-2 border-2 border-primary rounded-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled
+                  >
+                    ←
+                  </button>
+                  <span class="page-indicator font-medium">Page 1/{totalPages}</span>
+                  <button 
+                    class="next-page px-4 py-2 border-2 border-primary rounded-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={totalPages <= 1}
+                  >
+                    →
+                  </button>
+                </div>
+              )}
+            </div>
+          );
+        })
+      }
+    </div>
+</ContentSection>
+<script>
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -20% 0px',
+      threshold: 0
+    };
+  
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('achievement-item-visible');
+          entry.target.classList.remove('achievement-item-hidden');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+  
+    document.addEventListener('DOMContentLoaded', () => {
+      const section = document.querySelector('.timeline-container');
+      if (section) {
+        section.classList.add('achievement-item-hidden');
+        observer.observe(section);
+      }
+    });
+  </script>
+<script>
+    const yearButtons = document.querySelectorAll(".ctf-year-button");
+    const achievementGrids = document.querySelectorAll(".achievement-grid");
+    
+    let currentAnimation: { cancel: () => void } | null = null;
+    let isAnimating = false;
+    
+    function hideItem(item) {
+      item.classList.add('achievement-item-hidden');
+      item.classList.remove('achievement-item-visible');
+    }
+    
+    function showItem(item) {
+      item.classList.remove('achievement-item-hidden');
+      item.classList.add('achievement-item-visible');
+    }
+
+    function updateNavigationButtons() {
+      achievementGrids.forEach(grid => {
+        const currentPage = parseInt(grid.getAttribute("data-current-page") || "1");
+        const totalPages = parseInt(grid.getAttribute("data-total-pages") || "1");
+        const prevButton = grid.querySelector(".prev-page");
+        const nextButton = grid.querySelector(".next-page");
+        
+        if (prevButton) {
+          prevButton.disabled = currentPage === 1;
+        }
+        if (nextButton) {
+          nextButton.disabled = currentPage === totalPages;
+        }
+      });
+    }
+    
+    async function animateItems(items: Iterable<unknown> | ArrayLike<unknown>) {
+      if (currentAnimation) {
+        currentAnimation.cancel();
+      }
+    
+      const itemsArray = Array.from(items);
+      if (itemsArray.length === 0) return;
+    
+      isAnimating = true;
+      updateNavigationButtons();
+    
+      // Reset all items to hidden state
+      itemsArray.forEach(hideItem);
+      
+      // Ensure browser has rendered hidden state
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      
+      let cancelled = false;
+      
+      const animations = itemsArray.map((item, index) => {
+        return new Promise<void>(resolve => {
+          setTimeout(() => {
+            if (!cancelled) {
+              showItem(item);
+              
+              item.addEventListener('animationend', () => {
+                resolve();
+              }, { once: true });
+            } else {
+              resolve();
+            }
+          }, index * 50);
+        });
+      });
+    
+      currentAnimation = {
+        cancel: () => {
+          cancelled = true;
+          itemsArray.forEach(hideItem);
+        }
+      };
+    
+      await Promise.all(animations);
+      if (!cancelled) {
+        currentAnimation = null;
+        isAnimating = false;
+        updateNavigationButtons();
+      }
+    }
+    
+    async function showYear(year: string | null) {
+        yearButtons.forEach((button) => {
+          if (button.getAttribute("data-year") === year) {
+            button.classList.add("bg-primary", "text-white");
+          } else {
+            button.classList.remove("bg-primary", "text-white");
+          }
+        });
+        
+        achievementGrids.forEach(grid => {
+          grid.classList.add("hidden");
+          grid.querySelectorAll('.achievement-item').forEach(hideItem);
+        });
+    
+        const targetGrid = Array.from(achievementGrids)
+          .find(grid => grid.getAttribute("data-year") === year);
+    
+        if (targetGrid) {
+          targetGrid.classList.remove("hidden");
+          await showPage(targetGrid, 1);
+        }
+    }
+    
+    async function showPage(grid: Element, pageNumber: number) {
+      const pages = grid.querySelectorAll(".achievement-page");
+      const totalPages = parseInt(grid.getAttribute("data-total-pages") || "1");
+      
+      const pageIndicator = grid.querySelector(".page-indicator");
+    
+      if (pageIndicator) {
+        pageIndicator.textContent = `Page ${pageNumber}/${totalPages}`;
+      }
+      updateNavigationButtons();
+    
+      grid.setAttribute("data-current-page", pageNumber.toString());
+      
+      pages.forEach(page => {
+        page.classList.add("hidden");
+        page.querySelectorAll('.achievement-item').forEach(hideItem);
+      });
+    
+      const targetPage = Array.from(pages)
+        .find(page => parseInt(page.getAttribute("data-page") || "1") === pageNumber);
+    
+      if (targetPage) {
+        targetPage.classList.remove("hidden");
+        const items = targetPage.querySelectorAll('.achievement-item');
+        await animateItems(items);
+      }
+    }
+    
+    // Event listeners
+    yearButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const year = button.getAttribute("data-year");
+        if (year) showYear(year);
+      });
+    });
+    
+    achievementGrids.forEach((grid) => {
+      const prevButton = grid.querySelector(".prev-page");
+      const nextButton = grid.querySelector(".next-page");
+    
+      prevButton?.addEventListener("click", () => {
+        const currentPage = parseInt(grid.getAttribute("data-current-page") || "1");
+        if (currentPage > 1) {
+          showPage(grid, currentPage - 1);
+        }
+      });
+    
+      nextButton?.addEventListener("click", () => {
+        const currentPage = parseInt(grid.getAttribute("data-current-page") || "1");
+        const totalPages = parseInt(grid.getAttribute("data-total-pages") || "1");
+        if (currentPage < totalPages) {
+          showPage(grid, currentPage + 1);
+        }
+      });
+    });
+    
+    // Initial setup
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.achievement-item').forEach(hideItem);
+      
+      if (yearButtons.length > 0) {
+        const firstYear = yearButtons[0].getAttribute("data-year");
+        if (firstYear) showYear(firstYear);
+      }
+    });
+</script>
+
+<style>
+    .timeline-container {
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      transform: translateY(20px);
+    }
+    
+    .achievement-item {
+      will-change: opacity, transform;
+    }
+    
+    .achievement-item-hidden {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    .achievement-item-visible {
+      animation: fadeInUp 300ms ease-out forwards;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .achievement-grid,
+    .achievement-page {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    </style>

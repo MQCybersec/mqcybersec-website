@@ -1,0 +1,23 @@
+{
+    "name": "b01lers CTF",
+    "image": "/src/content/ctfs/_images/b01lers.png",
+    "placements": [
+        {
+            "year": 2022,
+            "globalPlacement": 370,
+            "totalTeams": 653
+        },
+        {
+            "year": 2021,
+            "globalPlacement": 71,
+            "totalTeams": 297
+        }
+        ,
+        {
+            "year": 2020,
+            "globalPlacement": 403,
+            "totalTeams": 660
+        }
+    ]
+
+}

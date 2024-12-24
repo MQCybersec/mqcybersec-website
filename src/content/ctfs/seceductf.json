@@ -1,0 +1,37 @@
+{
+    "name": "Australian Cyber Security Games",
+    "image": "/src/content/ctfs/_images/secedu.png",
+    "placements": [
+        {
+            "teamName": "MQCyberSec Trojans",
+            "year": 2024,
+            "globalPlacement": 1,
+            "totalTeams": 45
+        },
+        {
+            "teamName": "MQCyberSec JKVM",
+            "year": 2024,
+            "globalPlacement": 6,
+            "totalTeams": 45
+        },
+        {
+            "teamName": "MQCyberSec Worms",
+            "year": 2024,
+            "globalPlacement": 7,
+            "totalTeams": 45
+        },
+        {
+            "teamName": "MQCyberSec Scareware",
+            "year": 2024,
+            "globalPlacement": 24,
+            "totalTeams": 45
+        },
+        {
+            "teamName": "MQCyberSec Root",
+            "year": 2024,
+            "globalPlacement": 30,
+            "totalTeams": 45
+        }
+    ]
+
+}
