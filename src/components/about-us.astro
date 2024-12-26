@@ -248,24 +248,17 @@ function setupInfiniteScroll() {
   let currentPosition = 0;
 
   function moveItems() {
-    currentPosition -= 1.2; // Move 1px at a time for smooth scrolling
+    currentPosition -= 1.2;
     content.style.transform = `translateX(${currentPosition}px)`;
 
-    // Check each item
     items.forEach((item) => {
       const itemRect = item.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
       
-      // If an item has moved completely off screen to the left
       if (itemRect.right < containerRect.left) {
-        // Calculate the total width of all items
-        const totalWidth = itemWidth * items.length;
-        
-        // Move it to the right end
         currentPosition += itemWidth;
         content.style.transform = `translateX(${currentPosition}px)`;
         
-        // Move the element to the end of the content
         content.appendChild(item);
       }
     });
@@ -273,11 +266,9 @@ function setupInfiniteScroll() {
     requestAnimationFrame(moveItems);
   }
 
-  // Start the animation
   requestAnimationFrame(moveItems);
 }
 
-// Run setup when DOM is loaded
 document.addEventListener('DOMContentLoaded', setupInfiniteScroll);
   </script>
   

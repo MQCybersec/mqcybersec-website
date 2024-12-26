@@ -26,6 +26,7 @@ const people = defineCollection({
     z.object({
       name: z.string().min(1),
       image: image().optional(),
+      description: z.string().optional(),
       socials: z
         .array(
           z.object({
