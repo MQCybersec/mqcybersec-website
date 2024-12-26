@@ -193,6 +193,7 @@ const truncateDescription = (description: string) => {
                     width={128}
                     height={128}
                     class="rounded-full w-full h-full object-cover"
+                    loading="eager"
                   />
                 ) : (
                   <svg class="h-32 w-32 fill-current" viewBox="0 0 20 20">
@@ -325,7 +326,7 @@ const truncateDescription = (description: string) => {
         e.stopPropagation();
         return;
       }
-      
+
       const memberName = member.querySelector('.member-name').textContent;
       const modalId = `modal-${memberName.toLowerCase().replace(/\s+/g, '-')}`;
       openModal(modalId);
