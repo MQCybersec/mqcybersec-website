@@ -15,7 +15,7 @@ import TeamTimeline from '../components/team.astro';
 const { generator, site } = Astro;
 const image = new URL(logoImage.src, site);
 const description =
-  "MQCyberSec";
+  "The MQCyberSec club is the place to be for all Macquarie University students who are interested in cybersecurity and Capture the Flag competitions. ";
 ---
 
 <!doctype html>
@@ -24,6 +24,7 @@ const description =
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta content="#43B581" data-react-helmet="true" name="theme-color" />
     <meta name="generator" content={generator} />
 
     <title>MQCyberSec Club</title>
@@ -35,7 +36,6 @@ const description =
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
     <meta property="og:url" content={site} />
-    <meta name="twitter:card" content="summary_large_image" />
 
     <!-- initialize theme -->
     <script is:inline>
