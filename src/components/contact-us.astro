@@ -3,7 +3,7 @@ import ContentSection from "~/components/content-section.astro";
 ---
 
 <ContentSection title="Contact Us" id="contact">
-  <form id="contact-form" class="contact-form max-w-xl mx-auto w-full px-4">
+  <form id="contact-form" class="contact-form max-w-xl mx-auto w-full px-4" action="https://formspree.io/f/mgvvorna" method="POST">
     <div class="form-group">
       <label for="name">Name</label>
       <input
@@ -50,21 +50,15 @@ import ContentSection from "~/components/content-section.astro";
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    // Get form data
     const formData = new FormData(form);
-    const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      message: formData.get('message')
-    };
 
     try {
-      const response = await fetch('https://contactusmqcybersecwebsite.mqcybersec.workers.dev', {
+      const response = await fetch(form.action, {
         method: 'POST',
+        body: formData,
         headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
+          'Accept': 'application/json'
+        }
       });
 
       const result = await response.json();
@@ -80,10 +74,10 @@ import ContentSection from "~/components/content-section.astro";
       }
     } catch (error) {
       if (responseMessage) {
+        console.error('Error:', error);
         responseMessage.textContent = "There was an error submitting the form. Please try again.";
         responseMessage.className = "text-red-600";
       }
-      console.error('Error:', error);
     }
   });
 </script>
