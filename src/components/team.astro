@@ -319,7 +319,13 @@ const truncateDescription = (description: string) => {
   }
 
   document.querySelectorAll('.team-member').forEach(member => {
-    member.addEventListener('click', () => {
+    member.addEventListener('click', (e) => {
+      const socialLink = e.target.closest('.social-link');
+      if (socialLink) {
+        e.stopPropagation();
+        return;
+      }
+      
       const memberName = member.querySelector('.member-name').textContent;
       const modalId = `modal-${memberName.toLowerCase().replace(/\s+/g, '-')}`;
       openModal(modalId);

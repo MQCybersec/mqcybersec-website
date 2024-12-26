@@ -8,5 +8,12 @@
     {
       "year": 2022
     }
+  ],
+  "socials": [
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/in/solopie/",
+      "icon": "fa-brands:linkedin-in"
+    }
   ]
 }
