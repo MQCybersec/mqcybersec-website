@@ -1,15 +1,30 @@
 ---
 import { Image } from "astro:assets";
-import moonImage from "~/assets/moon.jpg";
-
-const widths = [450, 800, 1200];
-const sizes = "100vw";
+import footerImage from "~/assets/footer1.png";
 ---
 
-<Image
-  class="h-full w-full object-cover"
-  src={moonImage}
-  widths={widths}
-  sizes={sizes}
-  alt="The ridged surface of the moon"
-/>
+<div class="hero-image-container">
+  <Image
+    src={footerImage}
+    alt="Footer pattern"
+    width={2732}
+    height={1536}
+    class="hero-image"
+    loading="eager"
+  />
+</div>
+
+<style>
+  .hero-image-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+</style>

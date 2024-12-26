@@ -4,6 +4,7 @@ import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://astro-moon-landing.netlify.app/",
+  site: "https://mqcybersec.org/",
   integrations: [tailwind(), icon()],
+  output: 'hybrid'
 });

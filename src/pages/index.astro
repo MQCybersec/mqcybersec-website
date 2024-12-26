@@ -6,63 +6,16 @@ import CTFWins from '../components/ctfwins.astro';
 import Footer from "~/components/footer.astro";
 import Header from "~/components/header.astro";
 import AboutUs from "~/components/about-us.astro";
-import Showcase from "~/components/showcase.astro";
 import Splash from "~/components/splash.astro";
+import ContactUs from "~/components/contact-us.astro";
 import logoImage from "~/assets/logo.png";
 import "~/styles/index.css";
 import TeamTimeline from '../components/team.astro';
-
-const teamsData = [
-  {
-    year: 2025,
-    members: [
-      { name: "Manav Thobhani", role: "General Executive" }
-    ]
-  },
-  {
-    year: 2024,
-    members: [
-      { name: "Noah Cooper", icon: "" },
-      { name: "Tenzin Shak", role: "General Executive" },
-      { name: "Charlie Brown", role: "Web Exploitation Expert" }
-    ]
-  },
-  {
-    year: 2023,
-    members: [
-      { name: "David Lee", role: "Team Lead" },
-      { name: "Eva Garcia", role: "Reverse Engineering Specialist" },
-      { name: "Frank Wilson", role: "Network Security Expert" }
-    ]
-  },
-  {
-    year: 2022,
-    members: [
-      { name: "David Lee", role: "Team Lead" },
-      { name: "Eva Garcia", role: "Reverse Engineering Specialist" },
-      { name: "Frank Wilson", role: "Network Security Expert" }
-    ]
-  },
-  {
-    year: 2021,
-    members: [
-      { name: "David Lee", role: "Team Lead" },
-      { name: "Eva Garcia", role: "Reverse Engineering Specialist" },
-      { name: "Frank Wilson", role: "Network Security Expert" }
-    ]
-  },
-  // Add more years as needed
-];
 
 const { generator, site } = Astro;
 const image = new URL(logoImage.src, site);
 const description =
   "MQCyberSec";
-const ctfWins = [
-  { competition: "DEF CON CTF", place: 1, year: 2024, iconUrl: "https://example.com/icons/defcon.png" },
-  { competition: "HITCON CTF", place: 2, year: 2023, iconUrl: "https://example.com/icons/hitcon.png" },
-  { competition: "PlaidCTF", place: 3, year: 2022, iconUrl: "https://example.com/icons/plaidctf.png" }
-];
 ---
 
 <!doctype html>
@@ -118,8 +71,9 @@ const ctfWins = [
     <!-- <div class="space-y-24 px-8 py-32"> -->
       <AboutUs />
       <HackHub />
-      <CTFWins wins={ctfWins} />
-      <TeamTimeline teams={teamsData} />
+      <CTFWins />
+      <TeamTimeline />
+      <ContactUs />
       <!-- <Compatibility /> --> <!-- Maybe have CTF scores or some display of what we do. -->
       <!-- <Showcase /> -->
     <!-- </div> -->

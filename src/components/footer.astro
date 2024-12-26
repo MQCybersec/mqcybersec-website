@@ -1,13 +1,14 @@
 ---
 import { Icon } from "astro-icon/components";
 import HeroImage from "~/components/hero-image.astro";
-import type { FooterLink } from "~/types";
+import LogoBlock from "~/components/logo-block.astro";
+import type { FooterLink, NavItem } from "~/types";
 
 const links: Array<FooterLink> = [
   {
     url: "https://linktr.ee/mqcybersec",
     description: "MQCyberSec's Linktree",
-    icon: "mdi:home",
+    icon: "mdi:link",
   },
   {
     url: "https://github.com/MQCyberSec",
@@ -24,26 +25,80 @@ const links: Array<FooterLink> = [
     description: "MQCyberSec on LinkedIn",
     icon: "fa-brands:linkedin",
   },
+  {
+    url: "https://instagram.com/mqcybersec",
+    description: "MQCyberSec on Instagram",
+    icon: "fa-brands:instagram",
+  },
+  {
+    url: "mailto:mqcybersec@gmail.com",
+    description: "MQCyberSec's Email",
+    icon: "mdi:email",
+  }
 ];
+
+const navItems: Array<NavItem> = [
+  { title: "About Us", url: "#aboutus" },
+  { title: "Hack Hub", url: "#hackhub" },
+  { title: "CTF Achievements", url: "#ctf-achievements" },
+  { title: "Team", url: "#teams" },
+];
+
+const currentYear = new Date().getFullYear();
 ---
 
-<footer class="relative flex h-64 items-center justify-center">
+<footer class="relative flex flex-col h-auto items-center justify-center py-8">
   <div class="absolute inset-0 overflow-hidden opacity-40">
     <HeroImage />
   </div>
-  <ul class="relative grid grid-cols-2 gap-4 sm:grid-cols-4">
-    {
-      links.map((link) => (
+  <div class="relative w-full max-w-4xl px-4">
+    <div class="flex justify-between items-center mb-6">
+      <LogoBlock slot="eyebrow" inClass="size-48"/>
+      <p>📍 4 Research Park Dr, Macquarie Park, NSW, 2113</p>
+    </div>
+    
+    <ul class="flex justify-end gap-4 mb-6">
+      {links.map((link) => (
         <li>
           <a
-            class="flex size-16 items-center justify-center rounded-full border-2 border-current p-4"
+            class="flex size-12 items-center justify-center rounded-full border-2 border-current p-3"
             href={link.url}
           >
             <span class="sr-only">{link.description}</span>
             <Icon class="size-full" name={link.icon} />
           </a>
         </li>
-      ))
-    }
-  </ul>
+      ))}
+    </ul>
+    <hr class="border-t-2 border-current mb-6" />
+    <nav>
+      <ul class="flex justify-center space-x-8">
+        {navItems.map(({ title, url }) => (
+          <li>
+            <a class="block py-4 text-base" href={url}>
+              {title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <small class="flex justify-end px-4 gap-4 text-gray-300">© Copyright MQCyberSec {currentYear}</small>
+  </div>
 </footer>
+
+
+<style>
+  footer {
+    position: relative;
+    z-index: 1;
+  }
+
+  footer > div:first-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+  }
+</style>

@@ -248,7 +248,7 @@ function setupInfiniteScroll() {
   let currentPosition = 0;
 
   function moveItems() {
-    currentPosition -= 2; // Move 1px at a time for smooth scrolling
+    currentPosition -= 1.2; // Move 1px at a time for smooth scrolling
     content.style.transform = `translateX(${currentPosition}px)`;
 
     // Check each item
