@@ -5,5 +5,12 @@
     {
       "year": 2023
     }
+  ],
+  "socials": [
+    {
+      "platform": "Website",
+      "url": "https://bellesaurus.github.io/",
+      "icon": "mdi:home"
+    }
   ]
 }
