@@ -55,7 +55,7 @@ const currentYear = new Date().getFullYear();
   <div class="relative w-full max-w-4xl px-4">
     <div class="flex justify-between items-center mb-6">
       <LogoBlock slot="eyebrow" inClass="size-48"/>
-      <p>📍 4 Research Park Dr, Macquarie Park, NSW, 2113</p>
+      <p class="block py-4 text-sm md:text-base">📍 4 Research Park Dr, Macquarie Park, NSW, 2113</p>
     </div>
     
     <ul class="flex justify-end gap-4 mb-6">
@@ -76,7 +76,7 @@ const currentYear = new Date().getFullYear();
       <ul class="flex justify-center space-x-8">
         {navItems.map(({ title, url }) => (
           <li>
-            <a class="block py-4 text-base" href={url}>
+            <a class="block py-4 text-xs md:text-sm" href={url}>
               {title}
             </a>
           </li>

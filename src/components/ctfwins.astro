@@ -35,7 +35,7 @@ const ctfWins = competitions.reduce(
       name: string;
       image: ImageMetadata | null;
       globalPlacement: number;
-      totalTeams: number;
+      totalTeams?: number;
       australiaPlacement?: number;
       teamName: string;
     }>
@@ -122,7 +122,7 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
   </Fragment>
 
   <div class="timeline-container relative mx-auto max-w-6xl pb-16">
-    <div class="ctf-year-buttons mb-8 flex flex-wrap justify-center gap-4">
+    <div class="ctf-year-buttons mb-8 flex flex-wrap justify-center gap-4" id='ctfyearbuttons'>
       {
         years.map((year) => (
           <button
@@ -148,7 +148,7 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
               data-year={year}
               data-total-pages={totalPages}
             >
-              <h3 class="mb-8 text-center font-bold text-2xl">
+              <h3 class="mb-8 text-center font-bold text-2xl ctf-year-achievements-text">
                 {year} Achievements
               </h3>
 
@@ -285,6 +285,7 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
 <script>
   const yearButtons = document.querySelectorAll(".ctf-year-button");
   const achievementGrids = document.querySelectorAll(".achievement-grid");
+  const ctfYearAchievementTextLatest = document.querySelectorAll(".ctf-year-achievements-text")[0];
 
   let currentAnimation: { cancel: () => void } | null = null;
   let isAnimating = false;
@@ -440,6 +441,7 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
         grid.getAttribute("data-current-page") || "1",
       );
       if (currentPage > 1) {
+        yearButtons[0].scrollIntoView({behavior:'smooth',block:'start'});
         showPage(grid, currentPage - 1);
       }
     });
@@ -450,6 +452,7 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
       );
       const totalPages = parseInt(grid.getAttribute("data-total-pages") || "1");
       if (currentPage < totalPages) {
+        yearButtons[0].scrollIntoView({behavior:'smooth',block:'start'});
         showPage(grid, currentPage + 1);
       }
     });
