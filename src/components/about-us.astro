@@ -18,7 +18,14 @@ const tallImage3 = images.find(img => img.id === "tall3")?.data ?? null;
 const topHorizImage3 = images.find(img => img.id === "tophoriz3")?.data ?? null;
 const bottomHorizImage3 = images.find(img => img.id === "bottomhoriz3")?.data ?? null;
 
+const tallImage4 = images.find(img => img.id === "tall4")?.data ?? null;
 const topHorizImage4 = images.find(img => img.id === "tophoriz4")?.data ?? null;
+const bottomHorizImage4 = images.find(img => img.id === "bottomhoriz4")?.data ?? null;
+
+const tallImage5 = images.find(img => img.id === "tall5")?.data ?? null;
+const topHorizImage5 = images.find(img => img.id === "tophoriz5")?.data ?? null;
+const bottomHorizImage5 = images.find(img => img.id === "bottomhoriz5")?.data ?? null;
+
 
 if (!tallImage || !topHorizImage || !bottomHorizImage) {
   console.error("Missing required images!");
@@ -160,11 +167,20 @@ if (!tallImage || !topHorizImage || !bottomHorizImage) {
         </div>
       </div>
 
-      <!-- Remaining duplicates with empty sources removed -->
+      <!-- Third duplicate -->
       <div class="flex-none w-full max-w-4xl pl-4">
         <div class="grid grid-cols-1 lg:grid-cols-1 gap-8 items-start">
           <div class="grid grid-cols-[1fr,1.5fr] gap-4 h-[600px]">
-            <div class="h-full bg-gray-200 rounded-lg overflow-hidden"></div>
+            <div class="h-full bg-gray-200 rounded-lg overflow-hidden">
+              {tallImage4 && (
+                <Image
+                  src={tallImage4.image}
+                  alt={tallImage4.title}
+                  class="w-full h-full object-cover"
+                  data-image-modal
+                loading="eager"/>
+              )}
+            </div>
             <div class="flex flex-col gap-4 h-full">
               <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1">
                 {topHorizImage4 && (
@@ -176,19 +192,56 @@ if (!tallImage || !topHorizImage || !bottomHorizImage) {
                 loading="eager"  />
                 )}
               </div>
-              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1"></div>
+              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1">
+                {bottomHorizImage4 && (
+                  <Image
+                    src={bottomHorizImage4.image}
+                    alt={bottomHorizImage4.title}
+                    class="absolute inset-0 w-full h-full object-cover"
+                    data-image-modal
+                loading="eager"  />
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- Fourth duplicate -->
       <div class="flex-none w-full max-w-4xl pl-4 pr-4">
         <div class="grid grid-cols-1 lg:grid-cols-1 gap-8 items-start">
           <div class="grid grid-cols-[1fr,1.5fr] gap-4 h-[600px]">
-            <div class="h-full bg-gray-200 rounded-lg overflow-hidden"></div>
+            <div class="h-full bg-gray-200 rounded-lg overflow-hidden">
+              {tallImage5 && (
+                <Image
+                  src={tallImage5.image}
+                  alt={tallImage5.title}
+                  class="w-full h-full object-cover"
+                  data-image-modal
+                loading="eager"/>
+              )}
+            </div>
             <div class="flex flex-col gap-4 h-full">
-              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1"></div>
-              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1"></div>
+              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1">
+                {topHorizImage5 && (
+                  <Image
+                    src={topHorizImage5.image}
+                    alt={topHorizImage5.title}
+                    class="absolute inset-0 w-full h-full object-cover"
+                    data-image-modal
+                loading="eager"  />
+                )}
+              </div>
+              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1">
+                {bottomHorizImage5 && (
+                  <Image
+                    src={bottomHorizImage5.image}
+                    alt={bottomHorizImage5.title}
+                    class="absolute inset-0 w-full h-full object-cover"
+                    data-image-modal
+                loading="eager"  />
+                )}
+              </div>
             </div>
           </div>
         </div>
