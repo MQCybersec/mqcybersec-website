@@ -2,7 +2,7 @@
 import "@fontsource-variable/inter";
 import Compatibility from "~/components/compatibility.astro";
 import HackHub from "~/components/hack-hub.astro";
-import CTFWins from '../components/ctfwins.astro';
+import CTFWins from "../components/ctfwins.astro";
 import Footer from "~/components/footer.astro";
 import Header from "~/components/header.astro";
 import AboutUs from "~/components/about-us.astro";
@@ -10,7 +10,7 @@ import Splash from "~/components/splash.astro";
 import ContactUs from "~/components/contact-us.astro";
 import logoImage from "~/assets/logo.png";
 import "~/styles/index.css";
-import TeamTimeline from '../components/team.astro';
+import TeamTimeline from "../components/team.astro";
 
 const { generator, site } = Astro;
 const image = new URL(logoImage.src, site);
@@ -45,7 +45,7 @@ const description =
         document.documentElement.dataset.theme = themeSaved;
       } else {
         const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)",
+          "(prefers-color-scheme: dark)"
         ).matches;
         document.documentElement.dataset.theme = prefersDark ? "dark" : "light";
       }
@@ -61,7 +61,10 @@ const description =
         });
     </script>
     <!-- Initialise Flowbite -->
-    <script is:inline src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script
+      is:inline
+      src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"
+    ></script>
   </head>
   <body
     class="h-full overflow-x-hidden bg-default text-default text-base selection:bg-secondary selection:text-white"
@@ -69,14 +72,14 @@ const description =
     <Header />
     <Splash />
     <!-- <div class="space-y-24 px-8 py-32"> -->
-      <AboutUs />
-      <HackHub />
-      <CTFWins />
-      <TeamTimeline />
-      <ContactUs />
-      <!-- <Compatibility /> --> <!-- Maybe have CTF scores or some display of what we do. -->
-      <!-- <Showcase /> -->
-    <!-- </div> -->
-    <Footer />
+    <AboutUs />
+    <HackHub />
+    <CTFWins />
+    <TeamTimeline />
+    <ContactUs />
+    <!-- <Compatibility /> -->
+    <!-- Maybe have CTF scores or some display of what we do. -->
+    <!-- <Showcase /> -->
   </body>
+  <Footer />
 </html>

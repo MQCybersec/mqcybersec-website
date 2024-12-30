@@ -8,15 +8,15 @@ export interface Props {
 
 const { title, id, altBackground, bgColorOverride } = Astro.props;
 
-let altBg = altBackground ? ' bg-[var(--color-background-alt)]' : '';
+let altBg = altBackground ? " bg-[var(--color-background-alt)]" : "";
 if (bgColorOverride) {
-  altBg = ' '+bgColorOverride;
+  altBg = " " + bgColorOverride;
 }
 ---
 
 <section
   id={id}
-  class={`flex scroll-mt-24 flex-col items-center gap-4 space-y-8 py-16${altBg}`}
+  class={`flex scroll-mt-24 flex-col items-center gap-4 space-y-8 px-8 py-16${altBg}`}
 >
   <div class="flex flex-col items-center gap-4">
     <slot name="eyebrow" />
