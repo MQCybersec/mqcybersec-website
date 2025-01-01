@@ -6,26 +6,34 @@ import ContentSection from "~/components/content-section.astro";
 import { getCollection } from "astro:content";
 
 const images = await getCollection("gridImages");
-const tallImage = images.find(img => img.id === "tall")?.data ?? null;
-const topHorizImage = images.find(img => img.id === "tophoriz")?.data ?? null;
-const bottomHorizImage = images.find(img => img.id === "bottomhoriz")?.data ?? null;
+const tallImage = images.find((img) => img.id === "tall")?.data ?? null;
+const topHorizImage = images.find((img) => img.id === "tophoriz")?.data ?? null;
+const bottomHorizImage =
+  images.find((img) => img.id === "bottomhoriz")?.data ?? null;
 
-const tallImage2 = images.find(img => img.id === "tall2")?.data ?? null;
-const topHorizImage2 = images.find(img => img.id === "tophoriz2")?.data ?? null;
-const bottomHorizImage2 = images.find(img => img.id === "bottomhoriz2")?.data ?? null;
+const tallImage2 = images.find((img) => img.id === "tall2")?.data ?? null;
+const topHorizImage2 =
+  images.find((img) => img.id === "tophoriz2")?.data ?? null;
+const bottomHorizImage2 =
+  images.find((img) => img.id === "bottomhoriz2")?.data ?? null;
 
-const tallImage3 = images.find(img => img.id === "tall3")?.data ?? null;
-const topHorizImage3 = images.find(img => img.id === "tophoriz3")?.data ?? null;
-const bottomHorizImage3 = images.find(img => img.id === "bottomhoriz3")?.data ?? null;
+const tallImage3 = images.find((img) => img.id === "tall3")?.data ?? null;
+const topHorizImage3 =
+  images.find((img) => img.id === "tophoriz3")?.data ?? null;
+const bottomHorizImage3 =
+  images.find((img) => img.id === "bottomhoriz3")?.data ?? null;
 
-const tallImage4 = images.find(img => img.id === "tall4")?.data ?? null;
-const topHorizImage4 = images.find(img => img.id === "tophoriz4")?.data ?? null;
-const bottomHorizImage4 = images.find(img => img.id === "bottomhoriz4")?.data ?? null;
+const tallImage4 = images.find((img) => img.id === "tall4")?.data ?? null;
+const topHorizImage4 =
+  images.find((img) => img.id === "tophoriz4")?.data ?? null;
+const bottomHorizImage4 =
+  images.find((img) => img.id === "bottomhoriz4")?.data ?? null;
 
-const tallImage5 = images.find(img => img.id === "tall5")?.data ?? null;
-const topHorizImage5 = images.find(img => img.id === "tophoriz5")?.data ?? null;
-const bottomHorizImage5 = images.find(img => img.id === "bottomhoriz5")?.data ?? null;
-
+const tallImage5 = images.find((img) => img.id === "tall5")?.data ?? null;
+const topHorizImage5 =
+  images.find((img) => img.id === "tophoriz5")?.data ?? null;
+const bottomHorizImage5 =
+  images.find((img) => img.id === "bottomhoriz5")?.data ?? null;
 
 if (!tallImage || !topHorizImage || !bottomHorizImage) {
   console.error("Missing required images!");
@@ -33,54 +41,71 @@ if (!tallImage || !topHorizImage || !bottomHorizImage) {
 ---
 
 <ContentSection title="Est. 2020" id="aboutus">
-  <LogoBlock slot="eyebrow" inClass="size-36 md:size-48"/>
+  <LogoBlock slot="eyebrow" inClass="size-36 md:size-48" />
   <Fragment slot="lead">
-    <div class="max-w-xl mx-auto mb-8">
-      <p class="text-xl font-extrabold tracking-tight leading-relaxed text-center">
-        The <span class="text-primary">MQCyberSec</span> club is the place to be for all 
-        <span class="text-primary">Macquarie University</span> students who are interested in 
-        <span class="text-primary">cybersecurity</span> and 
+    <div class="mx-auto mb-8 max-w-xl">
+      <p
+        class="text-center font-extrabold leading-relaxed tracking-tight text-xl"
+      >
+        The <span class="text-primary">MQCyberSec</span> club is the place to be
+        for all
+        <span class="text-primary">Macquarie University</span> students who are interested
+        in
+        <span class="text-primary">cybersecurity</span> and
         <span class="text-primary">Capture the Flag</span> competitions.
       </p>
     </div>
   </Fragment>
 
-  <div class="scroll-container w-full overflow-hidden relative">
+  <div class="scroll-container relative w-full overflow-hidden">
     <div class="scroll-content flex:">
       <!-- Original set of images -->
-      <div class="flex-none w-full max-w-4xl">
-        <div class="grid grid-cols-1 lg:grid-cols-1 gap-8 items-start">
-          <div class="grid grid-cols-[1fr,1.5fr] gap-4 h-[600px]">
-            <div class="h-full bg-gray-200 rounded-lg overflow-hidden">
-              {tallImage && (
-                <Image
-                  src={tallImage.image}
-                  alt={tallImage.title}
-                  class="w-full h-full object-cover"
-                  data-image-modal
-                loading="eager"/>
-              )}
+      <div class="w-full min-w-[800px] max-w-4xl flex-none">
+        <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-1">
+          <div class="grid h-[600px] grid-cols-[1fr,1.5fr] gap-4">
+            <div class="h-full overflow-hidden rounded-lg bg-gray-200">
+              {
+                tallImage && (
+                  <Image
+                    src={tallImage.image}
+                    alt={tallImage.title}
+                    class="h-full w-full object-cover"
+                    data-image-modal
+                    loading="eager"
+                  />
+                )
+              }
             </div>
-            <div class="flex flex-col gap-4 h-full">
-              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1">
-                {topHorizImage && (
-                  <Image
-                    src={topHorizImage.image}
-                    alt={topHorizImage.title}
-                    class="absolute inset-0 w-full h-full object-cover"
-                    data-image-modal
-                loading="eager"  />
-                )}
+            <div class="flex h-full flex-col gap-4">
+              <div
+                class="relative flex-1 overflow-hidden rounded-lg bg-gray-200"
+              >
+                {
+                  topHorizImage && (
+                    <Image
+                      src={topHorizImage.image}
+                      alt={topHorizImage.title}
+                      class="absolute inset-0 h-full w-full object-cover"
+                      data-image-modal
+                      loading="eager"
+                    />
+                  )
+                }
               </div>
-              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1">
-                {bottomHorizImage && (
-                  <Image
-                    src={bottomHorizImage.image}
-                    alt={bottomHorizImage.title}
-                    class="absolute inset-0 w-full h-full object-cover"
-                    data-image-modal
-                loading="eager"  />
-                )}
+              <div
+                class="relative flex-1 overflow-hidden rounded-lg bg-gray-200"
+              >
+                {
+                  bottomHorizImage && (
+                    <Image
+                      src={bottomHorizImage.image}
+                      alt={bottomHorizImage.title}
+                      class="absolute inset-0 h-full w-full object-cover"
+                      data-image-modal
+                      loading="eager"
+                    />
+                  )
+                }
               </div>
             </div>
           </div>
@@ -88,39 +113,52 @@ if (!tallImage || !topHorizImage || !bottomHorizImage) {
       </div>
 
       <!-- First duplicate -->
-      <div class="flex-none w-full max-w-4xl pl-4">
-        <div class="grid grid-cols-1 lg:grid-cols-1 gap-8 items-start">
-          <div class="grid grid-cols-[1fr,1.5fr] gap-4 h-[600px]">
-            <div class="h-full bg-gray-200 rounded-lg overflow-hidden">
-              {tallImage2 && (
-                <Image
-                  src={tallImage2.image}
-                  alt={tallImage2.title}
-                  class="w-full h-full object-cover"
-                  data-image-modal
-                loading="eager"/>
-              )}
+      <div class="w-full min-w-[800px] max-w-4xl flex-none pl-4">
+        <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-1">
+          <div class="grid h-[600px] grid-cols-[1fr,1.5fr] gap-4">
+            <div class="h-full overflow-hidden rounded-lg bg-gray-200">
+              {
+                tallImage2 && (
+                  <Image
+                    src={tallImage2.image}
+                    alt={tallImage2.title}
+                    class="h-full w-full object-cover"
+                    data-image-modal
+                    loading="eager"
+                  />
+                )
+              }
             </div>
-            <div class="flex flex-col gap-4 h-full">
-              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1">
-                {topHorizImage2 && (
-                  <Image
-                    src={topHorizImage2.image}
-                    alt={topHorizImage2.title}
-                    class="absolute inset-0 w-full h-full object-cover"
-                    data-image-modal
-                loading="eager"  />
-                )}
+            <div class="flex h-full flex-col gap-4">
+              <div
+                class="relative flex-1 overflow-hidden rounded-lg bg-gray-200"
+              >
+                {
+                  topHorizImage2 && (
+                    <Image
+                      src={topHorizImage2.image}
+                      alt={topHorizImage2.title}
+                      class="absolute inset-0 h-full w-full object-cover"
+                      data-image-modal
+                      loading="eager"
+                    />
+                  )
+                }
               </div>
-              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1">
-                {bottomHorizImage2 && (
-                  <Image
-                    src={bottomHorizImage2.image}
-                    alt={bottomHorizImage2.title}
-                    class="absolute inset-0 w-full h-full object-cover"
-                    data-image-modal
-                loading="eager"  />
-                )}
+              <div
+                class="relative flex-1 overflow-hidden rounded-lg bg-gray-200"
+              >
+                {
+                  bottomHorizImage2 && (
+                    <Image
+                      src={bottomHorizImage2.image}
+                      alt={bottomHorizImage2.title}
+                      class="absolute inset-0 h-full w-full object-cover"
+                      data-image-modal
+                      loading="eager"
+                    />
+                  )
+                }
               </div>
             </div>
           </div>
@@ -128,39 +166,52 @@ if (!tallImage || !topHorizImage || !bottomHorizImage) {
       </div>
 
       <!-- Second duplicate -->
-      <div class="flex-none w-full max-w-4xl pl-4">
-        <div class="grid grid-cols-1 lg:grid-cols-1 gap-8 items-start">
-          <div class="grid grid-cols-[1fr,1.5fr] gap-4 h-[600px]">
-            <div class="h-full bg-gray-200 rounded-lg overflow-hidden">
-              {tallImage3 && (
-                <Image
-                  src={tallImage3.image}
-                  alt={tallImage3.title}
-                  class="w-full h-full object-cover"
-                  data-image-modal
-                loading="eager"/>
-              )}
+      <div class="w-full min-w-[800px] max-w-4xl flex-none pl-4">
+        <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-1">
+          <div class="grid h-[600px] grid-cols-[1fr,1.5fr] gap-4">
+            <div class="h-full overflow-hidden rounded-lg bg-gray-200">
+              {
+                tallImage3 && (
+                  <Image
+                    src={tallImage3.image}
+                    alt={tallImage3.title}
+                    class="h-full w-full object-cover"
+                    data-image-modal
+                    loading="eager"
+                  />
+                )
+              }
             </div>
-            <div class="flex flex-col gap-4 h-full">
-              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1">
-                {topHorizImage3 && (
-                  <Image
-                    src={topHorizImage3.image}
-                    alt={topHorizImage3.title}
-                    class="absolute inset-0 w-full h-full object-cover"
-                    data-image-modal
-                loading="eager"  />
-                )}
+            <div class="flex h-full flex-col gap-4">
+              <div
+                class="relative flex-1 overflow-hidden rounded-lg bg-gray-200"
+              >
+                {
+                  topHorizImage3 && (
+                    <Image
+                      src={topHorizImage3.image}
+                      alt={topHorizImage3.title}
+                      class="absolute inset-0 h-full w-full object-cover"
+                      data-image-modal
+                      loading="eager"
+                    />
+                  )
+                }
               </div>
-              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1">
-                {bottomHorizImage3 && (
-                  <Image
-                    src={bottomHorizImage3.image}
-                    alt={bottomHorizImage3.title}
-                    class="absolute inset-0 w-full h-full object-cover"
-                    data-image-modal
-                loading="eager"  />
-                )}
+              <div
+                class="relative flex-1 overflow-hidden rounded-lg bg-gray-200"
+              >
+                {
+                  bottomHorizImage3 && (
+                    <Image
+                      src={bottomHorizImage3.image}
+                      alt={bottomHorizImage3.title}
+                      class="absolute inset-0 h-full w-full object-cover"
+                      data-image-modal
+                      loading="eager"
+                    />
+                  )
+                }
               </div>
             </div>
           </div>
@@ -168,39 +219,52 @@ if (!tallImage || !topHorizImage || !bottomHorizImage) {
       </div>
 
       <!-- Third duplicate -->
-      <div class="flex-none w-full max-w-4xl pl-4">
-        <div class="grid grid-cols-1 lg:grid-cols-1 gap-8 items-start">
-          <div class="grid grid-cols-[1fr,1.5fr] gap-4 h-[600px]">
-            <div class="h-full bg-gray-200 rounded-lg overflow-hidden">
-              {tallImage4 && (
-                <Image
-                  src={tallImage4.image}
-                  alt={tallImage4.title}
-                  class="w-full h-full object-cover"
-                  data-image-modal
-                loading="eager"/>
-              )}
+      <div class="w-full min-w-[800px] max-w-4xl flex-none pl-4">
+        <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-1">
+          <div class="grid h-[600px] grid-cols-[1fr,1.5fr] gap-4">
+            <div class="h-full overflow-hidden rounded-lg bg-gray-200">
+              {
+                tallImage4 && (
+                  <Image
+                    src={tallImage4.image}
+                    alt={tallImage4.title}
+                    class="h-full w-full object-cover"
+                    data-image-modal
+                    loading="eager"
+                  />
+                )
+              }
             </div>
-            <div class="flex flex-col gap-4 h-full">
-              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1">
-                {topHorizImage4 && (
-                  <Image
-                    src={topHorizImage4.image}
-                    alt={topHorizImage4.title}
-                    class="absolute inset-0 w-full h-full object-cover"
-                    data-image-modal
-                loading="eager"  />
-                )}
+            <div class="flex h-full flex-col gap-4">
+              <div
+                class="relative flex-1 overflow-hidden rounded-lg bg-gray-200"
+              >
+                {
+                  topHorizImage4 && (
+                    <Image
+                      src={topHorizImage4.image}
+                      alt={topHorizImage4.title}
+                      class="absolute inset-0 h-full w-full object-cover"
+                      data-image-modal
+                      loading="eager"
+                    />
+                  )
+                }
               </div>
-              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1">
-                {bottomHorizImage4 && (
-                  <Image
-                    src={bottomHorizImage4.image}
-                    alt={bottomHorizImage4.title}
-                    class="absolute inset-0 w-full h-full object-cover"
-                    data-image-modal
-                loading="eager"  />
-                )}
+              <div
+                class="relative flex-1 overflow-hidden rounded-lg bg-gray-200"
+              >
+                {
+                  bottomHorizImage4 && (
+                    <Image
+                      src={bottomHorizImage4.image}
+                      alt={bottomHorizImage4.title}
+                      class="absolute inset-0 h-full w-full object-cover"
+                      data-image-modal
+                      loading="eager"
+                    />
+                  )
+                }
               </div>
             </div>
           </div>
@@ -208,39 +272,52 @@ if (!tallImage || !topHorizImage || !bottomHorizImage) {
       </div>
 
       <!-- Fourth duplicate -->
-      <div class="flex-none w-full max-w-4xl pl-4 pr-4">
-        <div class="grid grid-cols-1 lg:grid-cols-1 gap-8 items-start">
-          <div class="grid grid-cols-[1fr,1.5fr] gap-4 h-[600px]">
-            <div class="h-full bg-gray-200 rounded-lg overflow-hidden">
-              {tallImage5 && (
-                <Image
-                  src={tallImage5.image}
-                  alt={tallImage5.title}
-                  class="w-full h-full object-cover"
-                  data-image-modal
-                loading="eager"/>
-              )}
+      <div class="w-full min-w-[800px] max-w-4xl flex-none pl-4 pr-4">
+        <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-1">
+          <div class="grid h-[600px] grid-cols-[1fr,1.5fr] gap-4">
+            <div class="h-full overflow-hidden rounded-lg bg-gray-200">
+              {
+                tallImage5 && (
+                  <Image
+                    src={tallImage5.image}
+                    alt={tallImage5.title}
+                    class="h-full w-full object-cover"
+                    data-image-modal
+                    loading="eager"
+                  />
+                )
+              }
             </div>
-            <div class="flex flex-col gap-4 h-full">
-              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1">
-                {topHorizImage5 && (
-                  <Image
-                    src={topHorizImage5.image}
-                    alt={topHorizImage5.title}
-                    class="absolute inset-0 w-full h-full object-cover"
-                    data-image-modal
-                loading="eager"  />
-                )}
+            <div class="flex h-full flex-col gap-4">
+              <div
+                class="relative flex-1 overflow-hidden rounded-lg bg-gray-200"
+              >
+                {
+                  topHorizImage5 && (
+                    <Image
+                      src={topHorizImage5.image}
+                      alt={topHorizImage5.title}
+                      class="absolute inset-0 h-full w-full object-cover"
+                      data-image-modal
+                      loading="eager"
+                    />
+                  )
+                }
               </div>
-              <div class="relative bg-gray-200 rounded-lg overflow-hidden flex-1">
-                {bottomHorizImage5 && (
-                  <Image
-                    src={bottomHorizImage5.image}
-                    alt={bottomHorizImage5.title}
-                    class="absolute inset-0 w-full h-full object-cover"
-                    data-image-modal
-                loading="eager"  />
-                )}
+              <div
+                class="relative flex-1 overflow-hidden rounded-lg bg-gray-200"
+              >
+                {
+                  bottomHorizImage5 && (
+                    <Image
+                      src={bottomHorizImage5.image}
+                      alt={bottomHorizImage5.title}
+                      class="absolute inset-0 h-full w-full object-cover"
+                      data-image-modal
+                      loading="eager"
+                    />
+                  )
+                }
               </div>
             </div>
           </div>
@@ -252,76 +329,75 @@ if (!tallImage || !topHorizImage || !bottomHorizImage) {
 
 <style>
   .scroll-container {
-  position: relative;
-  overflow: hidden;
-}
+    position: relative;
+    overflow: hidden;
+  }
 
-.scroll-content {
-  display: flex;
-  gap: 0;
-}
+  .scroll-content {
+    display: flex;
+    gap: 0;
+  }
 
-.scroll-item {
-  flex: 0 0 auto;
-  transform: translateX(0);
-  transition: transform 0.5s linear;
-}
+  .scroll-item {
+    flex: 0 0 auto;
+    transform: translateX(0);
+    transition: transform 0.5s linear;
+  }
 
-.scroll-container::before,
-.scroll-container::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  width: 20%;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-}
+  .scroll-container::before,
+  .scroll-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 20%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
 
-.scroll-container::before {
-  left: 0;
-  background: linear-gradient(to right, rgb(15 23 42), transparent);
-}
+  .scroll-container::before {
+    left: 0;
+    background: linear-gradient(to right, rgb(15 23 42), transparent);
+  }
 
-.scroll-container::after {
-  right: 0;
-  background: linear-gradient(to left, rgb(15 23 42), transparent);
-}
-  </style>
-  
-  <script>
-function setupInfiniteScroll() {
-  const container = document.querySelector('.scroll-container');
-  const content = document.querySelector('.scroll-content');
-  const items = document.querySelectorAll('.flex-none');
-  
-  if (!container || !content || items.length === 0) return;
+  .scroll-container::after {
+    right: 0;
+    background: linear-gradient(to left, rgb(15 23 42), transparent);
+  }
+</style>
 
-  const itemWidth = items[0].offsetWidth;
-  let currentPosition = 0;
+<script>
+  function setupInfiniteScroll() {
+    const container = document.querySelector(".scroll-container");
+    const content = document.querySelector(".scroll-content");
+    const items = document.querySelectorAll(".flex-none");
 
-  function moveItems() {
-    currentPosition -= 1.2;
-    content.style.transform = `translateX(${currentPosition}px)`;
+    if (!container || !content || items.length === 0) return;
 
-    items.forEach((item) => {
-      const itemRect = item.getBoundingClientRect();
-      const containerRect = container.getBoundingClientRect();
-      
-      if (itemRect.right < containerRect.left) {
-        currentPosition += itemWidth;
-        content.style.transform = `translateX(${currentPosition}px)`;
-        
-        content.appendChild(item);
-      }
-    });
+    const itemWidth = items[0].offsetWidth;
+    let currentPosition = 0;
+
+    function moveItems() {
+      currentPosition -= 1.2;
+      content.style.transform = `translateX(${currentPosition}px)`;
+
+      items.forEach((item) => {
+        const itemRect = item.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+
+        if (itemRect.right < containerRect.left) {
+          currentPosition += itemWidth;
+          content.style.transform = `translateX(${currentPosition}px)`;
+
+          content.appendChild(item);
+        }
+      });
+
+      requestAnimationFrame(moveItems);
+    }
 
     requestAnimationFrame(moveItems);
   }
 
-  requestAnimationFrame(moveItems);
-}
-
-document.addEventListener('DOMContentLoaded', setupInfiniteScroll);
-  </script>
-  
+  document.addEventListener("DOMContentLoaded", setupInfiniteScroll);
+</script>

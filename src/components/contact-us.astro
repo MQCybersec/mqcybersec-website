@@ -3,7 +3,12 @@ import ContentSection from "~/components/content-section.astro";
 ---
 
 <ContentSection title="Contact Us" id="contact">
-  <form id="contact-form" class="contact-form max-w-xl mx-auto w-full px-4" action="https://formspree.io/f/mgvvorna" method="POST">
+  <form
+    id="contact-form"
+    class="contact-form mx-auto w-full max-w-xl px-4"
+    action="https://formspree.io/f/mgvvorna"
+    method="POST"
+  >
     <div class="form-group">
       <label for="name">Name</label>
       <input
@@ -11,7 +16,7 @@ import ContentSection from "~/components/content-section.astro";
         id="name"
         name="name"
         required
-        class="w-full min-w-[300px] px-3 py-2 border rounded-md"
+        class="w-full rounded-md border px-3 py-2 md:min-w-[300px]"
       />
     </div>
     <div class="form-group">
@@ -21,7 +26,7 @@ import ContentSection from "~/components/content-section.astro";
         id="email"
         name="email"
         required
-        class="w-full min-w-[300px] px-3 py-2 border rounded-md"
+        class="w-full rounded-md border px-3 py-2 md:min-w-[300px]"
       />
     </div>
     <div class="form-group">
@@ -30,12 +35,12 @@ import ContentSection from "~/components/content-section.astro";
         id="message"
         name="message"
         required
-        class="w-full min-w-[300px] px-3 py-2 border rounded-md min-h-[150px]"
+        class="min-h-[150px] w-full rounded-md border px-3 py-2 md:min-w-[300px]"
       ></textarea>
     </div>
     <button
       type="submit"
-      class="w-full px-4 py-2 rounded-md bg-primary text-white hover:bg-secondary"
+      class="w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-secondary"
     >
       Send Message
     </button>
@@ -44,38 +49,40 @@ import ContentSection from "~/components/content-section.astro";
 </ContentSection>
 
 <script>
-  const form = document.getElementById('contact-form') as HTMLFormElement;
-  const responseMessage = document.getElementById('response-message');
+  const form = document.getElementById("contact-form") as HTMLFormElement;
+  const responseMessage = document.getElementById("response-message");
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    
+
     const formData = new FormData(form);
 
     try {
       const response = await fetch(form.action, {
-        method: 'POST',
+        method: "POST",
         body: formData,
         headers: {
-          'Accept': 'application/json'
-        }
+          Accept: "application/json",
+        },
       });
 
       const result = await response.json();
 
       if (response.ok) {
         if (responseMessage) {
-          responseMessage.textContent = "Thanks for reaching out! We'll be in touch soon.";
+          responseMessage.textContent =
+            "Thanks for reaching out! We'll be in touch soon.";
           responseMessage.className = "text-green-600";
         }
         form.reset();
       } else {
-        throw new Error(result.error || 'Failed to submit form');
+        throw new Error(result.error || "Failed to submit form");
       }
     } catch (error) {
       if (responseMessage) {
-        console.error('Error:', error);
-        responseMessage.textContent = "There was an error submitting the form. Please try again.";
+        console.error("Error:", error);
+        responseMessage.textContent =
+          "There was an error submitting the form. Please try again.";
         responseMessage.className = "text-red-600";
       }
     }
@@ -106,7 +113,8 @@ import ContentSection from "~/components/content-section.astro";
     color: var(--color-text);
   }
 
-  input, textarea {
+  input,
+  textarea {
     border: 1px solid var(--color-border);
     background-color: var(--color-background);
     color: var(--color-text);
