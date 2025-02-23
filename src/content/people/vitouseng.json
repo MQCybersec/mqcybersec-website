@@ -1,0 +1,10 @@
+{
+  "name": "Vitou Seng",
+  "image": "/src/content/people/_images/vitouseng.jpg",
+  "enrollments": [
+    {
+      "year": 2025,
+      "role": "Social Media Manager"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Nullcon Goa HackIM CTF",
+    "image": "/src/content/ctfs/_images/hackim.png",
+    "placements": [
+        {
+            "year": 2025,
+            "globalPlacement": 110,
+            "totalTeams": 1115
+        }
+    ]
+
+}

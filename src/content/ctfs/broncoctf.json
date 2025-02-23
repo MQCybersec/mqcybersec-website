@@ -1,0 +1,12 @@
+{
+    "name": "BroncoCTF",
+    "image": "/src/content/ctfs/_images/broncosec.png",
+    "placements": [
+        {
+            "year": 2025,
+            "globalPlacement": 118,
+            "totalTeams": 806
+        }
+    ]
+
+}

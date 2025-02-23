@@ -1,0 +1,12 @@
+{
+    "name": "LACTF",
+    "image": "/src/content/ctfs/_images/lactf.png",
+    "placements": [
+        {
+            "year": 2025,
+            "globalPlacement": 292,
+            "totalTeams": 933
+        }
+    ]
+
+}
