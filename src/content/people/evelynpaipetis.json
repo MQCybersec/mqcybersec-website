@@ -5,5 +5,12 @@
       "year": 2025,
       "role": "General Executive"
     }
+  ],
+  "socials": [
+    {
+      "platform": "Website",
+      "url": "https://sclux7.world/",
+      "icon": "mdi:home"
+    }
   ]
 }

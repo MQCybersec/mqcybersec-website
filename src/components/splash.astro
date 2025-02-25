@@ -1,12 +1,47 @@
 ---
 import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 import logoImage from "~/assets/logo.png";
 import HeroImage from "~/components/hero-image.astro";
 import Starfield from "~/components/starfield.astro";
 import GitHubCorner from "./github-corner.astro";
+import type { FooterLink } from "~/types";
+
 
 const widths = [450, 800];
 const sizes = "(min-width: 640px) 42vw, 67vw";
+const links: Array<FooterLink> = [
+  {
+    url: "https://linktr.ee/mqcybersec",
+    description: "MQCyberSec's Linktree",
+    icon: "mdi:link",
+  },
+  {
+    url: "https://github.com/MQCyberSec",
+    description: "View MQCyberSec on GitHub",
+    icon: "fa-brands:github-alt",
+  },
+  {
+    url: "https://discord.gg/8uvnhG8EED",
+    description: "MQCyberSec on Discord",
+    icon: "fa-brands:discord",
+  },
+  {
+    url: "https://www.linkedin.com/company/mqcybersec",
+    description: "MQCyberSec on LinkedIn",
+    icon: "fa-brands:linkedin",
+  },
+  {
+    url: "https://instagram.com/mqcybersec",
+    description: "MQCyberSec on Instagram",
+    icon: "fa-brands:instagram",
+  },
+  {
+    url: "mailto:mqcybersec@gmail.com",
+    description: "MQCyberSec's Email",
+    icon: "mdi:email",
+  },
+]
 ---
 
 <section class="relative h-full bg-black">
@@ -24,9 +59,23 @@ const sizes = "(min-width: 640px) 42vw, 67vw";
         class="gradient-text text-center font-extrabold tracking-tighter text-6xl md:text-8xl"
       >
         MQCyberSec
-        <br /> 
-        <br /> 
+        <br><br>
       </div>
+      <ul class="flex flex-wrap justify-center gap-4">
+        {
+          links.map((link) => (
+            <li>
+              <a
+                class="flex size-16 items-center justify-center rounded-full border-2 border-current p-3"
+                href={link.url}
+              >
+                <span class="sr-only">{link.description}</span>
+                <Icon class="size-full" name={link.icon} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </h2>
     <!-- <div
       id="astronaut"
