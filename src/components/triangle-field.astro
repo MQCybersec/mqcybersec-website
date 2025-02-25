@@ -1,0 +1,351 @@
+---
+const id = "triangle-field";
+---
+
+<div id={id} class="absolute inset-0">
+  <canvas id="triangle-canvas"></canvas>
+</div>
+
+<script>
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.vx = (Math.random() - 0.5) *2;
+    this.vy = (Math.random() - 0.5) *2;
+  }
+
+  update(width, height) {
+    this.x += this.vx;
+    this.y += this.vy;
+
+    if (this.x < 0 || this.x > width) this.vx *= -1;
+    if (this.y < 0 || this.y > height) this.vy *= -1;
+  }
+}
+
+class Triangle {
+  constructor(p1, p2, p3) {
+    this.p1 = p1;
+    this.p2 = p2;
+    this.p3 = p3;
+    this.opacity = 0.4;
+    this.fadeSpeed = 0.05;
+  }
+
+  update() {
+    this.opacity -= this.fadeSpeed;
+    return this.opacity > 0;
+  }
+
+  draw(ctx) {
+    // First draw the semi-transparent fill
+    ctx.beginPath();
+    ctx.moveTo(this.p1.x, this.p1.y);
+    ctx.lineTo(this.p2.x, this.p2.y);
+    ctx.lineTo(this.p3.x, this.p3.y);
+    ctx.closePath();
+    
+    // Fill with 75% opacity
+    ctx.fillStyle = `rgba(128, 0, 128, ${0.75 * this.opacity})`;
+    ctx.fill();
+    
+    // Then draw the solid outline
+    ctx.beginPath();
+    ctx.moveTo(this.p1.x, this.p1.y);
+    ctx.lineTo(this.p2.x, this.p2.y);
+    ctx.lineTo(this.p3.x, this.p3.y);
+    ctx.closePath();
+    
+    // Stroke with nearly solid opacity
+    ctx.strokeStyle = `rgba(128, 0, 128, ${0.95 * this.opacity})`;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+}
+
+// Pre-defined positions from the provided data
+const PREDEFINED_POSITIONS = [
+  [347.00000000000006, 0.0],
+  [281.96161896706525, 8.019068445034614],
+  [220.13571805255702, 27.79374996082806],
+  [163.91871475790626, 61.109508180351185],
+  [112.74439351051122, 67.64326289784162],
+  [89.66692932715127, 84.78862379358497],
+  [105.96734125272042, 139.74228765213567],
+  [111.7821265149833, 205.72076806677734],
+  [160.96621682855178, 243.65008868365555],
+  [189.03539759523483, 278.88448373660367],
+  [200.58676368279853, 316.5415283611745],
+  [263.74082306959093, 320.9493190385476],
+  [311.0259076993899, 277.72954800237886],
+  [320.0411308516734, 213.06971384621835],
+  [284.14014377992805, 159.03144743376015],
+  [249.23812370428593, 167.23813525170937],
+  [222.59598534194018, 189.04254806328],
+  [162.88813302952275, 199.09971805508934],
+  [141.02084267681042, 159.3736549066974],
+  [189.6099087236705, 157.65753341281481],
+  [207.20081026259814, 139.03084867285935],
+  [189.47371613876697, 99.99122181780697],
+  [248.30076702498874, 72.9766758922231],
+  [313.32947666399303, 60.93374231802716],
+  [371.6528489385461, 87.74777167707506],
+  [407.0602666240851, 143.0984014503445],
+  [413.00003921911417, 208.99808751471534],
+  [398.8890766703401, 273.16997763883285],
+  [395.7716565779522, 340.27949584895987],
+  [347.6015004483389, 388.5454721770687],
+  [283.000577274454, 399.00000030402725],
+  [215.613667911183, 405.3492198023497],
+  [150.3155625642679, 416.7412582861009],
+  [87.88240581434356, 435.04989452821235],
+  [31.606657080258792, 468.2238290093095],
+  [5.310945292764399, 526.3619069292042],
+  [63.05115664415513, 544.9986815694368],
+  [131.84613372428439, 541.9511617434704],
+  [197.77090508227417, 551.8302946508402],
+  [259.29536590144437, 572.3378021056444],
+  [232.4304299049557, 628.3734798658562],
+  [194.01439250338174, 681.8920920059809],
+  [163.9983361563932, 739.4758764759187],
+  [156.97277201686867, 804.9483368662521],
+  [201.4100437007759, 824.5448770553426],
+  [258.82369538874826, 794.1180836161543],
+  [320.63203434466044, 813.698996218168],
+  [373.62871016118754, 854.7893127107744],
+  [411.0627526130329, 903.3485236510685],
+  [434.64420535877747, 963.597608293285],
+  [469.0321432385414, 1019.3705002314092],
+  [510.3061527388025, 1072.2910879128526],
+  [544.9865767198507, 1127.9428281410194],
+  [565.9657477346658, 1189.2698131693012],
+  [582.9521809980657, 1252.250644325218],
+  [635.0449492295119, 1267.9542427715965],
+  [666.9456514244416, 1211.1515668369136],
+  [675.9999999999999, 1144.8851586254027],
+  [670.9740232452102, 1076.9501441714488],
+  [654.9798223338119, 1013.5583169183116],
+  [641.9980200302531, 948.9187130945403],
+  [661.1126557572591, 886.8177722138852],
+  [682.9854168179409, 825.8609243018133],
+  [726.9968699590486, 777.0031905166177],
+  [773.5462242513174, 727.4392596438594],
+  [829.0287003448865, 726.0134787298108],
+  [888.7123217435162, 750.9600805072197],
+  [937.485553284427, 796.5287499254175],
+  [977.1376010453077, 850.1211761567167],
+  [1030.1090176221749, 882.9933951397904],
+  [1065.0042565985332, 831.4711472521908],
+  [1057.9771123479868, 765.1899443586258],
+  [1034.1038696286193, 705.0617230808599],
+  [998.6706035584656, 649.7218202563412],
+  [956.994804652881, 597.5534452082527],
+  [982.4199493343663, 563.9193510314676],
+  [1042.3997158099394, 539.6877067152489],
+  [1099.656739848529, 510.2969932410705],
+  [1155.0499120236902, 474.9923515555067],
+  [1198.313449440788, 425.9604897271054],
+  [1256.418786061263, 398.617868080923],
+  [1311.4824474819336, 362.51761276169304],
+  [1348.9865148871909, 308.03542881912483],
+  [1355.6033888418806, 243.57323037733127],
+  [1302.3763881613004, 210.06738459755758],
+  [1238.1822828508018, 196.010054253042],
+  [1173.967208751659, 182.00334704246086],
+  [1109.7756581764786, 167.93984902129384],
+  [1043.9000638250538, 157.94199232436122],
+  [976.7604340402474, 150.99578711401895],
+  [906.799818539826, 151.1399561224283],
+  [838.7851483708807, 154.0263730312913],
+  [772.9184884981318, 144.00694659371834],
+  [708.5014237439807, 130.48788796193034],
+  [646.6822571733425, 110.69694830184237],
+  [589.3259030061306, 80.13182641108176],
+  [532.7722738505076, 47.628754684071964],
+  [475.217038925658, 18.957987204486244],
+  [411.39758020230227, 3.996179988196395],
+  [346.99999999999994, -4.141131881851834e-14]
+];
+
+const POINT_COUNT = PREDEFINED_POSITIONS.length;
+const DISTANCE_THRESHOLD = 100;
+const MAX_LINE_DISTANCE = 150; // Maximum distance for full opacity
+const FPS = 60;
+
+class TriangleFieldAnimation {
+  constructor(canvas, container) {
+    this.canvas = canvas;
+    this.container = container;
+    this.ctx = canvas.getContext('2d');
+    this.points = [];
+    this.triangles = [];
+    this.rafId = null;
+    this.lastDrawTime = 0;
+
+    this.setupCanvas();
+    this.createPoints();
+    this.setupResizeObserver();
+    this.animate();
+  }
+
+  setupCanvas() {
+    const { clientWidth: width, clientHeight: height } = this.container;
+    const dpr = window.devicePixelRatio || 1;
+    this.canvas.width = width * dpr;
+    this.canvas.height = height * dpr;
+    this.canvas.style.width = `${width}px`;
+    this.canvas.style.height = `${height}px`;
+    this.ctx.scale(dpr, dpr);
+  }
+
+  createPoints() {
+    const { clientWidth: width, clientHeight: height } = this.container;
+    
+    // Calculate scaling factors to fit the points within the container
+    const pointsXRange = Math.max(...PREDEFINED_POSITIONS.map(p => p[0])) - 
+                        Math.min(...PREDEFINED_POSITIONS.map(p => p[0]));
+    const pointsYRange = Math.max(...PREDEFINED_POSITIONS.map(p => p[1])) - 
+                        Math.min(...PREDEFINED_POSITIONS.map(p => p[1]));
+    
+    const scaleX = width / (pointsXRange || 1);
+    const scaleY = height / (pointsYRange || 1);
+    
+    // Use the minimum scale to maintain aspect ratio
+    const scale = Math.min(scaleX, scaleY) * 0.9; // 90% of container to add some margin
+    
+    // Find minimum values to offset the points
+    const minX = Math.min(...PREDEFINED_POSITIONS.map(p => p[0]));
+    const minY = Math.min(...PREDEFINED_POSITIONS.map(p => p[1]));
+    
+    // Create points from predefined positions with scaling
+    this.points = PREDEFINED_POSITIONS.map(([x, y]) => {
+      // Scale and center the points in the container
+      const scaledX = (x - minX) * scale + (width - pointsXRange * scale) / 2;
+      const scaledY = (y - minY) * scale + (height - pointsYRange * scale) / 2;
+      return new Point(scaledX, scaledY);
+    });
+  }
+
+  setupResizeObserver() {
+    this.resizeObserver = new ResizeObserver(() => {
+      this.setupCanvas();
+      this.createPoints();
+    });
+    this.resizeObserver.observe(this.container);
+  }
+
+  animate(timestamp) {
+    const elapsed = timestamp - this.lastDrawTime;
+    if (elapsed < 1000 / FPS) {
+      this.rafId = requestAnimationFrame(this.animate.bind(this));
+      return;
+    }
+
+    const { clientWidth: width, clientHeight: height } = this.container;
+    
+    // Clear canvas with black background
+    this.ctx.fillStyle = 'black';
+    this.ctx.fillRect(0, 0, width, height);
+
+    // Draw lines between points
+    this.drawLines();
+
+    // Update and draw points
+    for (const point of this.points) {
+      point.update(width, height);
+      this.ctx.fillStyle = 'purple';
+      this.ctx.beginPath();
+      this.ctx.arc(point.x, point.y, 2, 0, Math.PI * 2);
+      this.ctx.fill();
+    }
+
+    // Check for new triangles
+    for (let i = 0; i < this.points.length - 2; i++) {
+      for (let j = i + 1; j < this.points.length - 1; j++) {
+        for (let k = j + 1; k < this.points.length; k++) {
+          const p1 = this.points[i];
+          const p2 = this.points[j];
+          const p3 = this.points[k];
+          
+          if (this.isValidTriangle(p1, p2, p3)) {
+            this.triangles.push(new Triangle(p1, p2, p3));
+          }
+        }
+      }
+    }
+
+    // Update and draw triangles
+    this.triangles = this.triangles.filter(triangle => {
+      if (triangle.update()) {
+        triangle.draw(this.ctx);
+        return true;
+      }
+      return false;
+    });
+
+    this.lastDrawTime = timestamp;
+    this.rafId = requestAnimationFrame(this.animate.bind(this));
+  }
+
+  drawLines() {
+    for (let i = 0; i < this.points.length; i++) {
+      for (let j = i + 1; j < this.points.length; j++) {
+        const p1 = this.points[i];
+        const p2 = this.points[j];
+        const distance = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+        
+        // Calculate opacity between 0.15 and 1
+        const opacity = Math.max(0.05, Math.min(1, 1 - (distance / MAX_LINE_DISTANCE)));
+        
+        this.ctx.strokeStyle = `rgba(128, 0, 128, ${opacity})`;
+        this.ctx.lineWidth = 1;
+        this.ctx.beginPath();
+        this.ctx.moveTo(p1.x, p1.y);
+        this.ctx.lineTo(p2.x, p2.y);
+        this.ctx.stroke();
+      }
+    }
+  }
+
+  isValidTriangle(p1, p2, p3) {
+    const d1 = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+    const d2 = Math.hypot(p2.x - p3.x, p2.y - p3.y);
+    const d3 = Math.hypot(p3.x - p1.x, p3.y - p1.y);
+    return d1 < DISTANCE_THRESHOLD && d2 < DISTANCE_THRESHOLD && d3 < DISTANCE_THRESHOLD;
+  }
+
+  cleanup() {
+    this.resizeObserver.disconnect();
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+  }
+}
+
+// Initialize animation
+const container = document.querySelector("#triangle-field");
+const canvas = document.querySelector("#triangle-canvas");
+
+if (container instanceof HTMLElement && canvas instanceof HTMLCanvasElement) {
+  const animation = new TriangleFieldAnimation(canvas, container);
+
+  // Cleanup on page navigation
+  document.addEventListener("astro:before-preparation", () => {
+    animation.cleanup();
+  });
+}
+</script>
+
+<style>
+  .absolute {
+    position: absolute;
+  }
+  .inset-0 {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+</style>

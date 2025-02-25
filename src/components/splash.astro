@@ -3,9 +3,10 @@ import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import logoImage from "~/assets/logo.png";
 import HeroImage from "~/components/hero-image.astro";
-import Starfield from "~/components/starfield.astro";
+// import Starfield from "~/components/starfield.astro";
 import GitHubCorner from "./github-corner.astro";
 import type { FooterLink } from "~/types";
+import TriangleField from "./triangle-field.astro";
 
 
 const widths = [450, 800];
@@ -45,7 +46,7 @@ const links: Array<FooterLink> = [
 ---
 
 <section class="relative h-full bg-black">
-  <Starfield />
+  <TriangleField />
   <GitHubCorner />
   <div id="splash-bg-fallback" class="absolute inset-0 hidden opacity-40">
     <HeroImage />
