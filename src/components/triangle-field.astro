@@ -11,16 +11,24 @@ class Point {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.vx = (Math.random() - 0.5) *2;
-    this.vy = (Math.random() - 0.5) *2;
+    this.vx = (Math.random() - 0.5) * 2;
+    this.vy = (Math.random() - 0.5) * 2;
+    this.originalX = x;
+    this.originalY = y;
   }
 
-  update(width, height) {
-    this.x += this.vx;
-    this.y += this.vy;
+  update(width, height, shouldAnimate) {
+    if (shouldAnimate) {
+      this.x += this.vx;
+      this.y += this.vy;
 
-    if (this.x < 0 || this.x > width) this.vx *= -1;
-    if (this.y < 0 || this.y > height) this.vy *= -1;
+      if (this.x < 0 || this.x > width) this.vx *= -1;
+      if (this.y < 0 || this.y > height) this.vy *= -1;
+    } else {
+      // For mobile: keep points static at their original positions
+      this.x = this.originalX;
+      this.y = this.originalY;
+    }
   }
 }
 
@@ -182,11 +190,18 @@ class TriangleFieldAnimation {
     this.triangles = [];
     this.rafId = null;
     this.lastDrawTime = 0;
+    this.isMobile = this.checkIfMobile();
 
     this.setupCanvas();
     this.createPoints();
     this.setupResizeObserver();
     this.animate();
+  }
+
+  checkIfMobile() {
+    // Check if device is mobile using window.innerWidth
+    // Common breakpoint for mobile devices is 768px
+    return window.innerWidth < 768;
   }
 
   setupCanvas() {
@@ -229,6 +244,8 @@ class TriangleFieldAnimation {
 
   setupResizeObserver() {
     this.resizeObserver = new ResizeObserver(() => {
+      // Update isMobile check on resize
+      this.isMobile = this.checkIfMobile();
       this.setupCanvas();
       this.createPoints();
     });
@@ -253,23 +270,26 @@ class TriangleFieldAnimation {
 
     // Update and draw points
     for (const point of this.points) {
-      point.update(width, height);
+      // Only animate if not on mobile
+      point.update(width, height, !this.isMobile);
       this.ctx.fillStyle = 'purple';
       this.ctx.beginPath();
       this.ctx.arc(point.x, point.y, 2, 0, Math.PI * 2);
       this.ctx.fill();
     }
 
-    // Check for new triangles
-    for (let i = 0; i < this.points.length - 2; i++) {
-      for (let j = i + 1; j < this.points.length - 1; j++) {
-        for (let k = j + 1; k < this.points.length; k++) {
-          const p1 = this.points[i];
-          const p2 = this.points[j];
-          const p3 = this.points[k];
-          
-          if (this.isValidTriangle(p1, p2, p3)) {
-            this.triangles.push(new Triangle(p1, p2, p3));
+    // Only check for new triangles on non-mobile devices
+    if (!this.isMobile) {
+      for (let i = 0; i < this.points.length - 2; i++) {
+        for (let j = i + 1; j < this.points.length - 1; j++) {
+          for (let k = j + 1; k < this.points.length; k++) {
+            const p1 = this.points[i];
+            const p2 = this.points[j];
+            const p3 = this.points[k];
+            
+            if (this.isValidTriangle(p1, p2, p3)) {
+              this.triangles.push(new Triangle(p1, p2, p3));
+            }
           }
         }
       }
@@ -295,15 +315,20 @@ class TriangleFieldAnimation {
         const p2 = this.points[j];
         const distance = Math.hypot(p1.x - p2.x, p1.y - p2.y);
         
-        // Calculate opacity between 0.15 and 1
-        const opacity = Math.max(0.05, Math.min(1, 1 - (distance / MAX_LINE_DISTANCE)));
+        // Mobile: only draw shorter lines to create less complex appearance
+        const mobileMaxDistance = this.isMobile ? MAX_LINE_DISTANCE * 0.7 : MAX_LINE_DISTANCE;
         
-        this.ctx.strokeStyle = `rgba(128, 0, 128, ${opacity})`;
-        this.ctx.lineWidth = 1;
-        this.ctx.beginPath();
-        this.ctx.moveTo(p1.x, p1.y);
-        this.ctx.lineTo(p2.x, p2.y);
-        this.ctx.stroke();
+        if (distance <= mobileMaxDistance) {
+          // Calculate opacity between 0.15 and 1
+          const opacity = Math.max(0.05, Math.min(1, 1 - (distance / mobileMaxDistance)));
+          
+          this.ctx.strokeStyle = `rgba(128, 0, 128, ${opacity})`;
+          this.ctx.lineWidth = 1;
+          this.ctx.beginPath();
+          this.ctx.moveTo(p1.x, p1.y);
+          this.ctx.lineTo(p2.x, p2.y);
+          this.ctx.stroke();
+        }
       }
     }
   }
