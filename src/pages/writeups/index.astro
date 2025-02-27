@@ -1,0 +1,150 @@
+---
+import { getCollection } from 'astro:content';
+import Header from "~/components/header.astro";
+import Footer from "~/components/footer.astro";
+import WriteupCard from "~/components/writeups/WriteupCard.astro";
+import ContentSection from "~/components/content-section.astro";
+import "~/styles/index.css";
+import LogoBlock from "~/components/logo-block.astro";
+
+// Get all writeups and sort by date, filter out hidden ones
+const allWriteups = await getCollection('writeups');
+const writeups = allWriteups.filter(writeup => !writeup.data.hidden);
+const sortedWriteups = writeups.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const { generator, site } = Astro;
+// Categories for filtering
+const categories = [...new Set(writeups.map(post => post.data.category).filter(Boolean))];
+const ctfs = [...new Set(writeups.map(post => post.data.ctf).filter(Boolean))];
+
+const description = "MQCyberSec CTF writeups and technical guides.";
+const title = "CTF Writeups | MQCyberSec";
+---
+
+<!doctype html>
+<html lang="en" class="h-full motion-safe:scroll-smooth" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta content="#ec4899" data-react-helmet="true" name="theme-color" />
+    <meta name="generator" content={generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    
+    <!-- social media -->
+    <meta property="og:title" content="Writeups - MQCyberSec" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={site} />
+    
+    <!-- initialize theme -->
+    <script is:inline>
+      const themeSaved = localStorage.getItem("theme");
+      
+      if (themeSaved) {
+        document.documentElement.dataset.theme = themeSaved;
+      } else {
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+        document.documentElement.dataset.theme = prefersDark ? "dark" : "light";
+      }
+    </script>
+    
+    <!-- Initialise Flowbite -->
+    <script
+      is:inline
+      src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"
+    ></script>
+  </head>
+  
+  <body
+    class="h-full overflow-x-hidden bg-default text-default text-base selection:bg-secondary selection:text-white"
+  >    <Header />
+    
+    <main>
+        <br>
+      <ContentSection title="CTF Writeups" id="writeups">
+        <Fragment slot="lead">
+          <div class="mx-auto max-w-2xl">
+            <p class="text-center font-bold leading-relaxed tracking-tight">
+              Explore our collection of 
+              <span class="text-primary">Capture The Flag writeups</span> and
+              <span class="text-primary">technical guides</span> created by the MQCyberSec team.
+            </p>
+          </div>
+        </Fragment>
+        
+        <div class="mt-8 w-full">
+          <div class="flex flex-wrap gap-4 mb-8">
+            <div class="sm:flex-1">
+              <label for="category-filter" class="block text-sm font-medium text-text-offset mb-2">Filter by Category</label>
+              <select id="category-filter" class="w-full rounded border border-border p-2 bg-background-offset text-text">
+                <option value="">All Categories</option>
+                {categories.map(category => 
+                  <option value={category}>{category}</option>
+                )}
+              </select>
+            </div>
+            
+            <div class="sm:flex-1">
+              <label for="ctf-filter" class="block text-sm font-medium text-text-offset mb-2">Filter by CTF</label>
+              <select id="ctf-filter" class="w-full rounded border border-border p-2 bg-background-offset text-text">
+                <option value="">All CTFs</option>
+                {ctfs.map(ctf => 
+                  <option value={ctf}>{ctf}</option>
+                )}
+              </select>
+            </div>
+          </div>
+          
+          <div id="writeups-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {sortedWriteups.map(writeup => (
+              <WriteupCard writeup={writeup} />
+            ))}
+          </div>
+        </div>
+      </ContentSection>
+    </main>
+    
+    <Footer />
+    
+    <script>
+      // Client-side filtering
+      const categoryFilter = document.getElementById('category-filter');
+      const ctfFilter = document.getElementById('ctf-filter');
+      const writeupCards = document.querySelectorAll('[data-writeup-card]');
+      
+      function applyFilters() {
+        const selectedCategory = categoryFilter.value;
+        const selectedCTF = ctfFilter.value;
+        
+        writeupCards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          const ctf = card.getAttribute('data-ctf');
+          
+          const categoryMatch = !selectedCategory || category === selectedCategory;
+          const ctfMatch = !selectedCTF || ctf === selectedCTF;
+          
+          if (categoryMatch && ctfMatch) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      }
+      
+      categoryFilter?.addEventListener('change', applyFilters);
+      ctfFilter?.addEventListener('change', applyFilters);
+      
+      // Ensure the header always has the fixed-header class
+      const header = document.getElementById('page-header');
+      if (header) {
+        header.classList.add('fixed-header');
+      }
+    </script>
+  </body>
+</html>

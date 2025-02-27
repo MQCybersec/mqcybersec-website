@@ -62,9 +62,24 @@ export const ctfs = defineCollection({
   }),
 });
 
+const writeups = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.date(),
+    updatedDate: z.date().optional(),
+    ctf: z.string().optional(),
+    category: z.string().optional(),
+    author: z.string().optional(),
+    image: z.string().optional(),
+    hidden: z.boolean().optional().default(false)
+  }),
+});
+
 export const collections = {
   showcase,
   people,
   ctfs,
-  gridImages
+  gridImages,
+  writeups
 };

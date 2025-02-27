@@ -19,3 +19,15 @@
   --color-border: theme("colors.gray.50" / 10%);
   --color-background-alt: #0E1421;
 }
+/* Apply theme consistently to form elements */
+input, select, textarea {
+  background-color: var(--color-background-offset);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+/* Fix select dropdown specifically for dark mode */
+html[data-theme="dark"] select option {
+  background-color: var(--color-background-offset);
+  color: var(--color-text);
+}

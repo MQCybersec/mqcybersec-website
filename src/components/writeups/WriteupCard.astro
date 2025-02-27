@@ -1,0 +1,52 @@
+---
+const { writeup } = Astro.props;
+
+const formattedDate = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(writeup.data.pubDate);
+---
+
+<a 
+  href={`/writeups/${writeup.slug}`} 
+  class="block border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow bg-background-offset" 
+  data-writeup-card
+  data-category={writeup.data.category || ''}
+  data-ctf={writeup.data.ctf || ''}
+>
+  {writeup.data.image ? (
+    <img 
+      src={writeup.data.image} 
+      alt={writeup.data.title}
+      class="w-full h-48 object-cover" 
+    />
+  ) : (
+    <div class="w-full h-48 bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white">
+      <span class="text-xl font-bold">{`${writeup.data.title} / ${writeup.data.ctf}` || writeup.data.ctf || 'CTF Writeup'}</span>
+    </div>
+  )}
+  
+  <div class="p-6">
+    <div class="flex gap-2 mb-2">
+      {writeup.data.ctf && (
+        <span class="px-2 py-1 text-xs bg-primary/20 text-primary rounded">{writeup.data.ctf}</span>
+      )}
+      {writeup.data.category && (
+        <span class="px-2 py-1 text-xs bg-secondary/20 text-secondary rounded">{writeup.data.category}</span>
+      )}
+    </div>
+    
+    <h2 class="text-xl font-bold mb-2 text-text">{writeup.data.title}</h2>
+    <p class="text-text-offset mb-4 line-clamp-2">{writeup.data.description}</p>
+    
+    <div class="flex items-center">
+      <time class="text-sm text-text-offset" datetime={writeup.data.pubDate.toISOString()}>
+        {formattedDate}
+      </time>
+      {writeup.data.author && (
+        <span class="text-sm text-text-offset ml-2">• by <span class="text-primary">{writeup.data.author}</span></span>
+      )}
+    </div>
+  </div>
+</a>

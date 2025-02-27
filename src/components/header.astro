@@ -5,11 +5,12 @@ import ThemeSwitcher from "~/components/theme-switcher.astro";
 import type {  NavItem } from "~/types";
 
 const navItems: Array<NavItem> = [
-  { title: "About Us", url: "#aboutus" },
-  { title: "Hack Hub", url: "#hackhub" },
-  { title: "CTF Achievements", url: "#ctf-achievements" },
-  { title: "Team", url: "#teams" },
-  { title: "Contact", url: "#contact" },
+ { title: "About Us", url: "/#aboutus" },
+ { title: "Hack Hub", url: "/#hackhub" },
+ { title: "CTF Achievements", url: "/#ctf-achievements" },
+ { title: "Writeups", url: "/writeups" },
+ { title: "Team", url: "/#teams" },
+ { title: "Contact", url: "/#contact" },
 ];
 ---
 
@@ -84,6 +85,7 @@ const navItems: Array<NavItem> = [
   </div>
 </header>
 
+<!-- Update the script section in header.astro -->
 <script>
   import MicroModal from "micromodal";
   import invariant from "tiny-invariant";
@@ -112,9 +114,15 @@ const navItems: Array<NavItem> = [
   openNavButton.addEventListener("click", openMenu);
   closeNavButton.addEventListener("click", closeMenu);
 
+  // Modified scroll event handler to ensure the header stays visible
   document.addEventListener("scroll", () => {
-    const d = page.clientHeight - page.scrollTop - header.offsetHeight;
-    header.classList.toggle("fixed-header", d < 0);
+    // Always add the fixed-header class regardless of scroll position
+    header.classList.add("fixed-header");
+  });
+
+  // Initialize header as fixed on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    header.classList.add("fixed-header");
   });
 
   menu.addEventListener("click", (event) => {
@@ -123,6 +131,20 @@ const navItems: Array<NavItem> = [
     }
   });
 </script>
+
+<!-- Keep the original style section as it is -->
+
+<!-- Update the style section in header.astro -->
+<style>
+  #page-header {
+    @apply fixed top-0 w-full z-20;
+    @apply border-b border-default bg-default text-default;
+  }
+  
+  .modal.is-open {
+    @apply block;
+  }
+</style>
 
 <noscript>
   <style>
@@ -139,5 +161,69 @@ const navItems: Array<NavItem> = [
   }
   .modal.is-open {
     @apply block;
+  }
+</style>
+<!-- Add this CSS to the header.astro component's style section -->
+<style>
+  /* Ensure header stays on top */
+  #page-header {
+    @apply fixed top-0 w-full z-50; /* Increased z-index */
+    @apply border-b border-default bg-default text-default;
+  }
+  
+  /* This style will apply when the fixed-header class is added */
+  .fixed-header {
+    @apply fixed top-0 bottom-auto;
+    @apply border-default bg-default text-default;
+  }
+  
+  .modal.is-open {
+    @apply block;
+  }
+</style>
+
+<!-- Ensure your main content has proper top padding -->
+<!-- Add this to both writeups page and detail page -->
+<style>
+  main {
+    padding-top: 6rem; /* Adjust based on your header height */
+  }
+</style>
+<!-- Add this to your global CSS file or in a style tag in your layout template -->
+<style is:global>
+  /* Define CSS variables for dark and light modes */
+  html {
+    --color-background: #f8fafc;
+    --color-background-offset: #f1f5f9;
+    --color-background-alt: #e2e8f0;
+    --color-text: #0f172a;
+    --color-text-offset: #64748b;
+    --color-border: #cbd5e1;
+    --color-primary: #ec4899;
+    --color-secondary: #8b5cf6;
+  }
+  
+  html[data-theme="dark"] {
+    --color-background: #0f172a;
+    --color-background-offset: #1e293b;
+    --color-background-alt: #334155;
+    --color-text: #f1f5f9;
+    --color-text-offset: #94a3b8;
+    --color-border: #475569;
+    --color-primary: #ec4899;
+    --color-secondary: #8b5cf6;
+  }
+  
+  /* Apply theme consistently to form elements */
+  input, select, textarea {
+    background-color: var(--color-background-offset);
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+  
+  /* Fix select dropdown specifically for dark mode */
+  html[data-theme="dark"] select option {
+    background-color: var(--color-background-offset);
+    color: var(--color-text);
   }
 </style>
