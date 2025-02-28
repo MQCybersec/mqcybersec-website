@@ -19,15 +19,30 @@
   --color-border: theme("colors.gray.50" / 10%);
   --color-background-alt: theme("colors.black");
 }
-/* Apply theme consistently to form elements */
-input, select, textarea {
+/* Add this to your global CSS file (index.css) */
+
+/* Explicitly style input fields in dark mode */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
   background-color: var(--color-background-offset);
   color: var(--color-text);
   border-color: var(--color-border);
 }
 
-/* Fix select dropdown specifically for dark mode */
-html[data-theme="dark"] select option {
+/* For the search specifically (more specific selector) */
+[data-theme="dark"] #search-input {
   background-color: var(--color-background-offset);
   color: var(--color-text);
+}
+
+/* Fix placeholder text in dark mode */
+[data-theme="dark"] input::placeholder {
+  color: var(--color-text-offset);
+  opacity: 0.7;
+}
+
+/* Ensure proper background color when focusing */
+[data-theme="dark"] input:focus {
+  background-color: var(--color-background-offset);
 }

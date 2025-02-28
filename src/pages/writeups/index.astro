@@ -6,6 +6,7 @@ import WriteupCard from "~/components/writeups/WriteupCard.astro";
 import ContentSection from "~/components/content-section.astro";
 import "~/styles/index.css";
 import LogoBlock from "~/components/logo-block.astro";
+import { Icon } from "astro-icon/components";
 
 // Get all writeups and sort by date, filter out hidden ones
 const allWriteups = await getCollection('writeups');
@@ -18,6 +19,23 @@ const { generator, site } = Astro;
 // Categories for filtering
 const categories = [...new Set(writeups.map(post => post.data.category).filter(Boolean))];
 const ctfs = [...new Set(writeups.map(post => post.data.ctf).filter(Boolean))];
+
+// Create a searchable index for client-side search
+// Include title, description, ctf, category, and a preview of the content
+const searchIndex = sortedWriteups.map(writeup => {
+  const searchableText = [
+    writeup.data.title,
+    writeup.data.description,
+    writeup.data.ctf,
+    writeup.data.category,
+    writeup.body // This includes the content for searching
+  ].filter(Boolean).join(' ').toLowerCase();
+  
+  return {
+    slug: writeup.slug,
+    searchableText
+  };
+});
 
 const description = "MQCyberSec CTF writeups and technical guides.";
 const title = "CTF Writeups | MQCyberSec";
@@ -76,6 +94,24 @@ const title = "CTF Writeups | MQCyberSec";
         </Fragment>
         
         <div class="mt-8 w-full">
+          <!-- Add search field -->
+          <div class="mb-8">
+            <div class="relative w-full max-w-xl mx-auto">
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <Icon name="mdi:magnify" class="size-5 text-text-offset" />
+              </div>
+              <input 
+                type="search" 
+                id="search-input" 
+                class="block w-full p-4 pl-10 text-sm rounded-lg border border-border bg-background-offset text-text placeholder:text-text-offset focus:border-primary focus:ring-primary"
+                placeholder="Search writeups content and titles..." 
+              />
+              <div id="search-status" class="absolute right-0 top-0 h-full flex items-center pr-4 text-sm text-text-offset hidden">
+                Found <span id="result-count" class="font-bold mx-1">0</span> results
+              </div>
+            </div>
+          </div>
+          
           <div class="flex flex-wrap gap-4 mb-8">
             <div class="sm:flex-1">
               <label for="category-filter" class="block text-sm font-medium text-text-offset mb-2">Filter by Category</label>
@@ -103,39 +139,94 @@ const title = "CTF Writeups | MQCyberSec";
               <WriteupCard writeup={writeup} />
             ))}
           </div>
+          
+          <!-- No results message -->
+          <div id="no-results" class="hidden text-center py-10">
+            <p class="text-xl font-bold text-text-offset">No writeups found matching your search.</p>
+            <p class="mt-2 text-text-offset">Try adjusting your search terms or filters.</p>
+          </div>
         </div>
       </ContentSection>
     </main>
     
     <Footer />
     
-    <script>
-      // Client-side filtering
+    <script define:vars={{ searchIndex }}>
+      // Client-side filtering and searching
       const categoryFilter = document.getElementById('category-filter');
       const ctfFilter = document.getElementById('ctf-filter');
+      const searchInput = document.getElementById('search-input');
       const writeupCards = document.querySelectorAll('[data-writeup-card]');
+      const writeupContainer = document.getElementById('writeups-container');
+      const noResultsMessage = document.getElementById('no-results');
+      const searchStatus = document.getElementById('search-status');
       
-      function applyFilters() {
+      let debounceTimeout;
+      
+      function debounce(func, wait) {
+        return function executedFunction(...args) {
+          const later = () => {
+            clearTimeout(debounceTimeout);
+            func(...args);
+          };
+          
+          clearTimeout(debounceTimeout);
+          debounceTimeout = setTimeout(later, wait);
+        };
+      }
+      
+      function applyFiltersAndSearch() {
         const selectedCategory = categoryFilter.value;
         const selectedCTF = ctfFilter.value;
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        
+        let visibleCount = 0;
         
         writeupCards.forEach(card => {
           const category = card.getAttribute('data-category');
           const ctf = card.getAttribute('data-ctf');
+          const slug = card.getAttribute('href').split('/').pop();
           
           const categoryMatch = !selectedCategory || category === selectedCategory;
           const ctfMatch = !selectedCTF || ctf === selectedCTF;
           
-          if (categoryMatch && ctfMatch) {
+          // Search match
+          let searchMatch = true;
+          if (searchTerm) {
+            const indexEntry = searchIndex.find(entry => entry.slug === slug);
+            searchMatch = indexEntry && indexEntry.searchableText.includes(searchTerm);
+          }
+          
+          if (categoryMatch && ctfMatch && searchMatch) {
             card.classList.remove('hidden');
+            visibleCount++;
           } else {
             card.classList.add('hidden');
           }
         });
+        
+        // Show/hide no results message
+        if (visibleCount === 0) {
+          writeupContainer.classList.add('hidden');
+          noResultsMessage.classList.remove('hidden');
+        } else {
+          writeupContainer.classList.remove('hidden');
+          noResultsMessage.classList.add('hidden');
+          
+          // Show search status if searching
+          if (searchTerm) {
+            searchStatus.textContent = `Found ${visibleCount} results for "${searchTerm}"`;
+            searchStatus.classList.remove('hidden');
+          } else {
+            searchStatus.classList.add('hidden');
+          }
+        }
       }
       
-      categoryFilter?.addEventListener('change', applyFilters);
-      ctfFilter?.addEventListener('change', applyFilters);
+      // Add event listeners
+      categoryFilter?.addEventListener('change', applyFiltersAndSearch);
+      ctfFilter?.addEventListener('change', applyFiltersAndSearch);
+      searchInput?.addEventListener('input', debounce(applyFiltersAndSearch, 300));
       
       // Ensure the header always has the fixed-header class
       const header = document.getElementById('page-header');
