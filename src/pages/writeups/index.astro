@@ -7,33 +7,77 @@ import ContentSection from "~/components/content-section.astro";
 import "~/styles/index.css";
 import LogoBlock from "~/components/logo-block.astro";
 import { Icon } from "astro-icon/components";
+import { extractTagSuggestions } from "~/utils/auto-hyperlink";
+const { generator, site } = Astro;
+
+// Modified section for tag extraction and assignment in index.astro
+// Replace the existing tag handling section with this code
 
 // Get all writeups and sort by date, filter out hidden ones
 const allWriteups = await getCollection('writeups');
 const writeups = allWriteups.filter(writeup => !writeup.data.hidden);
+
+// First pass: Apply tags to writeups without tags
+writeups.forEach(writeup => {
+  // If the writeup has no tags, extract and assign tags from content
+  if (!writeup.data.tags || writeup.data.tags.length === 0) {
+    const suggestedTags = extractTagSuggestions(writeup.body, []);
+    
+    // Use up to 5 suggested tags
+    if (suggestedTags.length > 0) {
+      writeup.data.tags = suggestedTags.slice(0, 5);
+    } else {
+      // Initialize with empty array if no suggestions found
+      writeup.data.tags = [];
+    }
+  }
+});
+
+// Sort writeups by date after tag assignment
 const sortedWriteups = writeups.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
-const { generator, site } = Astro;
+// Collect all tags and their frequencies
+const tagFrequencyMap = new Map();
+sortedWriteups.forEach(writeup => {
+  (writeup.data.tags || []).forEach(tag => {
+    tagFrequencyMap.set(tag, (tagFrequencyMap.get(tag) || 0) + 1);
+  });
+});
+
+// Get tags sorted by frequency for UI
+const tags = [...tagFrequencyMap.entries()]
+  .sort((a, b) => b[1] - a[1])
+  .map(entry => entry[0]);
+
 // Categories for filtering
 const categories = [...new Set(writeups.map(post => post.data.category).filter(Boolean))];
 const ctfs = [...new Set(writeups.map(post => post.data.ctf).filter(Boolean))];
 
+// Get all sections
+const sections = [...new Set(writeups.map(post => post.data.section).filter(Boolean))];
+
 // Create a searchable index for client-side search
-// Include title, description, ctf, category, and a preview of the content
+// Include title, description, ctf, category, section, tags and a preview of the content
 const searchIndex = sortedWriteups.map(writeup => {
   const searchableText = [
     writeup.data.title,
     writeup.data.description,
     writeup.data.ctf,
     writeup.data.category,
+    writeup.data.section,
+    (writeup.data.tags || []).join(' '),
     writeup.body // This includes the content for searching
   ].filter(Boolean).join(' ').toLowerCase();
   
   return {
     slug: writeup.slug,
-    searchableText
+    searchableText,
+    section: writeup.data.section || '',
+    tags: writeup.data.tags || [],
+    ctf: writeup.data.ctf || '',
+    category: writeup.data.category || ''
   };
 });
 
@@ -78,10 +122,11 @@ const title = "CTF Writeups | MQCyberSec";
   
   <body
     class="h-full overflow-x-hidden bg-default text-default text-base selection:bg-secondary selection:text-white"
-  >    <Header />
+  >    
+    <Header />
     
     <main>
-        <br>
+      <br>
       <ContentSection title="CTF Writeups" id="writeups">
         <Fragment slot="lead">
           <div class="mx-auto max-w-2xl">
@@ -104,7 +149,7 @@ const title = "CTF Writeups | MQCyberSec";
                 type="search" 
                 id="search-input" 
                 class="block w-full p-4 pl-10 text-sm rounded-lg border border-border bg-background-offset text-text placeholder:text-text-offset focus:border-primary focus:ring-primary"
-                placeholder="Search writeups content and titles..." 
+                placeholder="Search writeups content, titles, and tags..." 
               />
               <div id="search-status" class="absolute right-0 top-0 h-full flex items-center pr-4 text-sm text-text-offset hidden">
                 Found <span id="result-count" class="font-bold mx-1">0</span> results
@@ -112,6 +157,52 @@ const title = "CTF Writeups | MQCyberSec";
             </div>
           </div>
           
+          <!-- Section buttons -->
+          {sections.length > 0 && (
+            <div class="mb-6">
+              <h3 class="text-sm font-medium text-text-offset mb-3">Browse by Section</h3>
+              <div class="flex flex-wrap gap-2">
+                <button 
+                  class="section-btn active px-4 py-2 rounded-full bg-primary text-white font-medium text-sm hover:bg-primary/80 transition-colors" 
+                  data-section=""
+                >
+                  All
+                </button>
+                {sections.map(section => (
+                  <button 
+                    class="section-btn px-4 py-2 rounded-full bg-background-offset text-text font-medium text-sm hover:bg-background-alt transition-colors"
+                    data-section={section}
+                  >
+                    {section}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          <!-- Tags cloud -->
+          {tags.length > 0 && (
+            <div class="mb-6">
+              <div class="flex justify-between">
+                <h3 class="text-sm font-medium text-text-offset mb-3">Filter by Tags</h3>
+                <button id="clear-tags" class="text-xs text-primary hover:text-primary/80 hidden">
+                  Clear selected tags
+                </button>
+              </div>
+              <div class="flex flex-wrap gap-2 mb-2" id="tags-container">
+                {tags.map(tag => (
+                  <button 
+                    class="tag-btn px-3 py-1 rounded-full bg-background-offset text-sm text-text-offset hover:bg-background-alt transition-colors"
+                    data-tag={tag}
+                  >
+                    #{tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          <!-- Advanced filters -->
           <div class="flex flex-wrap gap-4 mb-8">
             <div class="sm:flex-1">
               <label for="category-filter" class="block text-sm font-medium text-text-offset mb-2">Filter by Category</label>
@@ -142,8 +233,11 @@ const title = "CTF Writeups | MQCyberSec";
           
           <!-- No results message -->
           <div id="no-results" class="hidden text-center py-10">
-            <p class="text-xl font-bold text-text-offset">No writeups found matching your search.</p>
-            <p class="mt-2 text-text-offset">Try adjusting your search terms or filters.</p>
+            <p class="text-xl font-bold text-text-offset">No writeups found matching your filters.</p>
+            <p class="mt-2 text-text-offset">Try adjusting your search terms, tags, or filters.</p>
+            <button id="reset-filters" class="mt-4 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors">
+              Reset all filters
+            </button>
           </div>
         </div>
       </ContentSection>
@@ -151,7 +245,7 @@ const title = "CTF Writeups | MQCyberSec";
     
     <Footer />
     
-    <script define:vars={{ searchIndex }}>
+    <script define:vars={{ searchIndex, sections }}>
       // Client-side filtering and searching
       const categoryFilter = document.getElementById('category-filter');
       const ctfFilter = document.getElementById('ctf-filter');
@@ -160,8 +254,14 @@ const title = "CTF Writeups | MQCyberSec";
       const writeupContainer = document.getElementById('writeups-container');
       const noResultsMessage = document.getElementById('no-results');
       const searchStatus = document.getElementById('search-status');
+      const resetFiltersBtn = document.getElementById('reset-filters');
+      const clearTagsBtn = document.getElementById('clear-tags');
+      const sectionBtns = document.querySelectorAll('.section-btn');
+      const tagBtns = document.querySelectorAll('.tag-btn');
       
       let debounceTimeout;
+      let selectedTags = [];
+      let currentSection = '';
       
       function debounce(func, wait) {
         return function executedFunction(...args) {
@@ -175,6 +275,40 @@ const title = "CTF Writeups | MQCyberSec";
         };
       }
       
+      // Update UI when tag selection changes
+      function updateTagUI() {
+        tagBtns.forEach(btn => {
+          const tag = btn.getAttribute('data-tag');
+          if (selectedTags.includes(tag)) {
+            btn.classList.add('bg-primary', 'text-white');
+            btn.classList.remove('bg-background-offset', 'text-text-offset');
+          } else {
+            btn.classList.remove('bg-primary', 'text-white');
+            btn.classList.add('bg-background-offset', 'text-text-offset');
+          }
+        });
+        
+        if (selectedTags.length > 0) {
+          clearTagsBtn.classList.remove('hidden');
+        } else {
+          clearTagsBtn.classList.add('hidden');
+        }
+      }
+      
+      // Update UI when section selection changes
+      function updateSectionUI() {
+        sectionBtns.forEach(btn => {
+          const section = btn.getAttribute('data-section');
+          if (section === currentSection) {
+            btn.classList.add('bg-primary', 'text-white', 'active');
+            btn.classList.remove('bg-background-offset', 'text-text');
+          } else {
+            btn.classList.remove('bg-primary', 'text-white', 'active');
+            btn.classList.add('bg-background-offset', 'text-text');
+          }
+        });
+      }
+      
       function applyFiltersAndSearch() {
         const selectedCategory = categoryFilter.value;
         const selectedCTF = ctfFilter.value;
@@ -185,10 +319,18 @@ const title = "CTF Writeups | MQCyberSec";
         writeupCards.forEach(card => {
           const category = card.getAttribute('data-category');
           const ctf = card.getAttribute('data-ctf');
+          const section = card.getAttribute('data-section') || '';
+          const tagsAttr = card.getAttribute('data-tags') || '[]';
+          const tags = tagsAttr ? JSON.parse(tagsAttr) : [];
           const slug = card.getAttribute('href').split('/').pop();
           
           const categoryMatch = !selectedCategory || category === selectedCategory;
           const ctfMatch = !selectedCTF || ctf === selectedCTF;
+          const sectionMatch = !currentSection || section === currentSection;
+          
+          // Tag matching - if tags are selected, at least one must match
+          const tagMatch = selectedTags.length === 0 || 
+                         (tags && selectedTags.some(tag => tags.includes(tag)));
           
           // Search match
           let searchMatch = true;
@@ -197,7 +339,7 @@ const title = "CTF Writeups | MQCyberSec";
             searchMatch = indexEntry && indexEntry.searchableText.includes(searchTerm);
           }
           
-          if (categoryMatch && ctfMatch && searchMatch) {
+          if (categoryMatch && ctfMatch && sectionMatch && tagMatch && searchMatch) {
             card.classList.remove('hidden');
             visibleCount++;
           } else {
@@ -215,7 +357,7 @@ const title = "CTF Writeups | MQCyberSec";
           
           // Show search status if searching
           if (searchTerm) {
-            searchStatus.textContent = `Found ${visibleCount} results for "${searchTerm}"`;
+            searchStatus.innerHTML = `Found <span id="result-count" class="font-bold mx-1">${visibleCount}</span> results`;
             searchStatus.classList.remove('hidden');
           } else {
             searchStatus.classList.add('hidden');
@@ -223,10 +365,58 @@ const title = "CTF Writeups | MQCyberSec";
         }
       }
       
+      // Reset all filters
+      function resetFilters() {
+        searchInput.value = '';
+        categoryFilter.value = '';
+        ctfFilter.value = '';
+        selectedTags = [];
+        currentSection = '';
+        
+        updateTagUI();
+        updateSectionUI();
+        applyFiltersAndSearch();
+      }
+      
       // Add event listeners
       categoryFilter?.addEventListener('change', applyFiltersAndSearch);
       ctfFilter?.addEventListener('change', applyFiltersAndSearch);
       searchInput?.addEventListener('input', debounce(applyFiltersAndSearch, 300));
+      resetFiltersBtn?.addEventListener('click', resetFilters);
+      
+      // Clear tags button
+      clearTagsBtn?.addEventListener('click', () => {
+        selectedTags = [];
+        updateTagUI();
+        applyFiltersAndSearch();
+      });
+      
+      // Section button clicks
+      sectionBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentSection = btn.getAttribute('data-section');
+          updateSectionUI();
+          applyFiltersAndSearch();
+        });
+      });
+      
+      // Tag button clicks
+      tagBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tag = btn.getAttribute('data-tag');
+          
+          if (selectedTags.includes(tag)) {
+            // Remove tag if already selected
+            selectedTags = selectedTags.filter(t => t !== tag);
+          } else {
+            // Add tag if not already selected
+            selectedTags.push(tag);
+          }
+          
+          updateTagUI();
+          applyFiltersAndSearch();
+        });
+      });
       
       // Ensure the header always has the fixed-header class
       const header = document.getElementById('page-header');
@@ -234,5 +424,21 @@ const title = "CTF Writeups | MQCyberSec";
         header.classList.add('fixed-header');
       }
     </script>
+
+    <style>
+      /* Transitions for buttons */
+      .section-btn, .tag-btn {
+        transition: all 0.2s ease-in-out;
+      }
+      
+      /* Active states */
+      .section-btn.active {
+        font-weight: 600;
+      }
+      
+      .tag-btn:hover {
+        transform: translateY(-1px);
+      }
+    </style>
   </body>
 </html>

@@ -4,6 +4,8 @@ import Header from "~/components/header.astro";
 import Footer from "~/components/footer.astro";
 import ContentSection from "~/components/content-section.astro";
 import { Icon } from "astro-icon/components";
+import "~/styles/theme.css"
+import { autoHyperlinkTerms, extractTagSuggestions } from "~/utils/auto-hyperlink";
 
 // Generate paths for all writeups
 export async function getStaticPaths() {
@@ -24,6 +26,33 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
   month: 'long',
   day: 'numeric',
 }).format(entry.data.pubDate);
+
+// Generate suggested tags if none exist or fewer than 3
+const existingTags = entry.data.tags || [];
+let suggestedTags = [];
+
+if (existingTags.length < 3) {
+  // Extract suggested tags from content
+  suggestedTags = extractTagSuggestions(entry.body, existingTags).slice(0, 5 - existingTags.length);
+}
+
+// Get related writeups (by category or tag)
+const allWriteups = await getCollection('writeups');
+const relatedWriteups = allWriteups
+  .filter(writeup => 
+    // Not the current writeup
+    writeup.slug !== entry.slug && 
+    // Not hidden
+    !writeup.data.hidden &&
+    // Same category or at least one matching tag
+    (
+      (entry.data.category && writeup.data.category === entry.data.category) ||
+      (existingTags.length > 0 && writeup.data.tags && 
+       writeup.data.tags.some(tag => existingTags.includes(tag)))
+    )
+  )
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3); // Limit to 3 related writeups
 ---
 
 <!doctype html>
@@ -89,7 +118,13 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
               )}
             </div>
             
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-2 mb-3">
+              {entry.data.section && (
+                <span class="px-3 py-1 bg-primary/40 text-white text-sm rounded-full font-medium">
+                  {entry.data.section}
+                </span>
+              )}
+              
               {entry.data.ctf && (
                 <span class="px-3 py-1 bg-primary/20 text-primary text-sm rounded-full">
                   {entry.data.ctf}
@@ -102,6 +137,30 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
                 </span>
               )}
             </div>
+            
+            <!-- Display tags if available -->
+            <div class="flex flex-wrap gap-1 mb-3">
+              {existingTags.map(tag => (
+                <a 
+                  href={`/writeups?tag=${tag}`}
+                  class="px-2 py-0.5 text-xs bg-background-alt text-primary rounded-full hover:bg-primary/10 transition-colors"
+                >
+                  #{tag}
+                </a>
+              ))}
+              
+              {/* Suggested tags with different styling */}
+              {suggestedTags.length > 0 && (
+                <div class="flex gap-1 ml-2 items-center">
+                  <span class="text-xs text-text-offset">Suggested:</span>
+                  {suggestedTags.map(tag => (
+                    <span class="px-2 py-0.5 text-xs border border-dashed border-primary/30 text-text-offset rounded-full">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
           </header>
           
           {entry.data.image && (
@@ -112,8 +171,78 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
             />
           )}
           
-          <div class="prose prose-lg dark:prose-invert max-w-none">
+          <div class="prose prose-lg dark:prose-invert max-w-none" id="writeup-content">
             <Content />
+          </div>
+          
+          <!-- Related writeups by tags or category -->
+          {relatedWriteups.length > 0 && (
+            <div class="mt-16 pt-8 border-t border-border">
+              <h2 class="text-2xl font-bold mb-4">Related Writeups</h2>
+              <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+                {relatedWriteups.map(writeup => (
+                  <a href={`/writeups/${writeup.slug}`} class="block p-4 border border-border rounded-lg hover:border-primary hover:bg-background-offset transition-all">
+                    <h3 class="font-bold text-lg mb-1">{writeup.data.title}</h3>
+                    <p class="text-text-offset text-sm mb-2">{writeup.data.description.slice(0, 120)}{writeup.data.description.length > 120 ? '...' : ''}</p>
+                    <div class="flex flex-wrap gap-2">
+                      {writeup.data.tags && writeup.data.tags.map(tag => (
+                        <span class="px-2 py-0.5 text-xs bg-background-alt text-primary rounded-full">#{tag}</span>
+                      ))}
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Share and contribution section */}
+          <div class="mt-12 pt-8 border-t border-border">
+            <div class="flex flex-col sm:flex-row justify-between items-start gap-6">
+              <div>
+                <h3 class="text-lg font-bold mb-2">Share this writeup</h3>
+                <div class="flex gap-2">
+                  <a 
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(entry.data.title)}&url=${encodeURIComponent(`https://mqcybersec.org/writeups/${entry.slug}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="p-2 bg-background-offset rounded-full hover:bg-background-alt transition-colors"
+                    aria-label="Share on Twitter"
+                  >
+                    <Icon name="mdi:twitter" class="size-5 text-text-offset" />
+                  </a>
+                  <a 
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://mqcybersec.org/writeups/${entry.slug}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="p-2 bg-background-offset rounded-full hover:bg-background-alt transition-colors"
+                    aria-label="Share on LinkedIn"
+                  >
+                    <Icon name="mdi:linkedin" class="size-5 text-text-offset" />
+                  </a>
+                  <button 
+                    id="copy-link-btn"
+                    class="p-2 bg-background-offset rounded-full hover:bg-background-alt transition-colors"
+                    aria-label="Copy link"
+                  >
+                    <Icon name="mdi:link-variant" class="size-5 text-text-offset" />
+                  </button>
+                </div>
+              </div>
+              
+              <div>
+                <h3 class="text-lg font-bold mb-2">Contribute</h3>
+                <p class="text-sm text-text-offset mb-2">Found an issue or want to improve this writeup?</p>
+                <a 
+                  href="https://github.com/mqcybersec/mqcybersec-website/edit/main/src/content/writeups"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-primary text-sm hover:text-primary/80 flex items-center gap-1"
+                >
+                  <Icon name="mdi:github" class="size-4" />
+                  Edit on GitHub
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </article>
@@ -128,9 +257,99 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
         header.classList.add('fixed-header');
       }
       
-      // Flag detection script
+      // Copy link button functionality
+      const copyLinkBtn = document.getElementById('copy-link-btn');
+      if (copyLinkBtn) {
+        copyLinkBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText(window.location.href);
+          
+          // Show temporary tooltip
+          const tooltip = document.createElement('span');
+          tooltip.textContent = 'Link copied!';
+          tooltip.className = 'absolute -top-8 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-primary text-white text-xs rounded';
+          
+          copyLinkBtn.style.position = 'relative';
+          copyLinkBtn.appendChild(tooltip);
+          
+          setTimeout(() => {
+            tooltip.remove();
+          }, 2000);
+        });
+      }
+      
+      // Import the auto-hyperlink function
+      import { processAutoHyperlinks, autoHyperlinkTerms } from "~/utils/auto-hyperlink";
+      
+      // Apply auto-hyperlinks to the content after it's rendered
       document.addEventListener('DOMContentLoaded', () => {
-        // Find paragraphs containing the flag pattern
+        // Process auto-hyperlinks in content
+        const contentContainer = document.getElementById('writeup-content');
+        
+        if (contentContainer) {
+          // Find all the text nodes that might contain our terms
+          // We'll specifically target paragraphs, list items, headings, and blockquotes
+          const textContainers = contentContainer.querySelectorAll('p, li, h1, h2, h3, h4, h5, h6, blockquote');
+          
+          textContainers.forEach(container => {
+            // Skip processing if this is a flag paragraph
+            if (container.classList.contains('flag-paragraph')) {
+              return;
+            }
+            
+            // Process each term in our dictionary
+            for (const [term, url] of Object.entries(autoHyperlinkTerms)) {
+              // Function to replace term in HTML while preserving markup
+              const replaceTermInHTML = (element) => {
+                // Don't process if we're inside a link already
+                if (element.tagName === 'A' || element.closest('a')) return;
+                
+                // Don't process inside code or pre elements
+                if (element.tagName === 'CODE' || element.tagName === 'PRE' || 
+                    element.closest('code') || element.closest('pre')) return;
+                
+                // Process element's childNodes
+                const childNodes = Array.from(element.childNodes);
+                
+                childNodes.forEach(node => {
+                  // If it's a text node, process it
+                  if (node.nodeType === Node.TEXT_NODE) {
+                    // Case insensitive match with 'i' flag
+                    const regex = new RegExp(`\\b(${term})\\b`, 'gi');
+                    if (regex.test(node.textContent)) {
+                      // Create wrapper for the new content
+                      const wrapper = document.createElement('span');
+                      
+                      // Replace term with hyperlink while preserving original case
+                      const newHTML = node.textContent.replace(
+                        regex, 
+                        (match) => `<a href="${url}" class="auto-hyperlink" title="${term}">${match}</a>`
+                      );
+                      
+                      wrapper.innerHTML = newHTML;
+                      
+                      // Replace the text node with our processed content
+                      const fragment = document.createDocumentFragment();
+                      while (wrapper.firstChild) {
+                        fragment.appendChild(wrapper.firstChild);
+                      }
+                      
+                      node.parentNode.replaceChild(fragment, node);
+                    }
+                  } 
+                  // If it's an element node, recurse (except for links, code, pre)
+                  else if (node.nodeType === Node.ELEMENT_NODE) {
+                    replaceTermInHTML(node);
+                  }
+                });
+              };
+              
+              // Process this container
+              replaceTermInHTML(container);
+            }
+          });
+        }
+        
+        // Flag detection script
         const paragraphs = document.querySelectorAll('.prose p');
         
         paragraphs.forEach(paragraph => {
@@ -146,208 +365,218 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
         });
       });
     </script>
+
+    <style is:global>
+      /* Improved code block styling */
+      .prose pre {
+        color: var(--color-text);
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        margin: 1.25rem 0; /* Reduce vertical spacing */
+      }
+      
+      /* Reduce bottom padding specifically to fix code block closing tag spacing */
+      .prose pre code {
+        padding-bottom: 0.1rem;
+      }
+      
+      /* Inline code styling */
+      .prose code:not(pre code) {
+        background-color: var(--color-background-alt);
+        color: var(--color-primary);
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+        font-size: 0.9em;
+        font-weight: 500;
+      }
+      
+      /* Ensure paragraphs have proper spacing */
+      .prose p {
+        margin-bottom: 1.25rem;
+        line-height: 1.6;
+      }
+      
+      /* When there are consecutive paragraphs, ensure they have spacing */
+      .prose p + p {
+        margin-top: 1rem;
+      }
+      
+      /* Fix blank lines in content */
+      .prose br {
+        display: block;
+        content: "";
+        margin-top: 1rem;
+      }
+      
+      /* Improved header styling */
+      .prose h1 {
+        font-size: 2.25rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        color: var(--color-text);
+        border-bottom: 2px solid var(--color-primary);
+        padding-bottom: 0.5rem;
+      }
+      
+      .prose h2 {
+        font-size: 1.8rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        color: var(--color-text);
+        border-bottom: 1px solid var(--color-border);
+        padding-bottom: 0.5rem;
+      }
+      
+      .prose h3 {
+        font-size: 1.5rem;
+        margin-top: 1.75rem;
+        margin-bottom: 0.75rem;
+        font-weight: 600;
+        color: var(--color-text);
+      }
+      
+      .prose h4 {
+        font-size: 1.25rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--color-text);
+      }
+      
+      /* Ensure blockquotes are styled properly */
+      .prose blockquote {
+        border-left: 4px solid var(--color-primary);
+        padding: 0.5rem 0 0.5rem 1rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+        color: var(--color-text-offset);
+        background-color: var(--color-background-offset);
+        border-radius: 0 0.25rem 0.25rem 0;
+      }
+      
+      .prose blockquote p {
+        margin-bottom: 0;
+      }
+      
+      /* Improved link styling */
+      .prose a {
+        text-decoration: underline;
+        text-decoration-color: var(--color-primary);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2px;
+        transition: text-decoration-thickness 0.2s, text-underline-offset 0.2s;
+      }
+
+      .prose a:hover {
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
+      }
+
+      /* Auto-hyperlink styling */
+      .prose a.auto-hyperlink {
+        text-decoration-style: dotted;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+      }
+
+      .prose a.auto-hyperlink:hover {
+        text-decoration-style: solid;
+      }
+
+      /* Special handling for blockquote links - make sure they're still visible */
+      .prose blockquote a {
+        color: var(--color-primary);
+        text-decoration: underline;
+        font-weight: 500;
+      }
+
+      /* Flag styling */
+      .prose .flag-paragraph {
+        position: relative;
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0.5rem;
+        background-image: linear-gradient(to right, 
+          var(--color-background-offset), 
+          var(--color-background)
+        );
+        border-left: 4px solid var(--color-primary);
+        font-weight: 500;
+      }
+
+      .prose .flag-code {
+        background-color: var(--color-background-alt);
+        color: var(--color-secondary);
+        position: relative;
+        font-weight: 700;
+        padding: 0.3rem 0.6rem;
+        border-radius: 0.25rem;
+        box-shadow: 0 0 10px rgba(236, 72, 153, 0.2);
+        animation: flag-glow 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes flag-glow {
+        from {
+          box-shadow: 0 0 5px rgba(236, 72, 153, 0.2);
+        }
+        to {
+          box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);
+        }
+      }
+      
+      /* Keep the gradient text styling for the page title only */
+      .gradient-text {
+        @apply bg-clip-text text-transparent;
+        @apply bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500;
+      }
+      
+      /* Unordered list styling */
+      .prose ul {
+        list-style-type: disc;
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+      }
+
+      .prose ul li {
+        margin-bottom: 0.5rem;
+        position: relative;
+      }
+
+      /* Ordered list styling */
+      .prose ol {
+        list-style-type: decimal;
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+      }
+
+      .prose ol li {
+        margin-bottom: 0.5rem;
+        position: relative;
+      }
+
+      /* Nested list styling */
+      .prose ul ul, 
+      .prose ol ol,
+      .prose ul ol,
+      .prose ol ul {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      /* Custom bullet color for light and dark themes */
+      .prose ul li::marker {
+        color: var(--color-primary);
+      }
+
+      .prose ol li::marker {
+        color: var(--color-primary);
+        font-weight: 500;
+      }
+    </style>
   </body>
 </html>
-
-<style is:global>
-  /* Improved code block styling */
-  .prose pre {
-    color: var(--color-text);
-    padding: 1rem;
-    border-radius: 0.5rem;
-    overflow-x: auto;
-    margin: 1.25rem 0; /* Reduce vertical spacing */
-  }
-  
-  /* Reduce bottom padding specifically to fix code block closing tag spacing */
-  .prose pre code {
-    padding-bottom: 0.1rem;
-  }
-  
-  /* Inline code styling */
-  .prose code:not(pre code) {
-    background-color: var(--color-background-alt);
-    color: var(--color-primary);
-    padding: 0.2rem 0.4rem;
-    border-radius: 0.25rem;
-    font-size: 0.9em;
-    font-weight: 500;
-  }
-  
-  /* Ensure paragraphs have proper spacing */
-  .prose p {
-    margin-bottom: 1.25rem;
-    line-height: 1.6;
-  }
-  
-  /* When there are consecutive paragraphs, ensure they have spacing */
-  .prose p + p {
-    margin-top: 1rem;
-  }
-  
-  /* Fix blank lines in content */
-  .prose br {
-    display: block;
-    content: "";
-    margin-top: 1rem;
-  }
-  
-  /* Improved header styling */
-  .prose h1 {
-    font-size: 2.25rem;
-    margin-top: 2.5rem;
-    margin-bottom: 1.5rem;
-    font-weight: 700;
-    color: var(--color-text);
-    border-bottom: 2px solid var(--color-primary);
-    padding-bottom: 0.5rem;
-  }
-  
-  .prose h2 {
-    font-size: 1.8rem;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
-    color: var(--color-text);
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: 0.5rem;
-  }
-  
-  .prose h3 {
-    font-size: 1.5rem;
-    margin-top: 1.75rem;
-    margin-bottom: 0.75rem;
-    font-weight: 600;
-    color: var(--color-text);
-  }
-  
-  .prose h4 {
-    font-size: 1.25rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: var(--color-text);
-  }
-  
-  /* Ensure blockquotes are styled properly */
-  .prose blockquote {
-    border-left: 4px solid var(--color-primary);
-    padding: 0.5rem 0 0.5rem 1rem;
-    margin: 1.5rem 0;
-    font-style: italic;
-    color: var(--color-text-offset);
-    background-color: var(--color-background-offset);
-    border-radius: 0 0.25rem 0.25rem 0;
-  }
-  
-  .prose blockquote p {
-    margin-bottom: 0;
-  }
-  
-  /* NEW STYLES */
-  
-  /* Improved link styling */
-  .prose a {
-    text-decoration: underline;
-    text-decoration-color: var(--color-primary);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 2px;
-    transition: text-decoration-thickness 0.2s, text-underline-offset 0.2s;
-  }
-
-  .prose a:hover {
-    text-decoration-thickness: 2px;
-    text-underline-offset: 3px;
-  }
-
-  /* Special handling for blockquote links - make sure they're still visible */
-  .prose blockquote a {
-    color: var(--color-primary);
-    text-decoration: underline;
-    font-weight: 500;
-  }
-
-  /* Flag styling */
-  .prose .flag-paragraph {
-    position: relative;
-    padding: 1rem 1.5rem;
-    margin: 1.5rem 0;
-    border-radius: 0.5rem;
-    background-image: linear-gradient(to right, 
-      var(--color-background-offset), 
-      var(--color-background)
-    );
-    border-left: 4px solid var(--color-primary);
-    font-weight: 500;
-  }
-
-  .prose .flag-code {
-    background-color: var(--color-background-alt);
-    color: var(--color-secondary);
-    position: relative;
-    font-weight: 700;
-    padding: 0.3rem 0.6rem;
-    border-radius: 0.25rem;
-    box-shadow: 0 0 10px rgba(236, 72, 153, 0.2);
-    animation: flag-glow 2s ease-in-out infinite alternate;
-  }
-
-  @keyframes flag-glow {
-    from {
-      box-shadow: 0 0 5px rgba(236, 72, 153, 0.2);
-    }
-    to {
-      box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);
-    }
-  }
-  
-  /* Keep the gradient text styling for the page title only */
-  .gradient-text {
-    @apply bg-clip-text text-transparent;
-    @apply bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500;
-  }
-  /* Unordered list styling */
-.prose ul {
-  list-style-type: disc;
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
-  padding-left: 1.5rem;
-}
-
-.prose ul li {
-  margin-bottom: 0.5rem;
-  position: relative;
-}
-
-/* Ordered list styling */
-.prose ol {
-  list-style-type: decimal;
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
-  padding-left: 1.5rem;
-}
-
-.prose ol li {
-  margin-bottom: 0.5rem;
-  position: relative;
-}
-
-/* Nested list styling */
-.prose ul ul, 
-.prose ol ol,
-.prose ul ol,
-.prose ol ul {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-/* Custom bullet color for light and dark themes */
-.prose ul li::marker {
-  color: var(--color-primary);
-}
-
-.prose ol li::marker {
-  color: var(--color-primary);
-  font-weight: 500;
-}
-</style>

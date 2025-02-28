@@ -5,6 +5,7 @@ pubDate: 2025-02-27
 ctf: "KashiCTF 2025"
 category: "forensics"
 author: "sealldev"
+section: "CTFs"
 ---
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/kashictf2025#look-at-me)

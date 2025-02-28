@@ -5,13 +5,14 @@ pubDate: 2025-02-27
 ctf: "KashiCTF 2025"
 category: "web"
 author: "sealldev"
+section: "CTFs"
 ---
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/kashictf2025#corporate-life-2)
 
 Same process as [Corporate Life 1](25-kashi-corporatelife1) getting to `/v2-testing` but the SQLi requires UNION injection to view the contents of another table.
 
-We can try and list the tables (I did this on the Corporate Life 1 instance assuming the flag was stored on both), I identified it was SQLite using a payload from [PayloadAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL%20Injection#dbms-identification).
+We can try and list the tables (I did this on the [Corporate Life 1](25-kashi-corporatelife1) instance assuming the flag was stored on both), I identified it was SQLite using a payload from [PayloadAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL%20Injection#dbms-identification).
 
 ![corplife2-1.png](images/25-kashi/corplife2-1.png)
 

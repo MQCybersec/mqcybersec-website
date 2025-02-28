@@ -62,6 +62,7 @@ export const ctfs = defineCollection({
   }),
 });
 
+// Updated writeups schema with tags
 const writeups = defineCollection({
   schema: z.object({
     title: z.string(),
@@ -70,6 +71,8 @@ const writeups = defineCollection({
     updatedDate: z.date().optional(),
     ctf: z.string().optional(),
     category: z.string().optional(),
+    section: z.string().optional(),
+    tags: z.array(z.string()).optional().default([]),
     author: z.string().optional(),
     image: z.string().optional(),
     hidden: z.boolean().optional().default(false)

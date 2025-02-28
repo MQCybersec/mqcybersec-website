@@ -1,29 +1,43 @@
 ---
+// WriteupCard.astro - Updated to support tags and section data attributes
 const { writeup } = Astro.props;
 
+// Format date
 const formattedDate = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 }).format(writeup.data.pubDate);
+
+// Tags data for filtering
+const tagsJSON = JSON.stringify(writeup.data.tags || []);
 ---
 
-<a 
-  href={`/writeups/${writeup.slug}`} 
-  class="block border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow bg-background-offset" 
+<a
+  href={`/writeups/${writeup.slug}`}
+  class="block border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow bg-background-offset"
   data-writeup-card
   data-category={writeup.data.category || ''}
   data-ctf={writeup.data.ctf || ''}
+  data-section={writeup.data.section || ''}
+  data-tags={tagsJSON}
 >
   {writeup.data.image ? (
-    <img 
-      src={writeup.data.image} 
+    <img
+      src={writeup.data.image}
       alt={writeup.data.title}
-      class="w-full h-48 object-cover" 
+      class="w-full h-48 object-cover"
     />
   ) : (
     <div class="w-full h-48 bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white">
       <span class="text-xl font-bold">{`${writeup.data.title} / ${writeup.data.ctf}` || writeup.data.ctf || 'CTF Writeup'}</span>
+    </div>
+  )}
+  
+  <!-- Section badge if available -->
+  {writeup.data.section && (
+    <div class="absolute top-3 right-3 bg-primary/80 text-white text-xs px-2 py-1 rounded font-medium">
+      {writeup.data.section}
     </div>
   )}
   
@@ -39,6 +53,17 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
     
     <h2 class="text-xl font-bold mb-2 text-text">{writeup.data.title}</h2>
     <p class="text-text-offset mb-4 line-clamp-2">{writeup.data.description}</p>
+    
+    <!-- Tags display -->
+    {writeup.data.tags && writeup.data.tags.length > 0 && (
+      <div class="mb-3 flex flex-wrap gap-1">
+        {writeup.data.tags.map(tag => (
+          <span class="text-xs bg-background-alt text-primary px-2 py-0.5 rounded-full">
+            #{tag}
+          </span>
+        ))}
+      </div>
+    )}
     
     <div class="flex items-center">
       <time class="text-sm text-text-offset" datetime={writeup.data.pubDate.toISOString()}>

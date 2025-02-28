@@ -5,11 +5,12 @@ pubDate: 2025-02-27
 ctf: "KashiCTF 2025"
 category: "rev"
 author: "sealldev"
+section: "CTFs"
 ---
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/kashictf2025#game-1---untitled-game)
 
-I read the files properties (also with `exiftool`) and saw it had Godot copyright.
+I read the files properties (also with exiftool) and saw it had Godot copyright.
 
 I know Godot is a game engine, and looked for a decompiler and found https://github.com/GDRETools/gdsdecomp.
 
