@@ -7,6 +7,7 @@ category: "category"
 author: "CyberTeam Member"
 # image: "./sample/"
 hidden: true
+section: "CTFs"
 ---
 
 # Breaking the Authentication
