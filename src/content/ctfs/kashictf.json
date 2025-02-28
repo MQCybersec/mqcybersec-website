@@ -1,0 +1,12 @@
+{
+    "name": "KashiCTF",
+    "image": "/src/content/ctfs/_images/kashictf.png",
+    "placements": [
+        {
+            "year": 2025,
+            "globalPlacement": 21,
+            "totalTeams": 729
+        }
+    ]
+
+}

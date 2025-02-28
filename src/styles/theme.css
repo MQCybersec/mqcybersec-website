@@ -17,7 +17,7 @@
   --color-background: theme("colors.gray.900");
   --color-background-offset: theme("colors.gray.800");
   --color-border: theme("colors.gray.50" / 10%);
-  --color-background-alt: #0E1421;
+  --color-background-alt: theme("colors.black");
 }
 /* Apply theme consistently to form elements */
 input, select, textarea {

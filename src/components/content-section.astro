@@ -5,18 +5,21 @@ export interface Props {
   altBackground?: boolean;
   bgColorOverride?: string;
 }
-
 const { title, id, altBackground, bgColorOverride } = Astro.props;
 
-let altBg = altBackground ? " bg-[var(--color-background-alt)]" : "";
-if (bgColorOverride) {
-  altBg = " " + bgColorOverride;
+// Generate an inline style if needed
+let inlineStyle = "";
+if (altBackground) {
+  inlineStyle = `background-color: var(--color-background-offset);`;
+} else if (bgColorOverride) {
+  inlineStyle = `background-color: ${bgColorOverride};`;
 }
 ---
 
 <section
   id={id}
-  class={`flex scroll-mt-24 flex-col items-center gap-4 space-y-8 px-8 py-16${altBg}`}
+  class="flex scroll-mt-24 flex-col items-center gap-4 space-y-8 px-8 py-16"
+  style={inlineStyle}
 >
   <div class="flex flex-col items-center gap-4">
     <slot name="eyebrow" />

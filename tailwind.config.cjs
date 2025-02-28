@@ -1,5 +1,4 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
-
 module.exports = {
   content: [
     "./src/**/*.{astro,html,js,jsx,svelte,ts,tsx,vue}",
@@ -21,6 +20,7 @@ module.exports = {
       backgroundColor: {
         default: "var(--color-background)",
         offset: "var(--color-background-offset)",
+        alt: "var(--color-background-alt)",
       },
       borderColor: {
         default: "var(--color-border)",
