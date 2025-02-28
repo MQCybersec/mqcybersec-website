@@ -133,6 +133,7 @@ export function extractTagSuggestions(content, existingTags = []) {
     "wordlist": "dictionary-attack",
     
     // Shell-related
+    "revshell": "reverse-shell",
     "rev shell": "reverse-shell",
     "reverse shell": "reverse-shell",
     
