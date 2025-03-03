@@ -48,14 +48,16 @@ export const autoHyperlinkTerms = {
   "OSINT": "https://en.wikipedia.org/wiki/Open-source_intelligence",
   "Steganography": "https://en.wikipedia.org/wiki/Steganography",
 
+  // Ciphers
+  "Caeser Cipher": "https://www.dcode.fr/caesar-cipher",
+  "ROT Cipher": "https://www.dcode.fr/rot-cipher",
+
   // Tools - Added per request
   "Autopsy": "https://www.autopsy.com/download/",
   "PayloadAllTheThings": "https://github.com/swisskyrepo/PayloadsAllTheThings",
   "SecLists": "https://github.com/danielmiessler/SecLists",
   "hashcat": "https://hashcat.net/hashcat/",
   "Wireshark": "https://www.wireshark.org/download.html",
-  "Caeser Cipher": "https://www.dcode.fr/caesar-cipher",
-  "ROT Cipher": "https://www.dcode.fr/rot-cipher",
   "CyberChef": "https://gchq.github.io/CyberChef/",
   "Dcode": "https://www.dcode.fr/cipher-identifier",
   "DetectItEasy": "https://github.com/horsicq/Detect-It-Easy",
