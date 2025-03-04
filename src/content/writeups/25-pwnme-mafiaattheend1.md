@@ -5,7 +5,7 @@ description: "You're an agent, your unit recently intercepted a mob discussion a
 pubdate: 2025-03-04
 ctf: "PwnMeCTF 2025"
 category: "misc"
-author: "Ch1maera"
+author: "Ch1maera & sealldev"
 section: "CTFs"
 ---
 
