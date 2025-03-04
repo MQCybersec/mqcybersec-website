@@ -133,7 +133,9 @@ So the injection points are of varying interest:
 - We can't escape the href with the `\"` method
 - The injection point inside the `onfocus` is filtered through `safe` but we can still achieve XSS!
 
-Let's make a sample payload first:
+`onfocus` as well as other `on` attributes (and others) execution JavaScript, so as it's using `document.location` to redirect the user, we can escape the string its redirecting to and add our own JavaAscript!
+
+Let's make a sample payload first for the `onfocus` attribute:
 `\";console.log(1);//`
 
 The reason this works is as `"` is replaced with `\"` when sanitised. If our input includes a backslash before we send our `"` we can escape the filtering backslash by doubling them up. This allows us to escape the `document.location` in onfocus.
