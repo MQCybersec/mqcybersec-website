@@ -64,6 +64,7 @@ export const autoHyperlinkTerms = {
   DetectItEasy: "https://github.com/horsicq/Detect-It-Easy",
   exiftool: "https://github.com/exiftool/exiftool",
   tshark: "https://tshark.dev/setup/install/",
+  "webhook.site": "https://webhook.site",
 
   // People
   sealldev: "https://seall.dev/",
