@@ -97,7 +97,7 @@ Looking at the sanitize first, it seems to not have a proper sanitisation mechan
 
 It replaces `<`, `>`, `'`, `&` and `:` with nothing, but it replaces `"` with `\\"`.
 
-Lookinag at the sanitisation of `your-name.html`, we can see the injection points and determine if we can exploit it.
+Looking at the sanitisation of `your-name.html`, we can see the injection points and determine if we can exploit it.
 
 ```html
 <div class="image-container">
