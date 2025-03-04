@@ -62,6 +62,7 @@ export const autoHyperlinkTerms = {
   "Dcode": "https://www.dcode.fr/cipher-identifier",
   "DetectItEasy": "https://github.com/horsicq/Detect-It-Easy",
   "exiftool": "https://github.com/exiftool/exiftool",
+  "tshark": "https://tshark.dev/setup/install/",
 
   // People
   "sealldev": "https://seall.dev/",
