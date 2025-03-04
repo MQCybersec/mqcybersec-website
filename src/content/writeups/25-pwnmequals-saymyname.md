@@ -79,11 +79,11 @@ app.run(debug=False, host='0.0.0.0')
 
 The front page of the site was a simple name input field:
 
-![saymynamemain.png](saymynamemain.png)
+![saymynamemain.png](images/25-pwnmequals/saymynamemain.png)
 
 Inputting a name we are given the `/your-name` page response with our name on the page, cool!
 
-![saymynamehello.png](saymynamehello.png)
+![saymynamehello.png](images/25-pwnmequals/saymynamehello.png)
 
 Some initial observations:
 - The webapp is running with Flask
@@ -113,7 +113,7 @@ Let's make a sample payload first:
 
 This should print `1` to the console before redirecting. Clicking the URL that's what we see!
 
-![saymynamexss.png](saymynamexss.png)
+![saymynamexss.png](images/25-pwnmequals/saymynamexss.png)
 
 Let's use `navigator` with a `sendBeacon` to send a request to a `webhook.site` URI.
 ```
@@ -122,7 +122,7 @@ Let's use `navigator` with a `sendBeacon` to send a request to a `webhook.site` 
 
 Sure enough we get a `POST` from our serveron `webhook.site`.
 
-![saymyname-webhook.png](saymyname-webhook.png)
+![saymyname-webhook.png](images/25-pwnmequals/saymyname-webhook.png)
 
 Now, we need to host a remote server to do this POST to exfiltrate the token.
 ```python
