@@ -255,3 +255,6 @@ $ curl -X GET "https://saymyname-c588791ba9cff43a.deploy.phreaks.fr/admin?prompt
 3. Profit
 
 Flag: `PWNME{b492b312612c741b3b6597f925f88198}`
+
+In the Discord user `lambdamancer` made this flow diagram of the attack:
+![saymynameflow.png](images/25-pwnmequals/saymynameflow.png) 

