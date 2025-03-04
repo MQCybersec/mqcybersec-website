@@ -150,7 +150,7 @@ document.location="https://www.behindthename.com/names/search.php?terms=\\""
 
 This allows us to escape the string with our payload:
 ```js
-document.location="https://www.behindthename.com/names/search.php?terms=\";console.log(1);//"
+document.location="https://www.behindthename.com/names/search.php?terms=\\";console.log(1);//"
 ```
 
 This should print `1` to the console before redirecting. Clicking the URL that's what we see!

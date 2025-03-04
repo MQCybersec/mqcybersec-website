@@ -12,6 +12,8 @@ section: "CTFs"
 
 This was a medium whitebox challenge, the files are available for download [here](https://github.com/sajjadium/ctf-archives/tree/64792ed55d90e43deb30cca2aa1f09e106a0eee3/ctfs/PwnMe/2025/Quals/web/Hack_the_bot_1)
 
+## Initial look
+
 The first flag is stored in a cookie that the bot will have.
 
 ```js
@@ -114,6 +116,8 @@ We need to find some sort of URL inside the applicataion (restricted by the `url
 The general function of the application is that is displays some articles and we can report a URL to the bot:
 ![hackthebot1articles.png](images/25-pwnmequals/hackthebot1articles.png)
 
+## DOM XSS
+
 Looking at the functionality of search, the source code `source/public/js/script.js` reveals a vulnerability:
 
 ```js
@@ -190,6 +194,8 @@ So we need to find some other attribute, we used `onfocusin`:
 
 We now get a confirm alert box:
 ![hackthebox1confirm.png](images/25-pwnmequals/hackthebox1confirm.png)
+
+## XSS: Exfiltration efforts
 
 We now need to just do a `fetch()` to send a web request with the cookies. This turned out to be alot more of a pain due to how it selects its words.
 
