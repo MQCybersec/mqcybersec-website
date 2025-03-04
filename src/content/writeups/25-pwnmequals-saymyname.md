@@ -235,8 +235,9 @@ def admin():
 
 The `return render_template(...)` line has a Python format string vulnerability, as the string is a format string (indicated by the `f` at the start) and is then run with a `.format()`, meaning we can injection our own variables and potentially exfiltrate sensitive information.
 
-I start with some simple payloads to test it:
-`{0.__globals__}`
+I start with some simple payloads to test it: `{0.__globals__}`
+
+We can send this on the `prompt` attribute on localhost to test: `http://localhost/admin?prompt={0.__globals__}`
 
 This returns the globals of the current exection:
 
