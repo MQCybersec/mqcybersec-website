@@ -8,7 +8,7 @@ author: "sealldev & Solopie"
 section: "CTFs"
 ---
 
-> Original Writeup on [seall.dev](https://seall.dev/posts/pwnmequals2025)
+> Original Writeup on [seall.dev](https://seall.dev/posts/pwnmequals2025#say-my-name)
 
 This was a medium whitebox challenge, the files are available for download [here](https://github.com/sajjadium/ctf-archives/tree/64792ed55d90e43deb30cca2aa1f09e106a0eee3/ctfs/PwnMe/2025/Quals/web/Say_my_name)
 
