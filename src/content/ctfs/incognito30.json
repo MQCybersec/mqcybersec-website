@@ -1,12 +1,11 @@
 {
-    "name": "Incognito 3.0",
-    "image": "/src/content/ctfs/_images/incognito30.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 52,
-            "totalTeams": 300
-        }
-    ]
-
+  "name": "Incognito 3.0",
+  "image": "/src/content/ctfs/_images/incognito30.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 52,
+      "totalTeams": 300
+    }
+  ]
 }

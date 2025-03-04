@@ -1,12 +1,11 @@
 {
-    "name": "NoobCTF",
-    "image": "/src/content/ctfs/_images/noobctf.png",
-    "placements": [
-        {
-            "year": 2020,
-            "globalPlacement": 107,
-            "totalTeams": 343
-        }
-    ]
-
+  "name": "NoobCTF",
+  "image": "/src/content/ctfs/_images/noobctf.png",
+  "placements": [
+    {
+      "year": 2020,
+      "globalPlacement": 107,
+      "totalTeams": 343
+    }
+  ]
 }

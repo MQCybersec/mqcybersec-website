@@ -13,7 +13,7 @@ section: "CTFs"
 We are given a `Look_at_me.jpg`:
 ![Look_at_me.jpg](images/25-kashi/Look_at_me.jpg)
 
-Originally tried *alot* of stego techniques and got nowhere...
+Originally tried _alot_ of stego techniques and got nowhere...
 
 I decided to reverse image searched the image as the icon looked familiar, was for a stego program 'SilentEye'.
 

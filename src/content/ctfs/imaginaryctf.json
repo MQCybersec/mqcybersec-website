@@ -1,12 +1,11 @@
 {
-    "name": "ImaginaryCTF",
-    "image": "/src/content/ctfs/_images/imaginaryctf.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 40,
-            "totalTeams": 815
-        }
-    ]
-
+  "name": "ImaginaryCTF",
+  "image": "/src/content/ctfs/_images/imaginaryctf.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 40,
+      "totalTeams": 815
+    }
+  ]
 }

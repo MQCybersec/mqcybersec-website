@@ -1,12 +1,11 @@
 {
-    "name": "idekCTF",
-    "image": "/src/content/ctfs/_images/idek.png",
-    "placements": [
-        {
-            "year": 2023,
-            "globalPlacement": 142,
-            "totalTeams": 846
-        }
-    ]
-
+  "name": "idekCTF",
+  "image": "/src/content/ctfs/_images/idek.png",
+  "placements": [
+    {
+      "year": 2023,
+      "globalPlacement": 142,
+      "totalTeams": 846
+    }
+  ]
 }

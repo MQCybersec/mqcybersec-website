@@ -19,6 +19,7 @@ Looking in `Source Code > com > knightctf.knights_droid` there are a few functio
 We can see a string `GYPB{_ykjcnwp5_GJECDP_u0q_c0p_uKqN_Gj1cd7_zN01z_}` and some kind of encoding function.
 
 Seeing this snippet:
+
 ```java
 String fullPackageName = context.getPackageName();
 if (fullPackageName.length() < 20) {

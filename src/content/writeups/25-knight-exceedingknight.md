@@ -18,7 +18,7 @@ This app used Laravel and had some applications: a calculator, a unit conversion
 
 ![exceedingviews.png](images/25-knight/exceedingviews.png)
 
-Looking through this app there is... nothing of interest initally. They seem to have covered all the possible bugs. 
+Looking through this app there is... nothing of interest initally. They seem to have covered all the possible bugs.
 
 ```php
 <?php
@@ -31,7 +31,7 @@ class CalculatorController extends Controller
 {
     public function index()
     {
-        return view('calculator'); 
+        return view('calculator');
     }
 
     public function calculate(Request $request)
@@ -66,6 +66,7 @@ class CalculatorController extends Controller
 The calculator for example has max int limits and 0 divison checks to stop errors, no reflections of dangerous characters (same as elsewhere).
 
 After looking through the application for a long time, we noticied the `app/Exceptions/Handler.php`
+
 ```php
 <?php
 
@@ -102,4 +103,3 @@ If it hit's an error, the `.env` is dumped. So we just need to trigger some inte
 On the calculator app we calculate `1+11111111111111111111` and we get the flag in the `.env` printout.
 
 Flag: `KCTF{_Y0U_sH0UlD_re4D_m0r3_Cod3_}`
-

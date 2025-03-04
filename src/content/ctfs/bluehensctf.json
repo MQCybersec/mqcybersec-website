@@ -1,12 +1,11 @@
 {
-    "name": "BlueHens CTF",
-    "image": "/src/content/ctfs/_images/bluehens.png",
-    "placements": [
-        {
-            "year": 2021,
-            "globalPlacement": 262,
-            "totalTeams": 324
-        }
-    ]
-
+  "name": "BlueHens CTF",
+  "image": "/src/content/ctfs/_images/bluehens.png",
+  "placements": [
+    {
+      "year": 2021,
+      "globalPlacement": 262,
+      "totalTeams": 324
+    }
+  ]
 }

@@ -1,12 +1,11 @@
 {
-    "name": "vsCTF",
-    "image": "/src/content/ctfs/_images/vsctf.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 22,
-            "totalTeams": 635
-        }
-    ]
-
+  "name": "vsCTF",
+  "image": "/src/content/ctfs/_images/vsctf.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 22,
+      "totalTeams": 635
+    }
+  ]
 }

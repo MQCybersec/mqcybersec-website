@@ -1,12 +1,11 @@
 {
-    "name": "H@cktivityCon CTF",
-    "image": "/src/content/ctfs/_images/h@cktivity.png",
-    "placements": [
-        {
-            "year": 2021,
-            "globalPlacement": 84,
-            "totalTeams": 1721
-        }
-    ]
-
+  "name": "H@cktivityCon CTF",
+  "image": "/src/content/ctfs/_images/h@cktivity.png",
+  "placements": [
+    {
+      "year": 2021,
+      "globalPlacement": 84,
+      "totalTeams": 1721
+    }
+  ]
 }

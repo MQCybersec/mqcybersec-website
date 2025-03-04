@@ -1,12 +1,11 @@
 {
-    "name": "x3CTF",
-    "image": "/src/content/ctfs/_images/x3ctf.png",
-    "placements": [
-        {
-            "year": 2025,
-            "globalPlacement": 91,
-            "totalTeams": 528
-        }
-    ]
-
+  "name": "x3CTF",
+  "image": "/src/content/ctfs/_images/x3ctf.png",
+  "placements": [
+    {
+      "year": 2025,
+      "globalPlacement": 91,
+      "totalTeams": 528
+    }
+  ]
 }

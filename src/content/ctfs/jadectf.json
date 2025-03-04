@@ -1,12 +1,11 @@
 {
-    "name": "Jade CTF",
-    "image": "/src/content/ctfs/_images/jadectf.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 528,
-            "totalTeams": 629
-        }
-    ]
-
+  "name": "Jade CTF",
+  "image": "/src/content/ctfs/_images/jadectf.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 528,
+      "totalTeams": 629
+    }
+  ]
 }

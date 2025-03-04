@@ -1,17 +1,16 @@
 {
-    "name": "RITSEC CTF",
-    "image": "/src/content/ctfs/_images/ritsecctf.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 482,
-            "totalTeams": 544
-        },
-        {
-            "year": 2021,
-            "globalPlacement": 270,
-            "totalTeams": 720
-        }
-    ]
-
+  "name": "RITSEC CTF",
+  "image": "/src/content/ctfs/_images/ritsecctf.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 482,
+      "totalTeams": 544
+    },
+    {
+      "year": 2021,
+      "globalPlacement": 270,
+      "totalTeams": 720
+    }
+  ]
 }

@@ -1,19 +1,18 @@
 {
-    "name": "PicoCTF",
-    "image": "/src/content/ctfs/_images/picoctf.png",
-    "placements": [
-        {
-            "teamName": "MqCybersec Team 1",
-            "year": 2023,
-            "globalPlacement": 776,
-            "totalTeams": 6923
-        },
-        {
-            "teamName": "MQ TEAM 2 (BEST TEAM)",
-            "year": 2023,
-            "globalPlacement": 785,
-            "totalTeams": 6923
-        }
-    ]
-
+  "name": "PicoCTF",
+  "image": "/src/content/ctfs/_images/picoctf.png",
+  "placements": [
+    {
+      "teamName": "MqCybersec Team 1",
+      "year": 2023,
+      "globalPlacement": 776,
+      "totalTeams": 6923
+    },
+    {
+      "teamName": "MQ TEAM 2 (BEST TEAM)",
+      "year": 2023,
+      "globalPlacement": 785,
+      "totalTeams": 6923
+    }
+  ]
 }

@@ -1,12 +1,11 @@
 {
-    "name": "GrabCON CTF",
-    "image": "/src/content/ctfs/_images/grabcon.png",
-    "placements": [
-        {
-            "year": 2021,
-            "globalPlacement": 358,
-            "totalTeams": 612
-        }
-    ]
-
+  "name": "GrabCON CTF",
+  "image": "/src/content/ctfs/_images/grabcon.png",
+  "placements": [
+    {
+      "year": 2021,
+      "globalPlacement": 358,
+      "totalTeams": 612
+    }
+  ]
 }

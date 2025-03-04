@@ -1,12 +1,11 @@
 {
-    "name": "HackPack CTF",
-    "image": "/src/content/ctfs/_images/hackpack.png",
-    "placements": [
-        {
-            "year": 2021,
-            "globalPlacement": 122,
-            "totalTeams": 477
-        }
-    ]
-
+  "name": "HackPack CTF",
+  "image": "/src/content/ctfs/_images/hackpack.png",
+  "placements": [
+    {
+      "year": 2021,
+      "globalPlacement": 122,
+      "totalTeams": 477
+    }
+  ]
 }

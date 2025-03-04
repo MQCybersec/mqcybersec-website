@@ -22,13 +22,14 @@ First, we examined the login form and found it was making POST requests to `/api
 
 ```javascript
 // Sample login request
-fetch('/api/login', {
-  method: 'POST',
+fetch("/api/login", {
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    username: 'admin',
-    password: 'password'
-  })
-})
+    username: "admin",
+    password: "password",
+  }),
+});
+```

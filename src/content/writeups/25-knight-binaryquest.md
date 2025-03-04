@@ -23,6 +23,7 @@ I can now begin to decompile it with Ghidra and understand its functionality.
 There are a few functions but `FUN_001010a0` contains the meat and potatos.
 
 The flag logic check is:
+
 ```c
   iVar1 = strcmp(local_58,local_98);
   if (iVar1 == 0) {
@@ -36,6 +37,7 @@ The flag logic check is:
 ```
 
 Looking at those two variables, `local58` is the user input and `local98` is defined as:
+
 ```c
   local_98._8_8_ = 0x7334655f37695f73;
   local_98._0_8_ = 0x34575f7b4654434b;
@@ -46,6 +48,7 @@ We can decode that hex (with some reordering) to get the flag.
 The first line decodes to `s4e_7i_s` and the second line is `4W_{FTCK`. We need to reverse the strings to be `KCTF{_W4` and `s_i7_e4s`.
 
 We are missing a bit of the flag, the variable above `local88` contains the rest:
+
 ```c
 local_88._0_4_ = 0x7d5f3f59;
 ```

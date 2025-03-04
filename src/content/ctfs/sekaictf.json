@@ -1,12 +1,11 @@
 {
-    "name": "SekaiCTF",
-    "image": "/src/content/ctfs/_images/sekaictf.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 166,
-            "totalTeams": 852
-        }
-    ]
-
+  "name": "SekaiCTF",
+  "image": "/src/content/ctfs/_images/sekaictf.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 166,
+      "totalTeams": 852
+    }
+  ]
 }

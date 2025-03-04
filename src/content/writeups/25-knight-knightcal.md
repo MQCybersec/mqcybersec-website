@@ -24,4 +24,3 @@ If `7=f`, `1=l`, `9=a` and `5=g` we can do `0+7195` to read the flag.
 ![knightcalsolve.png](images/25-knight/knightcalsolve.png)
 
 Flag: `KCTF{_c0ngR4t5_KNIGHT_f1naLLy_Y0U_g07_tH3_r1gh7_m4tH_}`
-
