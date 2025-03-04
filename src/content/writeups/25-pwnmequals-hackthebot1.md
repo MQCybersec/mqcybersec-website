@@ -111,6 +111,10 @@ app.listen(port, () => {
 });
 ```
 
+Initial observations:
+- Using `express`
+- Using `puppeteer` for the bot on `/report`
+
 We need to find some sort of URL inside the applicataion (restricted by the `url.startwith("http://localhost/")`) to set the cookie then exfiltrate the cookie contents.
 
 The general function of the application is that is displays some articles and we can report a URL to the bot:
