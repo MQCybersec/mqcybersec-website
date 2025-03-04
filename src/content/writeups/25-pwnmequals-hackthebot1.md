@@ -320,7 +320,31 @@ Pulling out the browser cookies by using Puppeteer you can decrypt them for the 
 
 Firstly send a report to the URL `http://localhost/` to initialise the cookies in the browser cache.
 
-Then visit `http://url/logs../browser_cache/Default/Cookies` to download the Cookies file with a path traversal.
+Then visit `http://localhost/logs../browser_cache/Default/Cookies` to download the Cookies file with a path traversal.
+
+This occurs due to a misconfiguration in the nginx config:
+```conf
+events{}
+user root;
+
+http {
+    server {
+        listen 80;
+
+        location / {
+            proxy_pass http://127.0.0.1:5000;
+        }
+
+        location /logs {
+            autoindex off;
+            alias /tmp/bot_folder/logs/;
+            try_files $uri $uri/ =404;
+        }
+    }
+}
+```
+
+You can read more about the location misconfiguration [here](https://www.acunetix.com/vulnerabilities/web/path-traversal-via-misconfigured-nginx-alias/) but it allows path traversal.
 
 We can initialise the `Cookie` file with `sqlite3`:
 ```bash
