@@ -2,10 +2,11 @@
 title: "Worthy Knight"
 description: "The gates of the Crimson Keep stand locked, sealed by cryptic runes from ages past. Many challengers have tested their might against these ancient wards—yet all were found wanting. Will you speak the correct incantation and earn the Keep’s hidden treasures? Prove your valor and stand among legends… if you truly are a Worthy Knight."
 pubDate: 2025-01-22
-ctf: "KnightCTF 2025"
+ctf: "BackdoorCTF 2024"
 category: "rev"
 author: "sealldev"
 section: "CTFs"
+hidden: true
 ---
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/knightctf2025#worthy-knight)
