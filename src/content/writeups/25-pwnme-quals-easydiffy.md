@@ -1,99 +1,95 @@
 ---
-title: "Key Exchange"
-description: "Someone wants to send you a message. But they want something from you first."
+title: "Easy Diffy"
+description: "I managed to generate strong parameters for our diffie-hellman key exchange, i think my message is now safe." 
 pubDate: 2025-03-04
-ctf: "KashiCTF 2025"
-category: "cryptography"
+ctf: "PwnMe CTF Quals"
+category: "Cryptography"
 author: "tulip"
+# image: "./sample/"
+hidden: false
 section: "CTFs"
 ---
 
-# Key Exchange - Cryptography
-
-We are given a server file `server.py`. In the file, we can see an elliptic curve being used to generate a public key, and the private key is a random integer.
-
-The server sends us this public key that was generated $(kG)$, where $G$ is the generator point. $k$ is this random integer generated. 
-
-The server then asks for an $(x,y)$ coordinate on the plane.
+The challenge gives us a simple script and output parameters.
 
 ```py
-try:
-    # P_B_x and P_B_y are the x and y coordinates we sent.
-    # If P_B_x and P_B_y do not lie on the curve defined by the parameters
-    # above, E.point(P_B_x, P_B_y) will fail. So our points must lie on 
-    # the curve.
-    P_B = E.point(P_B_x, P_B_y)
-except:
-    EXIT()
+from Crypto.Util.number import getPrime, long_to_bytes
+from Crypto.Util.Padding import pad, unpad
+from Crypto.Cipher import AES
+from hashlib import sha256
+
+import os
+
+# generating strong parameters
+
+flag = b"REDACTED" 
+
+p = getPrime(1536)
+g = p-1
+
+a = getPrime(1536)
+b = getPrime(1536)
+
+A = pow(g, a, p)
+B = pow(g, b, p)
+
+assert pow(A, b, p) == pow(B, a, p)
+
+C = pow(B, a, p)
+
+# Encrypting my message
+
+key = long_to_bytes(C)
+key = sha256(key).digest()[:16]
+
+cipher = AES.new(key, AES.MODE_ECB)
+ciphertext = cipher.encrypt(pad(flag, AES.block_size))
+
+print(f"{p = }")
+print(f"{g = }")
+print("ciphertext =", ciphertext.hex())
 ```
 
-This $(x,y)$ that we send it is then multiplied by the same $k$ used to generate the public key, and then the $x$ coordinate of this point is used to AES encrypt some data to us. So if we know $k$, we should be able to solve for the this key, right?
+We can see the key is produced by the expression $g^a\mod{p}$, where $g = p-1$. Let's try and find if this has a special property. First, expand the binomial:
+\\[g^a = (p-1)^a = (-1)^a + {n \choose k}(-1)^{a-1}p + {n \choose k}(-1)^{a-2}p^2+\ldots\\]
+(The values for ${n \choose k}$ are not necessary, you'll see why here.)
 
-The problem with finding $k$ is that $k$ is computationally very infeasible to find. Likewise to how RSA's modulus $n$ is hard to factorise into $p$ and $q$, finding $k$ given the public key $kG$ and the generator point $G$ is hard for an elliptic curve (Search the [discrete logarithm problem](https://enigbe.medium.com/about-elliptic-curves-and-dlp-ed76c5e27497) if you want to look into it more). So finding $k$ is not an option.
+However, we are expanding this expression $\pmod{p}$. So all terms with a $p^n$ in it will reduce to $0$, as they are divisible by $p$.
+\\[g^a \equiv (-1)^a \pmod{p}\\]
 
-Let $P_A$ be the public key $(x,y)$ or $kG$, $P_B$ be the coordinates we send, and $k$ the private key.
+We also know $a$ is odd, since it is prime. So we get the following result:
+\\[g^a \equiv -1 \pmod{p} \leftrightarrows g^a \equiv p-1 \pmod{p}\\]
 
-Here a snippet of code from `server.py`:
+Therefore for any odd index $a$, $(p-1)^a \equiv p-1 \pmod{p}$. Note that we have only tried this when $p$ is prime, so this is not a general rule yet. But it will work for our case.
 
+In the `output.txt`, we are given the following parameters.
+```
+p = 1740527743356518530873219004517954317742405916450945010211514630307030225825627940655848700898186119703288416676610512180281414181211686282526701502342109420226095690170506537523420657033019751819646839624557146950127906808859045989204720555752289247833349649020285507405445896768256093961814925065500513967524214087124440421275882981975756344900858314408284866222751684730112931487043308502610244878601557822285922054548064505819094588752116864763643689272130951
+g = 1740527743356518530873219004517954317742405916450945010211514630307030225825627940655848700898186119703288416676610512180281414181211686282526701502342109420226095690170506537523420657033019751819646839624557146950127906808859045989204720555752289247833349649020285507405445896768256093961814925065500513967524214087124440421275882981975756344900858314408284866222751684730112931487043308502610244878601557822285922054548064505819094588752116864763643689272130950
+ciphertext = f2803af955eebc0b24cf872f3c9e3c1fdd072c6da1202fe3c7250fd1058c0bc810b052cf99ebfe424ce82dc31a3ba94f
+```
+In the script, the "key" is generated via $B^a\mod{p}$, where $B\equiv g^b\pmod{p}$. $b$ is also prime, so $B$ will be equal to $p-1$, and thus $B^a\mod{p}$ will also equal to $p-1$. So we can just use the value of $p-1$ for our key. 
+
+Let's make a script to decrypt using the key.
 ```py
-#Curve Parameters (NIST P-384)
-p = 3940200619639447921227904010014361380579739270465446667948293404245721771496870329047266088258938001861606973112319
-a = -3
-b = 27580193559959705877849011840389048093056905856361568521428707301988689241309860865136260764883745107765439761230575
-E = EllipticCurve(p,a,b)
-G = E.point(26247035095799689268623156744566981891852923491109213387815615900925518854738050089022388053975719786650872476732087,8325710961489029985546751289520108179287853048861315594709205902480503199884419224438643760392947333078086511627871)
+from Crypto.Util.number import long_to_bytes
+from hashlib import sha256
+from Crypto.Cipher import AES
 
-print(G)
+g = 1740527743356518530873219004517954317742405916450945010211514630307030225825627940655848700898186119703288416676610512180281414181211686282526701502342109420226095690170506537523420657033019751819646839624557146950127906808859045989204720555752289247833349649020285507405445896768256093961814925065500513967524214087124440421275882981975756344900858314408284866222751684730112931487043308502610244878601557822285922054548064505819094588752116864763643689272130950
+ciphertext = "f2803af955eebc0b24cf872f3c9e3c1fdd072c6da1202fe3c7250fd1058c0bc810b052cf99ebfe424ce82dc31a3ba94f"
+ct_bytes = bytes.fromhex(ciphertext)
 
-n_A = random.randint(2, p-1) # n_A is k in our scenario
-P_A = n_A * G
+key = long_to_bytes(g)
+key = sha256(key).digest()[:16]
 
-# ... lines between ...
+cipher = AES.new(key, AES.MODE_ECB)
 
-S = n_A * P_B # n_A is the random integer k, P_B is our point
-
-print(f"\nReceived from Weierstrass:")
-print(f"   Message: {encrypt_flag(S.x)}")
+d = cipher.decrypt(ct_bytes)
+print(d)
 ```
 
-The server uses the same $k$ to encrypt data and send to us after we give it a point on the curve $P_B$. So the data is encrypted with $(kP_{B})$'s $x$ coordinate. However, $P_B$ can be *any* point that lies on the curve. Since $P_A = kG$, and we know the generator point $G$ definitely lies on the curve, we can just send the server the coordinates of $G$, and the server will send us $kG$, which is the same coordinate as the public key sent to us.
-
-Thus the server will AES encrypt using $(kP_B)_x = (kG)_x = (P_A)_x$. The server then sends us a JSON object containing the IV and ciphertext, with the key that we now know since it is the $x$ coordinate of the public key.
-
-```json
-{
-    "iv": "f7fd4727fe72241e1d986f248edef684",
-    "ciphertext": "ca80db182d37545ae75be56612c545bea0dfb331e5aaf3044fe13cc7791252ad79748f8bba7860e48527720c6d1b86ed2bf0e00ddd2e0661493856bd2d80d6ccf13e7bae217f0ead1b06cc8c522d191880d35e884a539302bae99a44f201f418"
-}
+Running this script, we get the flag.
 ```
-
-The key used is actually the first 16 bytes of the sha1 digest of our key $(P_A)_x$, so we can create a quick script to implement this in python.
-
-```py
-def decrypt_flag(shared_secret: int, encrypted_data: str):
-    sha1 = hashlib.sha1()
-    sha1.update(str(shared_secret).encode("ascii"))
-    key = sha1.digest()[:16]
-
-    data = json.loads(encrypted_data)
-    iv = bytes.fromhex(data["iv"])
-    ciphertext = bytes.fromhex(data["ciphertext"])
-
-    cipher = AES.new(key, AES.MODE_CBC, iv)
-    plain = unpad(cipher.decrypt(ciphertext), 16)
-
-    return plain.decode("utf-8")
-```
-
-```
-$ python3.9 decrypt.py
-Decrypted Flag: NaeusGRX{L_r3H3Nv3h_kq_Sun1Vm_O3w_4fg_4lx_1_t0d_a4q_lk1s_X0hcc_Dd4J_fvjBIYJr}
-
-Hint: DamnKeys
-```
-
-So it's still encrypted, but with a weak cipher and a given key. The curly braces and the underscores are left untouched, which tells us that this is probably a caesar or vigenere or alike cipher. Plugging it into a vigenere decoder with the key `DamnKeys`, we get the flag:
-
-```
-KashiCTF{I_r3V3Al3d_my_Pub1Ic_K3y_4nd_4ll_1_g0t_w4s_th1s_L0usy_Fl4G_fjwREARo}
+PWNME{411_my_h0m13s_h4t35_sm411_Gs}
 ```
