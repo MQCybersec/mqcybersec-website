@@ -1,15 +1,12 @@
 ---
-// WriteupCard.astro - Updated to support tags and section data attributes
 const { writeup } = Astro.props;
 
-// Format date
 const formattedDate = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "long",
   day: "numeric",
 }).format(writeup.data.pubDate);
 
-// Tags data for filtering
 const tagsJSON = JSON.stringify(writeup.data.tags || []);
 ---
 
@@ -30,16 +27,15 @@ const tagsJSON = JSON.stringify(writeup.data.tags || []);
         class="h-48 w-full object-cover"
       />
     ) : (
-      <div class="flex h-48 w-full items-center justify-center bg-gradient-to-r from-primary to-secondary text-white">
-        <span class="font-bold text-xl">
-          {`${writeup.data.title} / ${writeup.data.ctf}` ||
-            writeup.data.ctf ||
-            "CTF Writeup"}
+      <div class="flex h-48 w-full items-center justify-center bg-gradient-to-r from-primary to-secondary p-4 text-center text-white">
+        <span class="font-bold text-xl break-words">
+          {`${writeup.data.title}${writeup.data.ctf ? " / " + writeup.data.ctf : ""}` || 
+           writeup.data.ctf || 
+           "CTF Writeup"}
         </span>
       </div>
     )
   }
-
   <!-- Section badge if available -->
   {
     writeup.data.section && (
@@ -48,7 +44,6 @@ const tagsJSON = JSON.stringify(writeup.data.tags || []);
       </div>
     )
   }
-
   <div class="p-6">
     <div class="mb-2 flex gap-2">
       {
@@ -66,10 +61,8 @@ const tagsJSON = JSON.stringify(writeup.data.tags || []);
         )
       }
     </div>
-
     <h2 class="text-text mb-2 font-bold text-xl">{writeup.data.title}</h2>
     <p class="text-text-offset mb-4 line-clamp-2">{writeup.data.description}</p>
-
     <!-- Tags display -->
     {
       writeup.data.tags && writeup.data.tags.length > 0 && (
@@ -82,7 +75,6 @@ const tagsJSON = JSON.stringify(writeup.data.tags || []);
         </div>
       )
     }
-
     <div class="flex items-center">
       <time
         class="text-text-offset text-sm"

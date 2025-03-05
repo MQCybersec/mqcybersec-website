@@ -10,9 +10,6 @@ import { Icon } from "astro-icon/components";
 import { extractTagSuggestions } from "~/utils/auto-hyperlink";
 const { generator, site } = Astro;
 
-// Modified section for tag extraction and assignment in index.astro
-// Replace the existing tag handling section with this code
-
 // Get all writeups and sort by date, filter out hidden ones
 const allWriteups = await getCollection("writeups");
 const writeups = allWriteups.filter((writeup) => !writeup.data.hidden);
