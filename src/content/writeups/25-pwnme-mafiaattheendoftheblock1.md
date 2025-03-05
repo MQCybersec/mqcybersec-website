@@ -61,11 +61,11 @@ These messages revealed a few things:
    1. 0x69E881DB5160cc5543b544603b04908cac649D38.
    2. 0xCAB0b02864288a9cFbbd3d004570FEdE2faad8F8.
 
-Going online, we can find a lookup service for the [Sepolia] (https://sepolia.etherscan.io/) network, which allows us to view the transactions made at these addresses. 
+Going online, we can find a lookup service for the [Sepolia](https://sepolia.etherscan.io/) network, which allows us to view the transactions made at these addresses. 
 
 Next, we looked up these transaction addresses on the Sepolia network. 
 
-The first address rendered a fake flag (when viewing the hash as UTF-8), which had the PWNME{} format, but contained another address. In looking up the new address, it led back to the initial fake PWNME{} flag. 
+The first address rendered a fake flag (when viewing the hash as UTF-8), which had the `PWNME{}` format, but contained another address. In looking up the new address, it led back to the initial fake `PWNME{}` flag. 
 
 ![image of fake flag in Sepolia lookup](images/25-pwnme/mafia-fakeflag1.png)
 
