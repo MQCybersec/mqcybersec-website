@@ -12,6 +12,10 @@ export const autoHyperlinkTerms = {
   "SQL injection": "https://owasp.org/www-community/attacks/SQL_Injection",
   SSRF: "https://owasp.org/www-community/attacks/Server_Side_Request_Forgery",
   XXE: "https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing",
+  RCE: "https://owasp.org/www-community/attacks/rce/",
+  SSTI: "https://owasp.org/www-community/attacks/ssti/",
+  CRLF: "https://owasp.org/www-community/attacks/crlf/",
+  "DOM clobbering": "",
 
   // Binary Exploitation
   "Buffer Overflow":
@@ -120,6 +124,9 @@ export function extractTagSuggestions(content, existingTags = []) {
     // Cross-site scripting
     xss: "xss",
     "cross site scripting": "xss",
+
+    // Dom clobber
+    "dom clobbering": "dom-clobbering",
 
     // Cross-site request forgery
     csrf: "csrf",
