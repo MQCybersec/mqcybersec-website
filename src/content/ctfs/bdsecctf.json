@@ -1,12 +1,11 @@
 {
-    "name": "BDSec CTF",
-    "image": "/src/content/ctfs/_images/bdsec.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 21,
-            "totalTeams": 542
-        }
-    ]
-
+  "name": "BDSec CTF",
+  "image": "/src/content/ctfs/_images/bdsec.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 21,
+      "totalTeams": 542
+    }
+  ]
 }

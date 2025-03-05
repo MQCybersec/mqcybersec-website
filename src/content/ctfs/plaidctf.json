@@ -1,12 +1,11 @@
 {
-    "name": "PlaidCTF",
-    "image": "/src/content/ctfs/_images/plaidctf.png",
-    "placements": [
-        {
-            "year": 2021,
-            "globalPlacement": 515,
-            "totalTeams": 541
-        }
-    ]
-
+  "name": "PlaidCTF",
+  "image": "/src/content/ctfs/_images/plaidctf.png",
+  "placements": [
+    {
+      "year": 2021,
+      "globalPlacement": 515,
+      "totalTeams": 541
+    }
+  ]
 }

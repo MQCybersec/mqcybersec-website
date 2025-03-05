@@ -10,13 +10,14 @@ author: "sealldev"
 > Original Writeup on [seall.dev](https://seall.dev/posts/knightctf2025#dfir)
 
 ### Secret File
+
 > My friend's company's employees faced some attacks from hackers. Siam is a very close person to the company owner. Every employee knows that if Siam tells our CEO about anything, he can provide assistance without any hesitation. So, all employees made a statement, and here is the statement: "Triggers don't always require a spark. Sometimes, a simple change can set the stage for transformation. Where might such a trigger reside?" And guess what—the CEO granted him permission to hire an ethical hacker. So, he gave me that finding part. Are you able to help me with this issue?
 
 > Note: There are almost six users in their company, so anyone can be a victim. Thank you in advance.
 
 > Findout that One of the user hide some commercial data. Are you able to see that data?
 
-> Flag Format: KCTF{value_here} and replace space with underscore (_)
+> Flag Format: KCTF{value*here} and replace space with underscore (*)
 
 We are given a Kali `ova` file to use for all the DFIR challenges.
 
@@ -25,9 +26,10 @@ We have like 6 users and we know creds for `siam` (challenge description), `alic
 Instead of booting the image, I extract the `ova` to a `vmdk` and `ovf` and use the `vmdk` in Autopsy.
 
 Looking through the files I spot a `/home/intruder/.maybef149/m3.ini` which contains the following:
+
 ```
-0x00000000: 31 6E 66 30  72 6D 61 74   31 6F 6E 20  4E 30 54 20    1nf0rmat1on N0T 
-0x00000010: 53 34 66 33  0A                                        S4f3.           
+0x00000000: 31 6E 66 30  72 6D 61 74   31 6F 6E 20  4E 30 54 20    1nf0rmat1on N0T
+0x00000010: 53 34 66 33  0A                                        S4f3.
 ```
 
 Flag: `KCTF{1nf0rmat1on_N0T_S4f3}`
@@ -39,6 +41,7 @@ There is further 'encrypted' data somewhere else on the drive.
 I found `/home/robot/Documents/.decrypt.txt.gpg` and we need to decrypt this file with a password.
 
 I use `john`'s `gpg2john` to get the hash of the file:
+
 ```
 $gpg$*0*80*6afecb2a567f672ad132c349496469bf2c56a32647b304cac6e6a2bcc74c8aa5b1dc6200efa4a954311d31b06671790857645e7f400be04a9f0a2720656fa833c2ca0723e9c50bc121b25268493316c7*3*18*8*9*58720256*c12797ac5d46785f
 ```
@@ -46,8 +49,9 @@ $gpg$*0*80*6afecb2a567f672ad132c349496469bf2c56a32647b304cac6e6a2bcc74c8aa5b1dc6
 We can then crack it with `john` and it cracks to `letmein`.
 
 I decrypt the file with `gpg`:
+
 ```bash
-$ gpg -d decrypt.txt.gpg       
+$ gpg -d decrypt.txt.gpg
 gpg: AES256.CFB encrypted data
 gpg: encrypted with 1 passphrase
 Y0U h4v3 D3crypt m3
@@ -62,6 +66,7 @@ There are two zip's in the `/home/bob/Downloads/` folder: `challenge_final.zip` 
 The `pass.zip` has an image `Hacker-family.jpg`.
 
 I check the image with exiftool and there is an interesting entry.
+
 ```
 Artist                          : PartialPass: Null_
 ```
@@ -69,6 +74,7 @@ Artist                          : PartialPass: Null_
 I presume this is a portion of the password for the zip.
 
 Looking at the `challenge_final.zip` I try to extract it and notice this:
+
 ```
 Path = challenge_final.zip
 Type = zip
@@ -90,6 +96,7 @@ StegSeek 0.6 - https://github.com/RickdeJager/StegSeek
 ```
 
 Reading `challenge_final.jpg.out` gives us the flag.
+
 ```
 Congrats you have got your flag: KCTF{it_w4s_L0n9_Pr0c3s5}
 ```
@@ -99,7 +106,8 @@ Flag: `KCTF{it_w4s_L0n9_Pr0c3s5}`
 ### Backdoor File
 
 The challenge description (which I don't have) mentioned a user managing 'Projects' so I look for a Projects folder and find one in `alice`'s home directory. There is a suspicious binary `/home/alice/Projects/vulnerable`.
-``` bash
+
+```bash
 $ file vulnerable
 vulnerable: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=d30039c2184d48f3f659097b8a71b1e4512a6dd0, for GNU/Linux 3.2.0, not stripped
 ```
@@ -108,6 +116,7 @@ I open the ELF in Ghidra and look at the functions:
 ![dfirfunctions.png](images/25-knight/dfirfunctions.png)
 
 I check `secret` out of reflex and see this:
+
 ```c
 void secret(void)
 {
@@ -121,11 +130,13 @@ void secret(void)
 Flag: `KCTF{buff3r_0verfl0w_expl0it3d}`
 
 ### Find Attacker
-> This was solved **after** the CTF but I was *so* close
+
+> This was solved **after** the CTF but I was _so_ close
 
 We had to find the username and the IP address of the attacker. They have compromised the user `siam`.
 
 I looked into `/var/log` and there are some files of interest and IOC's.
+
 ```bash
 $ ls
 alternatives.log        boot.log          boot.log.2        boot.log.3-slack  btmp-slack      firewall.log        fontconfig.log-slack  lightdm           macchanger.log.1.gz        __pycache__      README        syslog-slack     wtmp        Xorg.0.log.old        Xorg.1.log            Xorg.1.log-slack
@@ -136,6 +147,7 @@ apt                     boot.log.1-slack  boot.log.3        btmp              dp
 `macchanger` is in the log's, and some `.sh` and `.py` files.
 
 `f.sh`
+
 ```bash
 #!/bin/bash
 
@@ -188,19 +200,19 @@ for ((i=1; i<=NUM_ENTRIES; i++))
 do
     # Increment time by 1 second for each log entry
     CURRENT_TIME=$((CURRENT_TIME + 1))
-    
+
     # Convert back to desired timestamp format
     TIMESTAMP=$(date -d "@$CURRENT_TIME" +"%Y-%m-%d %H:%M:%S")
-    
+
     # Get log level
     LEVEL=$(get_log_level)
-    
+
     # Select a random message template
     MESSAGE=$(get_random_message)
-    
+
     # Generate a random or sequential IP address (last octet)
     IP_LAST_OCTET=$(( (RANDOM % 254) + 1 ))  # Ensures IP ends with 1-254
-    
+
     # Formulate the log message based on the template
     case "$MESSAGE" in
         "Someone trying to breach")
@@ -237,7 +249,7 @@ do
             LOG_MESSAGE="Unknown log message"
             ;;
     esac
-    
+
     # Write the log entry to the log file
     echo "$TIMESTAMP firewall fw1: $LEVEL $LOG_MESSAGE" >> "$LOG_FILE"
 done
@@ -250,6 +262,7 @@ echo "Log generation completed. Total entries: $NUM_ENTRIES"
 ```
 
 `system.sh`
+
 ```bash
 #!/bin/bash
 
@@ -320,22 +333,22 @@ for ((i=1; i<=NUM_ENTRIES; i++))
 do
     # Generate a random epoch time within the range
     RANDOM_EPOCH=$((RANDOM % (END_EPOCH - START_EPOCH + 1) + START_EPOCH))
-    
+
     # Convert epoch to desired timestamp format
     TIMESTAMP=$(date -d "@$RANDOM_EPOCH" +"%Y-%m-%d %H:%M:%S")
-    
+
     # Get log level
     LEVEL=$(get_log_level)
-    
+
     # Get random message
     MESSAGE=$(get_random_message)
-    
+
     # Get random user and machine
     read USER MACHINE <<< $(get_random_user_machine)
-    
+
     # Formulate the log message
     LOG_MESSAGE="$MESSAGE $USER on $MACHINE."
-    
+
     # Write the log entry to the log file
     echo "$TIMESTAMP systemd[1]: $LOG_MESSAGE" >> "$LOG_FILE"
 done
@@ -344,6 +357,7 @@ echo "Log generation completed. Total entries: $NUM_ENTRIES"
 ```
 
 `random.py`
+
 ```python
 import random
 
@@ -365,7 +379,7 @@ The solution was the username and IP of the user were each in these files, I wro
 ```bash
 $ cat syslog | grep -Ev '(bob|siam|intruder|alice|robot)-machine'
 2024-11-15 11:02:30 systemd[1]: Started Session of user siam on LEO-machine.
-$ grep -Eo "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}" firewall.log | uniq | grep -v "^192"              
+$ grep -Eo "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}" firewall.log | uniq | grep -v "^192"
 203.108.20.803
 ```
 

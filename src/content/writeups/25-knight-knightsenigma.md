@@ -15,6 +15,7 @@ We are given another ELF called `knight_s.enigma`. Load it into Ghidra and let's
 The main function of interest is again `FUN_001010a0` and it's **huge**... 1145 lines huge...
 
 Let's focus on the end of the code to see what it's using:
+
 ```c
       iVar150 = memcmp(local_a8,&local_158,0x22);
       if (iVar150 == 0) {
@@ -27,6 +28,7 @@ Let's focus on the end of the code to see what it's using:
 ```
 
 It seems to be looking at a `local_158` variable, let's find the defenition for that:
+
 ```c
   local_138 = 0x1450;
   local_158 = 0xa68c507448008898;
@@ -39,6 +41,7 @@ It seems to be looking at a `local_158` variable, let's find the defenition for 
 Right at the start when it ask's for a secret, alongside some other interesting values.
 
 Just below that we can see it's expecting a length of `32` / `0x22` for the input:
+
 ```c
   printf("Hello Knight\nEnter your secret: ");
   fgets(__s,0x80,stdin);
@@ -52,12 +55,14 @@ Just below that we can see it's expecting a length of `32` / `0x22` for the inpu
 ```
 
 The input (`__s`) is then used in a new variable `auVar87`:
+
 ```c
 do {
         auVar87 = *(undefined (*) [16])(__s + lVar45);
 ```
 
 There is also some bitmasking here
+
 ```c
 auVar87 = ~auVar86 & auVar87 | (auVar172 & auVar27 | ~auVar27 & auVar62) & auVar86;
 ```
@@ -65,7 +70,9 @@ auVar87 = ~auVar86 & auVar87 | (auVar172 & auVar27 | ~auVar27 & auVar62) & auVar
 This is doing bit manipulation with other variables (that we haven't figured out yet)...
 
 Due to the amount of reassigning, I used an LLM to help process this part. Turns out it's alot of fluff code and the general idea of whats happening is the following (as well as help write the Python solution):
+
 1. It transforms the characters:
+
 ```python
 if 0x41 <= shuffled <= 0x5A:
     return chr(((shuffled - 0x41 + 0x1A) % 0x1A) + 0x41)
@@ -75,6 +82,7 @@ return chr(shuffled)
 ```
 
 2. It does bit shuffling:
+
 ```python
 def reverse_bit_shuffle(byte):
     result = 0
@@ -90,6 +98,7 @@ def reverse_bit_shuffle(byte):
 ```
 
 3. Does an XOR:
+
 ```python
 unxored = encoded_char ^ 0xAA
 ```
@@ -97,6 +106,7 @@ unxored = encoded_char ^ 0xAA
 And it is using those 4 suspicious variables at the start!
 
 I use this script:
+
 ```python
 import string
 def reverse_bit_shuffle(byte):
@@ -115,7 +125,7 @@ def decode_char(encoded_char):
     unxored = encoded_char ^ 0xAA
 
     shuffled = reverse_bit_shuffle(unxored)
-    
+
     if 0x41 <= shuffled <= 0x5A:
         return chr(((shuffled - 0x41 + 0x1A) % 0x1A) + 0x41)
     elif 0x61 <= shuffled <= 0x7A:
@@ -129,15 +139,15 @@ def decode_flag():
         0xa6f450043cbcfc5c,
         0x4265004a6bc50c4
     ]
-    
+
     encoded_bytes = b''
     for value in encoded_values:
         encoded_bytes += value.to_bytes(8, 'little')
-    
+
     flag = ''
     for byte in encoded_bytes[:0x22]:
         flag += decode_char(byte)
-    
+
     return flag
 
 if __name__ == "__main__":

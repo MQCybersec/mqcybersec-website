@@ -63,8 +63,10 @@ const teams = Object.entries(teamsByYear)
 const currentYear = teams[0]?.year;
 
 const truncateDescription = (description: string) => {
-  if (!description) return '';
-  return description.length > 15 ? description.substring(0, 20) + '...' : description;
+  if (!description) return "";
+  return description.length > 15
+    ? description.substring(0, 20) + "..."
+    : description;
 };
 ---
 
@@ -114,7 +116,7 @@ const truncateDescription = (description: string) => {
               <h3 class="mb-4 font-bold text-xl">{team.year} Team</h3>
               <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {team.members.map((member) => (
-                  <div class="team-member rounded-lg border border-[--color-border] p-4 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer">
+                  <div class="team-member transform cursor-pointer rounded-lg border border-[--color-border] p-4 text-center transition-all duration-300 hover:scale-105 hover:shadow-lg">
                     <div class="member-image mx-auto mb-2 h-16 w-16">
                       {member.image ? (
                         <Image
@@ -136,8 +138,12 @@ const truncateDescription = (description: string) => {
                       )}
                     </div>
                     <div class="member-name font-semibold">{member.name}</div>
-                    <div class="member-role text-gray-600 text-sm">{member.role}</div>
-                    <div class="member-desc text-gray-200 text-xs">{truncateDescription(member.description)}</div>
+                    <div class="member-role text-gray-600 text-sm">
+                      {member.role}
+                    </div>
+                    <div class="member-desc text-gray-200 text-xs">
+                      {truncateDescription(member.description)}
+                    </div>
                     {member.socials && member.socials.length > 0 && (
                       <ul class="member-socials mt-2 flex justify-center space-x-2">
                         {member.socials.map((social) => (
@@ -166,73 +172,80 @@ const truncateDescription = (description: string) => {
     </div>
 
     {/* Modals */}
-    {teams.map((team) =>
-      team.members.map((member) => (
-      <div
-        id={`modal-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
-        class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 member-modal"
-      >
-        <div class="modal-content bg-[--color-background] p-6 rounded-lg max-w-lg w-full mx-4 relative">
-            <button
-              type="button"
-              class="modal-close absolute top-4 right-4 text-gray-600 hover:text-gray-800 p-2"
-              aria-label="Close modal"
-            >
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-            <div class="flex flex-col items-center">
-              <div class="w-32 h-32 mb-4">
-                {member.image ? (
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    width={128}
-                    height={128}
-                    class="rounded-full w-full h-full object-cover"
-                    loading="eager"
+    {
+      teams.map((team) =>
+        team.members.map((member) => (
+          <div
+            id={`modal-${member.name.toLowerCase().replace(/\s+/g, "-")}`}
+            class="member-modal fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50"
+          >
+            <div class="modal-content relative mx-4 w-full max-w-lg rounded-lg bg-[--color-background] p-6">
+              <button
+                type="button"
+                class="modal-close absolute right-4 top-4 p-2 text-gray-600 hover:text-gray-800"
+                aria-label="Close modal"
+              >
+                <svg
+                  class="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
                   />
-                ) : (
-                  <svg class="h-32 w-32 fill-current" viewBox="0 0 20 20">
-                    <path
-                      fill-rule="evenodd"
-                      d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                      clip-rule="evenodd"
+                </svg>
+              </button>
+              <div class="flex flex-col items-center">
+                <div class="mb-4 h-32 w-32">
+                  {member.image ? (
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      width={128}
+                      height={128}
+                      class="h-full w-full rounded-full object-cover"
+                      loading="eager"
                     />
-                  </svg>
+                  ) : (
+                    <svg class="h-32 w-32 fill-current" viewBox="0 0 20 20">
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  )}
+                </div>
+                <h3 class="mb-2 font-bold text-xl">{member.name}</h3>
+                <p class="mb-4 text-gray-600">{member.role}</p>
+                {member.description && (
+                  <p class="mb-4 text-center">{member.description}</p>
+                )}
+                {member.socials && member.socials.length > 0 && (
+                  <div class="flex justify-center space-x-3">
+                    {member.socials.map((social) => (
+                      <a
+                        class="flex size-12 items-center justify-center rounded-full border-2 border-current p-2"
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span class="sr-only">{social.platform}</span>
+                        <Icon class="size-full" name={social.icon} />
+                      </a>
+                    ))}
+                  </div>
                 )}
               </div>
-              <h3 class="text-xl font-bold mb-2">{member.name}</h3>
-              <p class="text-gray-600 mb-4">{member.role}</p>
-              {member.description && (
-                <p class="text-center mb-4">{member.description}</p>
-              )}
-              {member.socials && member.socials.length > 0 && (
-                <div class="flex justify-center space-x-3">
-                  {member.socials.map((social) => (
-                    <a
-                      class="flex size-12 items-center justify-center rounded-full border-2 border-current p-2"
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span class="sr-only">{social.platform}</span>
-                      <Icon class="size-full" name={social.icon} />
-                    </a>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
-        </div>
-      ))
-    )}
+        )),
+      )
+    }
   </div>
 </ContentSection>
 
@@ -290,15 +303,15 @@ const truncateDescription = (description: string) => {
     }
   });
 
-  const modals = document.querySelectorAll('.member-modal');
-  const closeButtons = document.querySelectorAll('.modal-close');
+  const modals = document.querySelectorAll(".member-modal");
+  const closeButtons = document.querySelectorAll(".modal-close");
 
   function closeAllModals() {
-    modals.forEach(modal => {
-      modal.classList.remove('modal-visible');
+    modals.forEach((modal) => {
+      modal.classList.remove("modal-visible");
       setTimeout(() => {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
       }, 300);
     });
   }
@@ -306,192 +319,192 @@ const truncateDescription = (description: string) => {
   function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
-      modals.forEach(m => {
+      modals.forEach((m) => {
         if (m.id !== modalId) {
-          m.classList.remove('modal-visible');
-          m.classList.add('hidden');
-          m.classList.remove('flex');
+          m.classList.remove("modal-visible");
+          m.classList.add("hidden");
+          m.classList.remove("flex");
         }
       });
-      
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
+
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
 
       void modal.offsetHeight;
-      modal.classList.add('modal-visible');
+      modal.classList.add("modal-visible");
     }
   }
 
-  document.querySelectorAll('.team-member').forEach(member => {
-    member.addEventListener('click', (e) => {
-      const socialLink = e.target.closest('.social-link');
+  document.querySelectorAll(".team-member").forEach((member) => {
+    member.addEventListener("click", (e) => {
+      const socialLink = e.target.closest(".social-link");
       if (socialLink) {
         e.stopPropagation();
         return;
       }
 
-      const memberName = member.querySelector('.member-name').textContent;
-      const modalId = `modal-${memberName.toLowerCase().replace(/\s+/g, '-')}`;
+      const memberName = member.querySelector(".member-name").textContent;
+      const modalId = `modal-${memberName.toLowerCase().replace(/\s+/g, "-")}`;
       openModal(modalId);
     });
   });
 
-  closeButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
+  closeButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
       e.stopPropagation();
       closeAllModals();
     });
   });
 
-  modals.forEach(modal => {
-    modal.addEventListener('click', (e) => {
+  modals.forEach((modal) => {
+    modal.addEventListener("click", (e) => {
       if (e.target === modal) {
         closeAllModals();
       }
     });
   });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
       closeAllModals();
     }
   });
 </script>
 
 <style>
-.timeline-container {
-  padding: 20px 0;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+  .timeline-container {
+    padding: 20px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
-.year-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
+  .year-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
 
-.year-button {
-  padding: 8px 16px;
-  border: 2px solid var(--color-primary);
-  border-radius: 20px;
-  background-color: transparent;
-  color: var(--color-text);
-  font-weight: bold;
-  cursor: pointer;
-  transition:
-    background-color 0.3s,
-    color 0.3s;
-}
+  .year-button {
+    padding: 8px 16px;
+    border: 2px solid var(--color-primary);
+    border-radius: 20px;
+    background-color: transparent;
+    color: var(--color-text);
+    font-weight: bold;
+    cursor: pointer;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
+  }
 
-.year-button:hover,
-.year-button.active {
-  background-color: var(--color-primary);
-  color: white;
-}
+  .year-button:hover,
+  .year-button.active {
+    background-color: var(--color-primary);
+    color: white;
+  }
 
-.team-card {
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 20px;
-  background-color: var(--color-background);
-  width: 100%;
-}
+  .team-card {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 20px;
+    background-color: var(--color-background);
+    width: 100%;
+  }
 
-.team-member {
-  will-change: transform, box-shadow;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
+  .team-member {
+    will-change: transform, box-shadow;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
 
-.team-member::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--color-primary);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: -1;
-  border-radius: 0.5rem;
-}
+  .team-member::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-primary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    border-radius: 0.5rem;
+  }
 
-.team-member:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
+  .team-member:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
 
-.team-member:hover::before {
-  opacity: 0.05;
-}
+  .team-member:hover::before {
+    opacity: 0.05;
+  }
 
-.member-modal {
-  opacity: 0;
-  transition: opacity 0.3s ease-out;
-}
+  .member-modal {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
 
-.member-modal.modal-visible {
-  opacity: 1;
-}
+  .member-modal.modal-visible {
+    opacity: 1;
+  }
 
-.member-modal > div {
-  transform: scale(0.95);
-  transition: transform 0.3s ease-out;
-}
+  .member-modal > div {
+    transform: scale(0.95);
+    transition: transform 0.3s ease-out;
+  }
 
-.member-modal.modal-visible > div {
-  transform: scale(1);
-}
+  .member-modal.modal-visible > div {
+    transform: scale(1);
+  }
 
-.member-modal.hidden {
-  display: none;
-}
+  .member-modal.hidden {
+    display: none;
+  }
 
-.member-modal:not(.modal-visible) {
-  pointer-events: none;
-}
+  .member-modal:not(.modal-visible) {
+    pointer-events: none;
+  }
 
-.achievement-item-hidden {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.achievement-item-visible {
-  animation: fadeInUp 300ms ease-out forwards;
-}
-
-@keyframes fadeInUp {
-  from {
+  .achievement-item-hidden {
     opacity: 0;
     transform: translateY(20px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes modalFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
+  .achievement-item-visible {
+    animation: fadeInUp 300ms ease-out forwards;
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-}
 
-.modal-close {
-  transition: transform 0.2s ease;
-}
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 
-.modal-close:hover {
-  transform: rotate(90deg);
-}
+  .modal-close {
+    transition: transform 0.2s ease;
+  }
+
+  .modal-close:hover {
+    transform: rotate(90deg);
+  }
 </style>

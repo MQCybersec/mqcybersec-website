@@ -1,12 +1,11 @@
 {
-    "name": "hackrocks & HackArmour CTF",
-    "image": "/src/content/ctfs/_images/hackrockshackarmourctf.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 83,
-            "totalTeams": 130
-        }
-    ]
-
+  "name": "hackrocks & HackArmour CTF",
+  "image": "/src/content/ctfs/_images/hackrockshackarmourctf.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 83,
+      "totalTeams": 130
+    }
+  ]
 }

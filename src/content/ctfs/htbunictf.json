@@ -1,37 +1,36 @@
 {
-    "name": "HackTheBox University CTF",
-    "image": "/src/content/ctfs/_images/hackthebox.jpeg",
-    "placements": [
-        {
-            "year": 2024,
-            "globalPlacement": 49,
-            "totalTeams": 1128,
-            "australiaPlacement": 1
-        },
-        {
-            "year": 2023,
-            "globalPlacement": 54,
-            "totalTeams": 955,
-            "australiaPlacement": 1
-        },
-        {
-            "year": 2022,
-            "globalPlacement": 32,
-            "totalTeams": 938,
-            "australiaPlacement": 1
-        },
-        {
-            "year": 2021,
-            "globalPlacement": 25,
-            "totalTeams": 253,
-            "australiaPlacement": 1
-        },
-        {
-            "year": 2020,
-            "globalPlacement": 30,
-            "totalTeams": 186,
-            "australiaPlacement": 1
-        }
-    ]
-
+  "name": "HackTheBox University CTF",
+  "image": "/src/content/ctfs/_images/hackthebox.jpeg",
+  "placements": [
+    {
+      "year": 2024,
+      "globalPlacement": 49,
+      "totalTeams": 1128,
+      "australiaPlacement": 1
+    },
+    {
+      "year": 2023,
+      "globalPlacement": 54,
+      "totalTeams": 955,
+      "australiaPlacement": 1
+    },
+    {
+      "year": 2022,
+      "globalPlacement": 32,
+      "totalTeams": 938,
+      "australiaPlacement": 1
+    },
+    {
+      "year": 2021,
+      "globalPlacement": 25,
+      "totalTeams": 253,
+      "australiaPlacement": 1
+    },
+    {
+      "year": 2020,
+      "globalPlacement": 30,
+      "totalTeams": 186,
+      "australiaPlacement": 1
+    }
+  ]
 }

@@ -1,12 +1,11 @@
 {
-    "name": "InterIUT CTF",
-    "image": "/src/content/ctfs/_images/interiut.png",
-    "placements": [
-        {
-            "year": 2020,
-            "globalPlacement": 70,
-            "totalTeams": 87
-        }
-    ]
-
+  "name": "InterIUT CTF",
+  "image": "/src/content/ctfs/_images/interiut.png",
+  "placements": [
+    {
+      "year": 2020,
+      "globalPlacement": 70,
+      "totalTeams": 87
+    }
+  ]
 }

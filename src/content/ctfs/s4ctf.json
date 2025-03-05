@@ -1,12 +1,11 @@
 {
-    "name": "S4CTF",
-    "image": "/src/content/ctfs/_images/s4ctf.png",
-    "placements": [
-        {
-            "year": 2021,
-            "globalPlacement": 300,
-            "totalTeams": 312
-        }
-    ]
-
+  "name": "S4CTF",
+  "image": "/src/content/ctfs/_images/s4ctf.png",
+  "placements": [
+    {
+      "year": 2021,
+      "globalPlacement": 300,
+      "totalTeams": 312
+    }
+  ]
 }

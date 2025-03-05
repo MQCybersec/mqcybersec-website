@@ -1,12 +1,11 @@
 {
-    "name": "BalCCon CTF",
-    "image": "/src/content/ctfs/_images/balcconctf.png",
-    "placements": [
-        {
-            "year": 2020,
-            "globalPlacement": 40,
-            "totalTeams": 193
-        }
-    ]
-
+  "name": "BalCCon CTF",
+  "image": "/src/content/ctfs/_images/balcconctf.png",
+  "placements": [
+    {
+      "year": 2020,
+      "globalPlacement": 40,
+      "totalTeams": 193
+    }
+  ]
 }

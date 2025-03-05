@@ -1,31 +1,30 @@
 {
-    "name": "DownUnderCTF",
-    "image": "/src/content/ctfs/_images/downunderctf.jpg",
-    "placements": [
-        {
-            "teamName": "MQCyberSec (Team 1)",
-            "year": 2024,
-            "globalPlacement": 304,
-            "totalTeams": 1515,
-            "australiaPlacement": 29
-        },
-        {
-            "teamName": "MQCyberSec (Team 2)",
-            "year": 2024,
-            "globalPlacement": 589,
-            "totalTeams": 1515,
-            "australiaPlacement": 67
-        },
-        {
-            "year": 2022,
-            "globalPlacement": 132,
-            "totalTeams": 1407
-        },
-        {
-            "year": 2021,
-            "globalPlacement": 562,
-            "totalTeams": 1594
-        }
-    ]
-
+  "name": "DownUnderCTF",
+  "image": "/src/content/ctfs/_images/downunderctf.jpg",
+  "placements": [
+    {
+      "teamName": "MQCyberSec (Team 1)",
+      "year": 2024,
+      "globalPlacement": 304,
+      "totalTeams": 1515,
+      "australiaPlacement": 29
+    },
+    {
+      "teamName": "MQCyberSec (Team 2)",
+      "year": 2024,
+      "globalPlacement": 589,
+      "totalTeams": 1515,
+      "australiaPlacement": 67
+    },
+    {
+      "year": 2022,
+      "globalPlacement": 132,
+      "totalTeams": 1407
+    },
+    {
+      "year": 2021,
+      "globalPlacement": 562,
+      "totalTeams": 1594
+    }
+  ]
 }

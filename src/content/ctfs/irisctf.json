@@ -1,12 +1,11 @@
 {
-    "name": "IrisCTF",
-    "image": "/src/content/ctfs/_images/irisctf.png",
-    "placements": [
-        {
-            "year": 2025,
-            "globalPlacement": 77,
-            "totalTeams": 1064
-        }
-    ]
-
+  "name": "IrisCTF",
+  "image": "/src/content/ctfs/_images/irisctf.png",
+  "placements": [
+    {
+      "year": 2025,
+      "globalPlacement": 77,
+      "totalTeams": 1064
+    }
+  ]
 }

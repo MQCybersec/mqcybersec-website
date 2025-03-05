@@ -1,12 +1,11 @@
 {
-    "name": "Lexington Informatics Tournament CTF",
-    "image": "/src/content/ctfs/_images/litctf.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 29,
-            "totalTeams": 544
-        }
-    ]
-
+  "name": "Lexington Informatics Tournament CTF",
+  "image": "/src/content/ctfs/_images/litctf.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 29,
+      "totalTeams": 544
+    }
+  ]
 }

@@ -4,10 +4,16 @@ import logoImage from "~/assets/logo.png";
 
 // LogoBlock component
 export interface Props {
-    inClass: string;
+  inClass: string;
 }
 
 const { inClass: inClass } = Astro.props;
 ---
 
-<Image src={logoImage} loading="lazy" alt="MQCyberSec Logo" class={inClass} id="logoblock"/>
+<Image
+  src={logoImage}
+  loading="lazy"
+  alt="MQCyberSec Logo"
+  class={inClass}
+  id="logoblock"
+/>

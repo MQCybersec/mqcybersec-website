@@ -39,7 +39,7 @@ const ctfWins = competitions.reduce(
       australiaPlacement?: number;
       teamName: string;
     }>
-  >
+  >,
 );
 
 const years = Object.keys(ctfWins)
@@ -167,7 +167,7 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
                         .map((competition) => {
                           const placementInfo = getPlacementInfo(
                             competition.globalPlacement,
-                            competition.totalTeams
+                            competition.totalTeams,
                           );
                           const aussieMedalInfo = competition.australiaPlacement
                             ? getMedalInfo(competition.australiaPlacement)
@@ -289,7 +289,7 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
   const yearButtons = document.querySelectorAll(".ctf-year-button");
   const achievementGrids = document.querySelectorAll(".achievement-grid");
   const ctfYearAchievementTextLatest = document.querySelectorAll(
-    ".ctf-year-achievements-text"
+    ".ctf-year-achievements-text",
   )[0];
 
   let currentAnimation: { cancel: () => void } | null = null;
@@ -308,7 +308,7 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
   function updateNavigationButtons() {
     achievementGrids.forEach((grid) => {
       const currentPage = parseInt(
-        grid.getAttribute("data-current-page") || "1"
+        grid.getAttribute("data-current-page") || "1",
       );
       const totalPages = parseInt(grid.getAttribute("data-total-pages") || "1");
       const prevButton = grid.querySelector(".prev-page");
@@ -352,7 +352,7 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
               () => {
                 resolve();
               },
-              { once: true }
+              { once: true },
             );
           } else {
             resolve();
@@ -391,7 +391,7 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
     });
 
     const targetGrid = Array.from(achievementGrids).find(
-      (grid) => grid.getAttribute("data-year") === year
+      (grid) => grid.getAttribute("data-year") === year,
     );
 
     if (targetGrid) {
@@ -419,7 +419,7 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
     });
 
     const targetPage = Array.from(pages).find(
-      (page) => parseInt(page.getAttribute("data-page") || "1") === pageNumber
+      (page) => parseInt(page.getAttribute("data-page") || "1") === pageNumber,
     );
 
     if (targetPage) {
@@ -443,7 +443,7 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
 
     prevButton?.addEventListener("click", () => {
       const currentPage = parseInt(
-        grid.getAttribute("data-current-page") || "1"
+        grid.getAttribute("data-current-page") || "1",
       );
       if (currentPage > 1) {
         yearButtons[0].scrollIntoView({ behavior: "smooth", block: "start" });
@@ -453,7 +453,7 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
 
     nextButton?.addEventListener("click", () => {
       const currentPage = parseInt(
-        grid.getAttribute("data-current-page") || "1"
+        grid.getAttribute("data-current-page") || "1",
       );
       const totalPages = parseInt(grid.getAttribute("data-total-pages") || "1");
       if (currentPage < totalPages) {

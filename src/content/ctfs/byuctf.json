@@ -1,12 +1,11 @@
 {
-    "name": "BYUCTF",
-    "image": "/src/content/ctfs/_images/byuctf.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 80,
-            "totalTeams": 435
-        }
-    ]
-
+  "name": "BYUCTF",
+  "image": "/src/content/ctfs/_images/byuctf.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 80,
+      "totalTeams": 435
+    }
+  ]
 }

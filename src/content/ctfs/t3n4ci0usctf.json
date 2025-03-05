@@ -1,12 +1,11 @@
 {
-    "name": "T3N4CI0US CTF - Escape",
-    "image": "/src/content/ctfs/_images/t3n4ci0us.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 161,
-            "totalTeams": 557
-        }
-    ]
-
+  "name": "T3N4CI0US CTF - Escape",
+  "image": "/src/content/ctfs/_images/t3n4ci0us.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 161,
+      "totalTeams": 557
+    }
+  ]
 }

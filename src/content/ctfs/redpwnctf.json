@@ -1,12 +1,11 @@
 {
-    "name": "redpwnCTF",
-    "image": "/src/content/ctfs/_images/redpwn.png",
-    "placements": [
-        {
-            "year": 2021,
-            "globalPlacement": 238,
-            "totalTeams": 1418
-        }
-    ]
-
+  "name": "redpwnCTF",
+  "image": "/src/content/ctfs/_images/redpwn.png",
+  "placements": [
+    {
+      "year": 2021,
+      "globalPlacement": 238,
+      "totalTeams": 1418
+    }
+  ]
 }

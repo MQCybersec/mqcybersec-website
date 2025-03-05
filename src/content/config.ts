@@ -16,7 +16,7 @@ const gridImages = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string().min(1),
-      image: image()
+      image: image(),
     }),
 });
 
@@ -32,17 +32,17 @@ const people = defineCollection({
           z.object({
             platform: z.string(),
             url: z.string().url(),
-            icon: z.string()
-          })
+            icon: z.string(),
+          }),
         )
         .optional(),
       enrollments: z.array(
         z.object({
           year: z.number().int().positive(),
-          role: z.string().min(1).optional()
-        })
-      )
-    })
+          role: z.string().min(1).optional(),
+        }),
+      ),
+    }),
 });
 
 const placementSchema = z.object({
@@ -55,11 +55,12 @@ const placementSchema = z.object({
 
 export const ctfs = defineCollection({
   type: "data",
-  schema: ({ image }) => z.object({
-    name: z.string(),
-    image: image().optional(),
-    placements: z.array(placementSchema),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      image: image().optional(),
+      placements: z.array(placementSchema),
+    }),
 });
 
 // Updated writeups schema with tags
@@ -75,7 +76,7 @@ const writeups = defineCollection({
     tags: z.array(z.string()).optional().default([]),
     author: z.string().optional(),
     image: z.string().optional(),
-    hidden: z.boolean().optional().default(false)
+    hidden: z.boolean().optional().default(false),
   }),
 });
 
@@ -84,5 +85,5 @@ export const collections = {
   people,
   ctfs,
   gridImages,
-  writeups
+  writeups,
 };

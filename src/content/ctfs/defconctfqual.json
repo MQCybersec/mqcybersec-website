@@ -1,17 +1,16 @@
 {
-    "name": "DEF CON CTF Qualifier",
-    "image": "/src/content/ctfs/_images/defconctf.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 278,
-            "totalTeams": 470
-        },
-        {
-            "year": 2021,
-            "globalPlacement": 164,
-            "totalTeams": 433
-        }
-    ]
-
+  "name": "DEF CON CTF Qualifier",
+  "image": "/src/content/ctfs/_images/defconctf.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 278,
+      "totalTeams": 470
+    },
+    {
+      "year": 2021,
+      "globalPlacement": 164,
+      "totalTeams": 433
+    }
+  ]
 }

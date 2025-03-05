@@ -11,6 +11,7 @@ section: "CTFs"
 > Original Writeup on [seall.dev](https://seall.dev/posts/kashictf2025#self-destruct)
 
 The description says:
+
 > The attachment is a VirtualBox image. Do not run it outside VirtualBox. It is recommended to backup the .vdi file before launching the VM.
 
 I downloaded the `.vdi` and then extracted it with 7Zip to a `.img` as I find working with disk images in Autopsy far easier than running the image called 'Self Destruct'.
@@ -18,13 +19,14 @@ I downloaded the `.vdi` and then extracted it with 7Zip to a `.img` as I find wo
 Once loaded in Autopsy, I exported all the files to `Export`.
 
 I manually found 2 flag parts in `/img_0.img/home/kashictf/.sush_history` and `/img_0.img/home/kashictf/.bash_history`:
+
 ```
 ls
 echo "fLaG Part 3: 'eserve_roo'"
 exit
 ```
 
-and 
+and
 
 ```
 ls
@@ -32,8 +34,8 @@ echo "fLaG Part 5: 'ht??_No_Er'"
 exit
 ```
 
-
 after noticing the trend, I used powershell with a recursive search to locate the remaining parts:
+
 ```powershell
 kashiselfdestruct\Export> Get-ChildItem -Recurse | Select-String -Pattern "fLaG Part" -CaseSensitive:$false
 25-etc\hosts.allow:7:# fLaG Part 1: 'KashiCTF{r'
