@@ -2,7 +2,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
   content: [
     "./src/**/*.{astro,html,js,jsx,svelte,ts,tsx,vue}",
-    "./node_modules/flowbite/**/*.js"
+    "./node_modules/flowbite/**/*.js",
   ],
   theme: {
     extend: {
@@ -30,8 +30,5 @@ module.exports = {
   corePlugins: {
     fontSize: false,
   },
-  plugins: [
-    require("tailwindcss-fluid-type"),
-    require("flowbite/plugin")
-  ],
+  plugins: [require("tailwindcss-fluid-type"), require("flowbite/plugin")],
 };

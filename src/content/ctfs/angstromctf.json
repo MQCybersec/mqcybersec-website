@@ -1,22 +1,21 @@
 {
-    "name": "ångstromCTF",
-    "image": "/src/content/ctfs/_images/angstrom.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 159,
-            "totalTeams": 1180
-        },
-        {
-            "year": 2021,
-            "globalPlacement": 213,
-            "totalTeams": 1245  
-        },
-        {
-            "year": 2020,
-            "globalPlacement": 511,
-            "totalTeams": 1596
-        }
-    ]
-
+  "name": "ångstromCTF",
+  "image": "/src/content/ctfs/_images/angstrom.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 159,
+      "totalTeams": 1180
+    },
+    {
+      "year": 2021,
+      "globalPlacement": 213,
+      "totalTeams": 1245
+    },
+    {
+      "year": 2020,
+      "globalPlacement": 511,
+      "totalTeams": 1596
+    }
+  ]
 }

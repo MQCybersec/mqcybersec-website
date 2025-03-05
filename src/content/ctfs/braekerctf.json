@@ -1,12 +1,11 @@
 {
-    "name": "BraekerCTF",
-    "image": "/src/content/ctfs/_images/braekerctf.png",
-    "placements": [
-        {
-            "year": 2024,
-            "globalPlacement": 165,
-            "totalTeams": 508
-        }
-    ]
-
+  "name": "BraekerCTF",
+  "image": "/src/content/ctfs/_images/braekerctf.png",
+  "placements": [
+    {
+      "year": 2024,
+      "globalPlacement": 165,
+      "totalTeams": 508
+    }
+  ]
 }

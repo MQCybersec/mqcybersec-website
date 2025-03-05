@@ -1,12 +1,11 @@
 {
-    "name": "NACTF",
-    "image": "/src/content/ctfs/_images/nactf.png",
-    "placements": [
-        {
-            "year": 2020,
-            "globalPlacement": 367,
-            "totalTeams": 968
-        }
-    ]
-
+  "name": "NACTF",
+  "image": "/src/content/ctfs/_images/nactf.png",
+  "placements": [
+    {
+      "year": 2020,
+      "globalPlacement": 367,
+      "totalTeams": 968
+    }
+  ]
 }

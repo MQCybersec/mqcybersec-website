@@ -1,17 +1,16 @@
 {
-    "name": "FooBar CTF",
-    "image": "/src/content/ctfs/_images/foobar.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 79,
-            "totalTeams": 372
-        },
-        {
-            "year": 2021,
-            "globalPlacement": 225,
-            "totalTeams": 404
-        }
-    ]
-
+  "name": "FooBar CTF",
+  "image": "/src/content/ctfs/_images/foobar.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 79,
+      "totalTeams": 372
+    },
+    {
+      "year": 2021,
+      "globalPlacement": 225,
+      "totalTeams": 404
+    }
+  ]
 }

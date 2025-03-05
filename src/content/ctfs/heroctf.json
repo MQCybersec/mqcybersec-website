@@ -1,17 +1,16 @@
 {
-    "name": "HeroCTF",
-    "image": "/src/content/ctfs/_images/heroctf.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 314,
-            "totalTeams": 632
-        },
-        {
-            "year": 2021,
-            "globalPlacement": 181,
-            "totalTeams": 645
-        }
-    ]
-
+  "name": "HeroCTF",
+  "image": "/src/content/ctfs/_images/heroctf.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 314,
+      "totalTeams": 632
+    },
+    {
+      "year": 2021,
+      "globalPlacement": 181,
+      "totalTeams": 645
+    }
+  ]
 }

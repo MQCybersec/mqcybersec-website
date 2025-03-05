@@ -1,5 +1,5 @@
 ---
-import Header from '../components/header.astro';
+import Header from "../components/header.astro";
 // Import other common components you use across pages
 
 export interface Props {
@@ -7,10 +7,11 @@ export interface Props {
   description?: string;
 }
 
-const { title, description = "MQCyberSec writeups and CTF solutions" } = Astro.props;
+const { title, description = "MQCyberSec writeups and CTF solutions" } =
+  Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -25,7 +26,7 @@ const { title, description = "MQCyberSec writeups and CTF solutions" } = Astro.p
     <main>
       <slot />
     </main>
-    <footer class="p-8 text-center text-sm text-gray-500">
+    <footer class="p-8 text-center text-gray-500 text-sm">
       &copy; {new Date().getFullYear()} MQCyberSec. All rights reserved.
     </footer>
   </body>

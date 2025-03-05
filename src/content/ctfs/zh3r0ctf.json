@@ -1,12 +1,11 @@
 {
-    "name": "Zh3r0 CTF",
-    "image": "/src/content/ctfs/_images/zh3r0ctf.png",
-    "placements": [
-        {
-            "year": 2020,
-            "globalPlacement": 292,
-            "totalTeams": 810
-        }
-    ]
-
+  "name": "Zh3r0 CTF",
+  "image": "/src/content/ctfs/_images/zh3r0ctf.png",
+  "placements": [
+    {
+      "year": 2020,
+      "globalPlacement": 292,
+      "totalTeams": 810
+    }
+  ]
 }

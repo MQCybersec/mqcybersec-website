@@ -1,12 +1,11 @@
 {
-    "name": "UofTCTF",
-    "image": "/src/content/ctfs/_images/uoftctf.png",
-    "placements": [
-        {
-            "year": 2025,
-            "globalPlacement": 129,
-            "totalTeams": 897
-        }
-    ]
-
+  "name": "UofTCTF",
+  "image": "/src/content/ctfs/_images/uoftctf.png",
+  "placements": [
+    {
+      "year": 2025,
+      "globalPlacement": 129,
+      "totalTeams": 897
+    }
+  ]
 }

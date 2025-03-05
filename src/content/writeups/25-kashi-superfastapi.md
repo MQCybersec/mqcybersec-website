@@ -10,9 +10,10 @@ section: "CTFs"
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/kashictf2025#superfastapi)
 
-I start by using `ffuf` and find the `/docs` endpoint using a directory 2.3 medium list from SecLists. 
+I start by using `ffuf` and find the `/docs` endpoint using a directory 2.3 medium list from SecLists.
 
 After locating the `/docs` endpoint I see we can:
+
 - Create a user
 - Update a user
 - Request the flag

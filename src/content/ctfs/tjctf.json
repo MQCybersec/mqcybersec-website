@@ -1,12 +1,11 @@
 {
-    "name": "TJCTF",
-    "image": "/src/content/ctfs/_images/tjctf.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 121,
-            "totalTeams": 768
-        }
-    ]
-
+  "name": "TJCTF",
+  "image": "/src/content/ctfs/_images/tjctf.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 121,
+      "totalTeams": 768
+    }
+  ]
 }

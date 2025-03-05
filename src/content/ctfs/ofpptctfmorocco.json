@@ -1,12 +1,11 @@
 {
-    "name": "OFPPT-CTF Morocco",
-    "image": "/src/content/ctfs/_images/ofpptctfmorocco.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 503,
-            "totalTeams": 587
-        }
-    ]
-
+  "name": "OFPPT-CTF Morocco",
+  "image": "/src/content/ctfs/_images/ofpptctfmorocco.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 503,
+      "totalTeams": 587
+    }
+  ]
 }

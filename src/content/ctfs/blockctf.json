@@ -1,12 +1,11 @@
 {
-    "name": "Block CTF",
-    "image": "/src/content/ctfs/_images/blockctf.png",
-    "placements": [
-        {
-            "year": 2020,
-            "globalPlacement": 114,
-            "totalTeams": 610
-        }
-    ]
-
+  "name": "Block CTF",
+  "image": "/src/content/ctfs/_images/blockctf.png",
+  "placements": [
+    {
+      "year": 2020,
+      "globalPlacement": 114,
+      "totalTeams": 610
+    }
+  ]
 }

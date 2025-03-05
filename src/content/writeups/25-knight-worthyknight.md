@@ -15,12 +15,14 @@ Another binary, ELF, you know the gist by now... I open Ghidra.
 We have to get 5 pair's of characters:
 
 First:
+
 ```c
       if ((byte)(local_c8[1] ^ local_c8[0]) == 0x24) {
         if (local_c8[1] == 0x6a) {
 ```
 
 Second:
+
 ```c
           if ((local_c8[2] ^ local_c8[3]) == 0x38) {
             if (local_c8[3] == 0x53) {
@@ -29,12 +31,14 @@ Second:
 Third is a hash, we can crack this with `hashcat`/`john` as its just 2 characters. I crack it and it is `Tf`. But this proves to be useless due to something we see later.
 
 Fourth:
+
 ```c
                 if ((local_c8[6] ^ local_c8[7]) == 0x38) {
-                  if (local_c8[7] == 0x61) 
+                  if (local_c8[7] == 0x61)
 ```
 
 Fifth:
+
 ```c
                     if ((byte)(local_c8[9] ^ local_c8[8]) == 0x20) {
                       if (local_c8[9] == 0x69) {
@@ -43,6 +47,7 @@ Fifth:
 But this was incorrect and Ghidra was not being helpful, its decompilation was quite unclear and after calculating the values it was wrong. My teammate (Solopie) puts the binary into [dogbolt](https://dogbolt.org/) and the HexRays decompile was alot more helpful.
 
 First:
+
 ```c
   if ( (s[0] ^ s[1]) != 36 )
   {
@@ -57,12 +62,13 @@ First:
     return 1;
   }
 ```
+
 - `s[1]` = 'j' (106)
 - `s[0]` = 106 ^ 36 = 78 ('N')
-Result: "Nj"
+  Result: "Nj"
 
+Second:
 
-Second: 
 ```c
   if ( (s[3] ^ s[2]) != 56 )
   {
@@ -77,11 +83,13 @@ Second:
     return 1;
   }
 ```
+
 - `s[3]` = 'S' (83)
 - `s[2]` = 83 ^ 56 = 107 ('k')
-Result: "kS"
+  Result: "kS"
 
 Third is still the hash, but I notice there is some preprocessing (which was in Ghidra but more irritating to spot for myself):
+
 ```c
   v15 = 0;
   v9 = v16;
@@ -108,7 +116,8 @@ Third is still the hash, but I notice there is some preprocessing (which was in 
   }
 ```
 
-What this is doing is before doing a comparison it is modifying the input. 
+What this is doing is before doing a comparison it is modifying the input.
+
 1. Takes the two characters as a 16-bit word
 2. Rotates left by 8 bits (swaps the bytes)
 3. Calculates MD5 hash
@@ -116,6 +125,7 @@ What this is doing is before doing a comparison it is modifying the input.
 We can replicate this process in Python and find the correct characters. We know its going to be a lowercase and uppercase letter.
 
 We can do it with this Python script:
+
 ```python
 import hashlib
 import string
@@ -136,6 +146,7 @@ for c1, c2 in pairs:
 It returns `fT` (the inverse of the cracked hash, :p).
 
 Fourth:
+
 ```c
   if ( (s[7] ^ s[6]) != 56 )
   {
@@ -150,11 +161,13 @@ Fourth:
     return 1;
   }
 ```
+
 - `s[7]` = 'a' (97)
 - `s[6]` = 97 ^ 56 = 89 ('Y')
-Result: "Ya"
+  Result: "Ya"
 
 Fifth:
+
 ```c
   if ( (s[8] ^ s[9]) != 32 )
   {
@@ -169,35 +182,36 @@ Fifth:
     return 1;
   }
 ```
+
 - `s[9]` = 'i' (105)
 - `s[8]` = 105 ^ 32 = 73 ('I')
-Result: "Ii"
+  Result: "Ii"
 
 The final string is: `NjkSfTYaIi`!
 
 ```bash
-$ ./worthy.knight 
-                       (Knight's Adventure)                
+$ ./worthy.knight
+                       (Knight's Adventure)
 
-         O                                              
-        <M>            .---.                            
-        /W\           ( -.- )--------.                  
-   ^    \|/            \_o_/         )    ^             
-  /|\    |     *      ~~~~~~~       /    /|\            
-  / \   / \  /|\                    /    / \            
+         O
+        <M>            .---.
+        /W\           ( -.- )--------.
+   ^    \|/            \_o_/         )    ^
+  /|\    |     *      ~~~~~~~       /    /|\
+  / \   / \  /|\                    /    / \
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Welcome, traveler. A mighty dragon blocks the gate.
 Speak the secret incantation (10 runic letters) to continue.
 
 Enter your incantation: NjkSfTYaIi
 
-   The kingdom's gates open, revealing the hidden realm...    
-                         ( (                                 
-                          \ \                                
-                     .--.  ) ) .--.                         
-                    (    )/_/ (    )                        
-                     '--'      '--'                         
-    "Huzzah! Thy incantation is true. Onward, brave knight!" 
+   The kingdom's gates open, revealing the hidden realm...
+                         ( (
+                          \ \
+                     .--.  ) ) .--.
+                    (    )/_/ (    )
+                     '--'      '--'
+    "Huzzah! Thy incantation is true. Onward, brave knight!"
 
 The final scroll reveals your reward: KCTF{NjkSfTYaIi}
 ```

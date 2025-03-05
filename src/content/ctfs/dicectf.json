@@ -1,17 +1,16 @@
 {
-    "name": "Dice CTF",
-    "image": "/src/content/ctfs/_images/dicectf.png",
-    "placements": [
-        {
-            "year": 2023,
-            "globalPlacement": 288,
-            "totalTeams": 1041
-        },
-        {
-            "year": 2022,
-            "globalPlacement": 494,
-            "totalTeams": 1127
-        }
-    ]
-
+  "name": "Dice CTF",
+  "image": "/src/content/ctfs/_images/dicectf.png",
+  "placements": [
+    {
+      "year": 2023,
+      "globalPlacement": 288,
+      "totalTeams": 1041
+    },
+    {
+      "year": 2022,
+      "globalPlacement": 494,
+      "totalTeams": 1127
+    }
+  ]
 }

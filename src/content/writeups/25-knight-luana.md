@@ -11,6 +11,7 @@ section: "CTFs"
 > Original Writeup on [seall.dev](https://seall.dev/posts/knightctf2025#luana)
 
 We are given a webserver that notifies the service has started on port `6379`, looking into that port it is **Redis**. I'd heard of it before but never really used it. We are also told the flag is stored at `/flag.txt`.
+
 > Redis is a source-available, in-memory storage, used as a distributed, in-memory key–value database, cache and message broker, with optional durability.
 
 I start with some basic commands such as `set` and `get` through `nc`

@@ -1,12 +1,11 @@
 {
-    "name": "pbctf",
-    "image": "/src/content/ctfs/_images/pb.png",
-    "placements": [
-        {
-            "year": 2023,
-            "globalPlacement": 129,
-            "totalTeams": 150
-        }
-    ]
-
+  "name": "pbctf",
+  "image": "/src/content/ctfs/_images/pb.png",
+  "placements": [
+    {
+      "year": 2023,
+      "globalPlacement": 129,
+      "totalTeams": 150
+    }
+  ]
 }

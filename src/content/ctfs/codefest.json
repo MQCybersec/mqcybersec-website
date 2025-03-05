@@ -1,12 +1,11 @@
 {
-    "name": "Codefest CTF",
-    "image": "/src/content/ctfs/_images/codefest.png",
-    "placements": [
-        {
-            "year": 2021,
-            "globalPlacement": 83,
-            "totalTeams": 297
-        }
-    ]
-
+  "name": "Codefest CTF",
+  "image": "/src/content/ctfs/_images/codefest.png",
+  "placements": [
+    {
+      "year": 2021,
+      "globalPlacement": 83,
+      "totalTeams": 297
+    }
+  ]
 }

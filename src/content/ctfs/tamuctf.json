@@ -1,12 +1,11 @@
 {
-    "name": "TAMUctf",
-    "image": "/src/content/ctfs/_images/tamuctf.png",
-    "placements": [
-        {
-            "year": 2021,
-            "globalPlacement": 191,
-            "totalTeams": 344
-        }
-    ]
-
+  "name": "TAMUctf",
+  "image": "/src/content/ctfs/_images/tamuctf.png",
+  "placements": [
+    {
+      "year": 2021,
+      "globalPlacement": 191,
+      "totalTeams": 344
+    }
+  ]
 }

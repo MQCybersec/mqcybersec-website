@@ -3,10 +3,10 @@
 const { writeup } = Astro.props;
 
 // Format date
-const formattedDate = new Intl.DateTimeFormat('en-US', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
+const formattedDate = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
 }).format(writeup.data.pubDate);
 
 // Tags data for filtering
@@ -15,63 +15,88 @@ const tagsJSON = JSON.stringify(writeup.data.tags || []);
 
 <a
   href={`/writeups/${writeup.slug}`}
-  class="block border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow bg-background-offset"
+  class="border-border bg-background-offset block overflow-hidden rounded-lg border transition-shadow hover:shadow-lg"
   data-writeup-card
-  data-category={writeup.data.category || ''}
-  data-ctf={writeup.data.ctf || ''}
-  data-section={writeup.data.section || ''}
+  data-category={writeup.data.category || ""}
+  data-ctf={writeup.data.ctf || ""}
+  data-section={writeup.data.section || ""}
   data-tags={tagsJSON}
 >
-  {writeup.data.image ? (
-    <img
-      src={writeup.data.image}
-      alt={writeup.data.title}
-      class="w-full h-48 object-cover"
-    />
-  ) : (
-    <div class="w-full h-48 bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white">
-      <span class="text-xl font-bold">{`${writeup.data.title} / ${writeup.data.ctf}` || writeup.data.ctf || 'CTF Writeup'}</span>
-    </div>
-  )}
-  
-  <!-- Section badge if available -->
-  {writeup.data.section && (
-    <div class="absolute top-3 right-3 bg-primary/80 text-white text-xs px-2 py-1 rounded font-medium">
-      {writeup.data.section}
-    </div>
-  )}
-  
-  <div class="p-6">
-    <div class="flex gap-2 mb-2">
-      {writeup.data.ctf && (
-        <span class="px-2 py-1 text-xs bg-primary/20 text-primary rounded">{writeup.data.ctf}</span>
-      )}
-      {writeup.data.category && (
-        <span class="px-2 py-1 text-xs bg-secondary/20 text-secondary rounded">{writeup.data.category}</span>
-      )}
-    </div>
-    
-    <h2 class="text-xl font-bold mb-2 text-text">{writeup.data.title}</h2>
-    <p class="text-text-offset mb-4 line-clamp-2">{writeup.data.description}</p>
-    
-    <!-- Tags display -->
-    {writeup.data.tags && writeup.data.tags.length > 0 && (
-      <div class="mb-3 flex flex-wrap gap-1">
-        {writeup.data.tags.map(tag => (
-          <span class="text-xs bg-background-alt text-primary px-2 py-0.5 rounded-full">
-            #{tag}
-          </span>
-        ))}
+  {
+    writeup.data.image ? (
+      <img
+        src={writeup.data.image}
+        alt={writeup.data.title}
+        class="h-48 w-full object-cover"
+      />
+    ) : (
+      <div class="flex h-48 w-full items-center justify-center bg-gradient-to-r from-primary to-secondary text-white">
+        <span class="font-bold text-xl">
+          {`${writeup.data.title} / ${writeup.data.ctf}` ||
+            writeup.data.ctf ||
+            "CTF Writeup"}
+        </span>
       </div>
-    )}
-    
+    )
+  }
+
+  <!-- Section badge if available -->
+  {
+    writeup.data.section && (
+      <div class="bg-primary/80 absolute right-3 top-3 rounded px-2 py-1 font-medium text-white text-xs">
+        {writeup.data.section}
+      </div>
+    )
+  }
+
+  <div class="p-6">
+    <div class="mb-2 flex gap-2">
+      {
+        writeup.data.ctf && (
+          <span class="bg-primary/20 rounded px-2 py-1 text-primary text-xs">
+            {writeup.data.ctf}
+          </span>
+        )
+      }
+      {
+        writeup.data.category && (
+          <span class="bg-secondary/20 rounded px-2 py-1 text-secondary text-xs">
+            {writeup.data.category}
+          </span>
+        )
+      }
+    </div>
+
+    <h2 class="text-text mb-2 font-bold text-xl">{writeup.data.title}</h2>
+    <p class="text-text-offset mb-4 line-clamp-2">{writeup.data.description}</p>
+
+    <!-- Tags display -->
+    {
+      writeup.data.tags && writeup.data.tags.length > 0 && (
+        <div class="mb-3 flex flex-wrap gap-1">
+          {writeup.data.tags.map((tag) => (
+            <span class="bg-background-alt rounded-full px-2 py-0.5 text-primary text-xs">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )
+    }
+
     <div class="flex items-center">
-      <time class="text-sm text-text-offset" datetime={writeup.data.pubDate.toISOString()}>
+      <time
+        class="text-text-offset text-sm"
+        datetime={writeup.data.pubDate.toISOString()}
+      >
         {formattedDate}
       </time>
-      {writeup.data.author && (
-        <span class="text-sm text-text-offset ml-2">• by <span class="text-primary">{writeup.data.author}</span></span>
-      )}
+      {
+        writeup.data.author && (
+          <span class="text-text-offset ml-2 text-sm">
+            • by <span class="text-primary">{writeup.data.author}</span>
+          </span>
+        )
+      }
     </div>
   </div>
 </a>

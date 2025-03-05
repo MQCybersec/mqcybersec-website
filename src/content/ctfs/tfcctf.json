@@ -1,12 +1,11 @@
 {
-    "name": "TFC CTF",
-    "image": "/src/content/ctfs/_images/tfcctf.png",
-    "placements": [
-        {
-            "year": 2022,
-            "globalPlacement": 47,
-            "totalTeams": 941
-        }
-    ]
-
+  "name": "TFC CTF",
+  "image": "/src/content/ctfs/_images/tfcctf.png",
+  "placements": [
+    {
+      "year": 2022,
+      "globalPlacement": 47,
+      "totalTeams": 941
+    }
+  ]
 }

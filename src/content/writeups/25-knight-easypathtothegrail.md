@@ -15,6 +15,7 @@ We are given a `grail.knight` which is an ELF binary again:
 We have a few functions and of interest are `main`, `transform_input` and `do_fight`.
 
 The snippet of `main` doing the flag check is:
+
 ```c
     transform_input(local_198,local_118);
     iVar1 = strcmp(local_118,"D2C22A62DEA62CCE9EFA0ECC86CE9AFA4ECC6EFAC6162C3636CC76E6A6BE");
@@ -35,7 +36,7 @@ void transform_input(byte *param_1,char *param_2)
   byte bVar1;
   char *local_28;
   byte *local_20;
-  
+
   local_28 = param_2;
   for (local_20 = param_1; *local_20 != 0; local_20 = local_20 + 1) {
     bVar1 = do_fight(*local_20);
@@ -47,7 +48,7 @@ void transform_input(byte *param_1,char *param_2)
 }
 ```
 
-This (in essence) is hex encoding a string byte by byte but running `do_fight` on each byte each iteration before hex encoding. 
+This (in essence) is hex encoding a string byte by byte but running `do_fight` on each byte each iteration before hex encoding.
 
 ```c
 
@@ -57,7 +58,7 @@ byte do_fight(byte param_1)
   undefined local_1c;
   undefined local_d;
   undefined4 local_c;
-  
+
   local_d = 0;
   local_1c = param_1;
   for (local_c = 0; local_c < 8; local_c = local_c + 1) {
@@ -76,10 +77,12 @@ eg. `10110011` becomes `11001101`.
 So the overall functionality is taking a string, getting each byte, reversing the bit order and then hex encoding it.
 
 So to undo it we need to:
+
 - Hex Decode the string
 - Reverse the bits
 
 I do this in Python:
+
 ```python
 def do_fight(byte):
     result = 0
@@ -103,6 +106,7 @@ print(f"Decoded flag: {flag.decode()}")
 ```
 
 This outputs:
+
 ```bash
 $ python3 script.py
 Decoded flag: KCTF{e4sy_p3asY_r3v_ch4ll3nge}
