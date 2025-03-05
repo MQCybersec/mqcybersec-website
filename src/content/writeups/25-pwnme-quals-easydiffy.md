@@ -51,14 +51,14 @@ print("ciphertext =", ciphertext.hex())
 ```
 
 We can see the key is produced by the expression $g^a\mod{p}$, where $g = p-1$. Let's try and find if this has a special property. First, expand the binomial:
-\\[g^a = (p-1)^a = (-1)^a + {n \choose k}(-1)^{a-1}p + {n \choose k}(-1)^{a-2}p^2+\ldots\\]
+\\[g^a = (p-1)^a = (-1)^a + {n \choose k}(-1)^{a-1}p + {n \choose k}(-1)^{a-2}p^2+\ldots+p^a\\]
 (The values for ${n \choose k}$ are not necessary, you'll see why here.)
 
 However, we are expanding this expression $\pmod{p}$. So all terms with a $p^n$ in it will reduce to $0$, as they are divisible by $p$.
 \\[g^a \equiv (-1)^a \pmod{p}\\]
 
 We also know $a$ is odd, since it is prime. So we get the following result:
-\\[g^a \equiv -1 \pmod{p} \leftrightarrows g^a \equiv p-1 \pmod{p}\\]
+\\[g^a \equiv -1 \pmod{p} \leftrightharpoons g^a \equiv p-1 \pmod{p}\\]
 
 Therefore for any odd index $a$, $(p-1)^a \equiv p-1 \pmod{p}$. Note that we have only tried this when $p$ is prime, so this is not a general rule yet. But it will work for our case.
 
