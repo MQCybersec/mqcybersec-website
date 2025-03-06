@@ -6,6 +6,7 @@ ctf: "PicoCTF"
 category: "general skill"
 author: "sclux7"
 section: "PicoCTF"
+tags: ["easy"]
 ---
 
 # Understanding the challenge

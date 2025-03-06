@@ -7,6 +7,7 @@ ctf: "PwnMe Quals 2025"
 category: "misc"
 author: "Ch1maera & sealldev"
 section: "CTFs"
+image: "images/25-pwnmequals/icon.png"
 ---
 
 We are provided with a packet capture that contains a range of protocols used for internet communication. Looking through some of the protocols, we can see an IRC protocol. 

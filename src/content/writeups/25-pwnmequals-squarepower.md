@@ -6,6 +6,7 @@ ctf: "PwnMe Quals 2025"
 category: "cryptography"
 author: "tulip & h8ckjv"
 section: "CTFs"
+image: "images/25-pwnmequals/icon.png"
 ---
 
 Another encryption script. This closely resembles the Paillier cryptosystem.

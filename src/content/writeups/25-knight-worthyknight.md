@@ -6,6 +6,7 @@ ctf: "KnightCTF 2025"
 category: "rev"
 author: "sealldev"
 section: "CTFs"
+image: "images/25-knight/icon.png"
 ---
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/knightctf2025#worthy-knight)

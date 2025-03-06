@@ -6,6 +6,7 @@ ctf: "PwnMe Quals 2025"
 category: "web"
 author: "sealldev & Solopie"
 section: "CTFs"
+image: "images/25-pwnmequals/icon.png"
 ---
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/pwnmequals2025#hack-the-bot-1)

@@ -8,6 +8,7 @@ ctf: "PicoCTF"
 category: "general skill"
 author: "sclux7"
 section: "PicoCTF"
+tags: ["medium"]
 ---
 
 # Understanding the challenge

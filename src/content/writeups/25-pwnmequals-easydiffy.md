@@ -6,6 +6,7 @@ ctf: "PwnMe Quals 2025"
 category: "cryptography"
 author: "tulip"
 section: "CTFs"
+image: "images/25-pwnmequals/icon.png"
 ---
 
 The challenge gives us a simple script and output parameters.
