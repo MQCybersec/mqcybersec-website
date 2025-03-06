@@ -3,7 +3,7 @@ title: "Mafia at the End of the Block 1"
 description: "You're an agent, your unit recently intercepted a mob discussion about an event that's going to take place on August 8, 2024. You already know the location, though. A password for the event was mentioned. Your job is to find it and return it so that an agent can go to the scene and collect evidence. Note : The contract is deployed on sepolia network "
 
 pubDate: 2025-03-04
-ctf: "PwnMeCTF 2025"
+ctf: "PwnMe Quals 2025"
 category: "misc"
 author: "Ch1maera & sealldev"
 section: "CTFs"
