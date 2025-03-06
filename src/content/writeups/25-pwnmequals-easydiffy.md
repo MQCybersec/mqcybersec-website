@@ -3,10 +3,8 @@ title: "Easy Diffy"
 description: "I managed to generate strong parameters for our diffie-hellman key exchange, i think my message is now safe." 
 pubDate: 2025-03-04
 ctf: "PwnMe CTF Quals"
-category: "Cryptography"
+category: "cryptography"
 author: "tulip"
-# image: "./sample/"
-hidden: false
 section: "CTFs"
 ---
 
