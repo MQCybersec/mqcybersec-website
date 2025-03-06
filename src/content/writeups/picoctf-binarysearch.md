@@ -18,8 +18,21 @@ We are given a zip file with 3 folders and a .sh (shell script) file.
 Navigating to the file using `cd [folder]/`, we can then read the file using `cat [file]` so that we may begin understanding how this file works.
 
 We see that the program first chooses a random number between 1 and 1000,
+```
+ target=$(( (RANDOM % 1000) + 1 ))
+```
 
-it then reads the inputted guess, and if the guess is valid (only contains numbers between 0 and 9), checks if the guess is higher or lower than the target number. It then prints a corresponding message to keep the player's guesses on the right track.
+it then reads the inputted guess, and if the guess is valid (only contains numbers between 0 and 9),
+```
+if ! [[ "$guess" =~ ^[0-9]+$ ]]; then
+```
+checks if the guess is higher or lower than the target number. It then prints a corresponding message to keep the player's guesses on the right track.
+```
+if (( guess < target )); then
+                    echo "Higher! Try again."
+                elif (( guess > target )); then
+                    echo "Lower! Try again."
+```
 
 Understanding this, let's attempt the challenge.
 
