@@ -4,11 +4,13 @@ import Header from "~/components/header.astro";
 import Footer from "~/components/footer.astro";
 import ContentSection from "~/components/content-section.astro";
 import { Icon } from "astro-icon/components";
+
 import "~/styles/theme.css";
 import {
   autoHyperlinkTerms,
   extractTagSuggestions,
 } from "~/utils/auto-hyperlink";
+import 'katex/dist/katex.min.css';
 
 // Generate paths for all writeups
 export async function getStaticPaths() {
@@ -433,6 +435,25 @@ const relatedWriteups = allWriteups
       });
     </script>
 
+
+    <script>
+      window.addEventListener("DOMContentLoaded", async () => {
+
+        const { default: renderMathInElement } = await import("katex/contrib/auto-render/auto-render.js");
+
+        renderMathInElement(document.body, {
+          delimiters: [
+
+            { left: "$$", right: "$$", display: true },
+            { left: "\\[", right: "\\]", display: true },
+            { left: "$", right: "$", display: false },
+            { left: "\\(", right: "\\)", display: false }
+
+          ]
+        });
+      });
+    </script>
+    
     <style is:global>
       /* Improved code block styling */
       .prose pre {
