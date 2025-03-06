@@ -6,6 +6,7 @@ ctf: "KashiCTF 2025"
 category: "web"
 author: "sealldev"
 section: "CTFs"
+image: "images/25-kashi/icon.png"
 ---
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/kashictf2025#corporate-life-1)

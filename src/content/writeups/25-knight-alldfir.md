@@ -5,6 +5,7 @@ pubDate: 2025-01-22
 ctf: "KnightCTF 2025"
 category: "forensics"
 author: "sealldev"
+section: "CTFs"
 ---
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/knightctf2025#dfir)

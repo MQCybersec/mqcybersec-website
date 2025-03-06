@@ -7,6 +7,7 @@ import ContentSection from "~/components/content-section.astro";
 import "~/styles/index.css";
 import LogoBlock from "~/components/logo-block.astro";
 import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
 import { extractTagSuggestions } from "~/utils/auto-hyperlink";
 const { generator, site } = Astro;
 
@@ -56,13 +57,36 @@ const ctfs = [
   ...new Set(writeups.map((post) => post.data.ctf).filter(Boolean)),
 ];
 
-// Get all sections
-const sections = [
+// Get all sections from the sections collection with their icons/images
+const sectionCollection = await getCollection("sections");
+const sectionsMap = new Map();
+
+// Process sections from the section collection
+sectionCollection.forEach((section) => {
+  sectionsMap.set(section.data.name, {
+    icon: section.data.icon || null,
+    iconImage: section.data.iconImage || null,
+    color: section.data.color || null
+  });
+});
+
+// Get unique sections from writeups
+const sectionNames = [
   ...new Set(writeups.map((post) => post.data.section).filter(Boolean)),
 ];
 
+// Create a formatted sections array with icon information
+const sections = sectionNames.map((name) => {
+  const sectionInfo = sectionsMap.get(name) || { icon: null, iconImage: null, color: null };
+  return {
+    name,
+    icon: sectionInfo.icon,
+    iconImage: sectionInfo.iconImage,
+    color: sectionInfo.color
+  };
+});
+
 // Create a searchable index for client-side search
-// Include title, description, ctf, category, section, tags and a preview of the content
 const searchIndex = sortedWriteups.map((writeup) => {
   const searchableText = [
     writeup.data.title,
@@ -185,10 +209,22 @@ const title = "CTF Writeups | MQCyberSec";
                   </button>
                   {sections.map((section) => (
                     <button
-                      class="section-btn bg-background-offset text-text hover:bg-background-alt rounded-full px-4 py-2 font-medium transition-colors text-sm"
-                      data-section={section}
+                      class="section-btn bg-background-offset text-text hover:bg-background-alt rounded-full px-4 py-2 font-medium transition-colors text-sm flex items-center"
+                      data-section={section.name}
+                      style={section.color ? `background-color: ${section.color}20; color: ${section.color};` : ''}
                     >
-                      {section}
+                      {section.iconImage ? (
+                        <Image 
+                          src={section.iconImage}
+                          alt={`${section.name} icon`}
+                          width={16}
+                          height={16}
+                          class="mr-1.5"
+                        />
+                      ) : section.icon ? (
+                        <span class="mr-1.5">{section.icon}</span>
+                      ) : null}
+                      {section.name}
                     </button>
                   ))}
                 </div>
@@ -344,12 +380,25 @@ const title = "CTF Writeups | MQCyberSec";
       function updateSectionUI() {
         sectionBtns.forEach((btn) => {
           const section = btn.getAttribute("data-section");
+          const sectionObj = sections.find(s => s.name === section);
+          
           if (section === currentSection) {
             btn.classList.add("bg-primary", "text-white", "active");
-            btn.classList.remove("bg-background-offset", "text-text");
+            btn.classList.remove("bg-background-offset", "text-text", "hover:bg-background-alt");
+            
+            if (sectionObj && sectionObj.color) {
+              btn.style.backgroundColor = sectionObj.color;
+              btn.style.color = "white";
+            }
           } else {
             btn.classList.remove("bg-primary", "text-white", "active");
-            btn.classList.add("bg-background-offset", "text-text");
+            
+            if (sectionObj && sectionObj.color) {
+              btn.style.backgroundColor = `${sectionObj.color}20`;
+              btn.style.color = sectionObj.color;
+            } else {
+              btn.classList.add("bg-background-offset", "text-text", "hover:bg-background-alt");
+            }
           }
         });
       }

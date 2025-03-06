@@ -1,6 +1,6 @@
 ---
 title: "Exceeding Knight"
-description: ""
+description: "In the shadows of the ancient realm, a knight watches over unseen boundaries. The path ahead holds secrets known only to those who dare to explore beyond the ordinary."
 pubDate: 2025-01-22
 ctf: "KnightCTF 2025"
 category: "web"

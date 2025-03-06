@@ -1,13 +1,40 @@
 ---
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+
 const { writeup } = Astro.props;
 
+// Format date
 const formattedDate = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "long",
   day: "numeric",
 }).format(writeup.data.pubDate);
 
+// Prepare tags JSON for data attributes
 const tagsJSON = JSON.stringify(writeup.data.tags || []);
+
+// Get section data if it exists
+let sectionData = null;
+if (writeup.data.section) {
+  try {
+    // Try to fetch section by slug (convert section name to slug format)
+    const sectionSlug = writeup.data.section.toLowerCase().replace(/\s+/g, '-');
+    sectionData = await getEntry('sections', sectionSlug);
+  } catch (e) {
+    // Section doesn't exist in the collection - will be handled dynamically
+    sectionData = null;
+  }
+}
+
+// Get section info if available
+const sectionName = writeup.data.section || null;
+const sectionTextIcon = sectionData?.data?.icon || null;
+const sectionIconImage = sectionData?.data?.iconImage || null;
+const sectionColor = sectionData?.data?.color || null;
+
+// Determine which image to display - writeup image takes precedence
+const displayImage = writeup.data.image || null;
 ---
 
 <a
@@ -16,36 +43,67 @@ const tagsJSON = JSON.stringify(writeup.data.tags || []);
   data-writeup-card
   data-category={writeup.data.category || ""}
   data-ctf={writeup.data.ctf || ""}
-  data-section={writeup.data.section || ""}
+  data-section={sectionName || ""}
   data-tags={tagsJSON}
 >
-  {
-    writeup.data.image ? (
-      <img
-        src={writeup.data.image}
-        alt={writeup.data.title}
-        class="h-48 w-full object-cover"
-      />
-    ) : (
-      <div class="flex h-48 w-full items-center justify-center bg-gradient-to-r from-primary to-secondary p-4 text-center text-white">
+  <div class="relative h-48 w-full bg-gradient-to-r from-primary to-secondary">
+    <!-- Text positioning - properly centered when no image, top-left when image is present -->
+    <div class={`absolute text-white ${displayImage ? 'top-4 left-4 w-3/5' : 'inset-0 flex items-center justify-center'}`}>
+      {!displayImage ? (
+        <div class="w-full text-center">
+          <span class="font-bold text-xl break-words">
+            {`${writeup.data.title}${writeup.data.ctf ? " / " + writeup.data.ctf : ""}` ||
+              writeup.data.ctf ||
+              "CTF Writeup"}
+          </span>
+        </div>
+      ) : (
         <span class="font-bold text-xl break-words">
-          {`${writeup.data.title}${writeup.data.ctf ? " / " + writeup.data.ctf : ""}` || 
-           writeup.data.ctf || 
-           "CTF Writeup"}
+          {`${writeup.data.title}${writeup.data.ctf ? " / " + writeup.data.ctf : ""}` ||
+            writeup.data.ctf ||
+            "CTF Writeup"}
         </span>
+      )}
+    </div>
+    
+    <!-- Image if available, positioned to the right -->
+    {displayImage && (
+      <div class="absolute right-4 top-1/2 -translate-y-1/2 overflow-hidden rounded-lg border-2 border-white/50 shadow-lg h-36 w-36 md:h-40 md:w-40">
+        <Image
+          src={displayImage}
+          alt={writeup.data.title}
+          class="h-full w-full object-cover"
+        />
       </div>
-    )
-  }
-  <!-- Section badge if available -->
-  {
-    writeup.data.section && (
-      <div class="bg-primary/80 absolute right-3 top-3 rounded px-2 py-1 font-medium text-white text-xs">
-        {writeup.data.section}
-      </div>
-    )
-  }
+    )}
+  </div>
+  
   <div class="p-6">
-    <div class="mb-2 flex gap-2">
+    <div class="mb-2 flex flex-wrap gap-2">
+      {/* Display section badge in metadata area */}
+      {
+        sectionName && (
+          <span 
+            class="rounded px-2 py-1 text-xs font-medium text-white flex items-center"
+            style={sectionColor ? `background-color: ${sectionColor}` : 'background-color: var(--color-primary)'}>
+            
+            {/* Section icon - show image icon first, then fall back to text icon */}
+            {sectionIconImage ? (
+              <Image 
+                src={sectionIconImage} 
+                alt={`${sectionName} icon`}
+                width={16}
+                height={16}
+                class="mr-1 inline-block"
+              />
+            ) : sectionTextIcon ? (
+              <span class="mr-1">{sectionTextIcon}</span>
+            ) : null}
+            
+            {sectionName}
+          </span>
+        )
+      }
       {
         writeup.data.ctf && (
           <span class="bg-primary/20 rounded px-2 py-1 text-primary text-xs">

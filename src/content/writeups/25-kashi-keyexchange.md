@@ -6,6 +6,7 @@ ctf: "KashiCTF 2025"
 category: "cryptography"
 author: "tulip"
 section: "CTFs"
+image: "images/25-kashi/icon.png"
 ---
 
 # Key Exchange - Cryptography

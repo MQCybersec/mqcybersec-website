@@ -63,20 +63,30 @@ export const ctfs = defineCollection({
     }),
 });
 
-// Updated writeups schema with tags
 const writeups = defineCollection({
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
     pubDate: z.date(),
     updatedDate: z.date().optional(),
     ctf: z.string().optional(),
     category: z.string().optional(),
-    section: z.string().optional(),
+    section: z.string().optional(), 
     tags: z.array(z.string()).optional().default([]),
     author: z.string().optional(),
-    image: z.string().optional(),
+    image: image().optional(),
     hidden: z.boolean().optional().default(false),
+  }),
+});
+
+const sections = defineCollection({
+  type: 'data', 
+  schema: ({ image }) => z.object({
+    name: z.string(), 
+    icon: z.string().optional(), 
+    iconImage: image().optional(), 
+    description: z.string().optional(), 
+    color: z.string().optional(), 
   }),
 });
 
@@ -86,4 +96,5 @@ export const collections = {
   ctfs,
   gridImages,
   writeups,
+  sections,
 };

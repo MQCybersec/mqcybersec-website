@@ -1,9 +1,10 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 import Header from "~/components/header.astro";
 import Footer from "~/components/footer.astro";
 import ContentSection from "~/components/content-section.astro";
 import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
 
 import "~/styles/theme.css";
 import {
@@ -43,6 +44,29 @@ if (existingTags.length < 3) {
     5 - existingTags.length,
   );
 }
+
+// Try to get section data if available
+let sectionData = null;
+if (entry.data.section) {
+  try {
+    // Try to fetch section by slug (convert section name to slug format)
+    const sectionSlug = entry.data.section.toLowerCase().replace(/\s+/g, '-');
+    sectionData = await getEntry('sections', sectionSlug);
+  } catch (e) {
+    // Section doesn't exist in the collection - will be handled dynamically
+    sectionData = null;
+  }
+}
+
+// Get section info if available
+const sectionName = entry.data.section || null;
+const sectionTextIcon = sectionData?.data?.icon || null;
+const sectionIconImage = sectionData?.data?.iconImage || null;
+const sectionColor = sectionData?.data?.color || null; 
+const sectionImage = sectionData?.data?.image || null;
+
+// Determine which image to display - writeup image takes precedence
+const displayImage = entry.data.image || sectionImage || null;
 
 // Get related writeups (by category or tag)
 const allWriteups = await getCollection("writeups");
@@ -141,10 +165,27 @@ const relatedWriteups = allWriteups
             </div>
 
             <div class="mb-3 flex flex-wrap gap-2">
+              {/* Section with icon if available */}
               {
-                entry.data.section && (
-                  <span class="bg-primary/40 rounded-full px-3 py-1 font-medium text-white text-sm">
-                    {entry.data.section}
+                sectionName && (
+                  <span 
+                    class="rounded-full px-3 py-1 font-medium text-white text-sm flex items-center"
+                    style={sectionColor ? `background-color: ${sectionColor}` : 'background-color: var(--color-primary)'}>
+                    
+                    {/* Section icon - show image icon first, then fall back to text icon */}
+                    {sectionIconImage ? (
+                      <Image 
+                        src={sectionIconImage} 
+                        alt={`${sectionName} icon`}
+                        width={16}
+                        height={16}
+                        class="mr-1.5"
+                      />
+                    ) : sectionTextIcon ? (
+                      <span class="mr-1.5">{sectionTextIcon}</span>
+                    ) : null}
+                    
+                    {sectionName}
                   </span>
                 )
               }
@@ -195,15 +236,44 @@ const relatedWriteups = allWriteups
             </div>
           </header>
 
-          {
-            entry.data.image && (
-              <img
-                src={entry.data.image}
-                alt={entry.data.title}
-                class="mb-8 h-64 w-full rounded-lg object-cover"
-              />
-            )
-          }
+          {/* Featured image with gradient background styling similar to WriteupCard */}
+          {displayImage ? (
+            <div class="relative h-64 w-full rounded-lg mb-8 overflow-hidden">
+              {/* Gradient background */}
+              <div class="absolute inset-0 bg-gradient-to-r from-primary to-secondary"></div>
+              
+              {/* Title overlay (top-left when image is present) */}
+              <div class="absolute top-4 left-4 w-3/5 text-white z-10">
+                <span class="font-bold text-xl break-words">
+                  {`${entry.data.title}${entry.data.ctf ? " / " + entry.data.ctf : ""}` ||
+                    entry.data.ctf ||
+                    "CTF Writeup"}
+                </span>
+              </div>
+              
+              {/* Image - positioned like in WriteupCard */}
+              <div class="absolute right-4 top-1/2 -translate-y-1/2 overflow-hidden rounded-lg border-2 border-white/50 shadow-lg h-48 w-48">
+                <Image
+                  src={displayImage}
+                  alt={entry.data.title}
+                  class="h-full w-full object-cover"
+                  width={500}
+                  height={500}
+                />
+              </div>
+            </div>
+          ) : (
+            <div class="relative h-64 w-full rounded-lg mb-8 overflow-hidden">
+              {/* Gradient background with centered text when no image */}
+              <div class="absolute inset-0 bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-center p-4">
+                <span class="font-bold text-xl break-words text-white">
+                  {`${entry.data.title}${entry.data.ctf ? " / " + entry.data.ctf : ""}` ||
+                    entry.data.ctf ||
+                    "CTF Writeup"}
+                </span>
+              </div>
+            </div>
+          )}
 
           <div
             class="prose prose-lg dark:prose-invert max-w-none"

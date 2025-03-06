@@ -6,6 +6,7 @@ ctf: "HackTheBox University CTF 2024"
 category: "fullpwn"
 author: "sealldev"
 section: "CTFs"
+image: "images/24-htbuni/icon.png"
 ---
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/htbunictf2024#apolo)
