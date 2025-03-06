@@ -7,14 +7,13 @@ pubDate: 2025-03-06
 ctf: "PicoCTF"
 category: "general"
 author: "sclux7"
-# image: "./sample/"
 section: "PicoCTF"
 ---
 
 # Understanding the challenge
-This is the fourth installment in the PW Crack series. I highly recommend completing the other ones from the start as they teach you different and important skills in each one, however only the fourth one was chosen to be demo'd in hack hub. But do what you will I am merely [a voice inside your head as you are reading this text](https://en.wikipedia.org/wiki/Subvocalization).
+This is the fourth installment in the PW Crack series. I highly recommend completing the other ones from the start as they teach you different and important skills in each one, however only the fourth one was chosen to be demo'd in Hack Hub. But do what you will I am merely [a voice inside your head as you are reading this text](https://en.wikipedia.org/wiki/Subvocalization).
 With all that out of the way, let's get [cracking](https://en.wikipedia.org/wiki/Pun)!
-After using wget on all three files and ensuring the are all in the same directory, we can then "cat level4.py" and start reading how the program works.
+After using `wget` on all three files and ensuring they are all in the same directory, we can then `cat level4.py` and start reading how the program works.
 ```python
 def level_4_pw_check():
     user_pw = input("Please enter correct password for flag: ")
@@ -58,8 +57,8 @@ for i in pos_pw_list:
 print("That password is incorrect")
 ```
 Analysing the above:
-- We move pos_pw_list to inside the function so that we may call upon it later
-- We use a for loop to iterate through the list so that when the correct password is seected, it then prints the flag
-- We change "user_pw_hash = hash_pw(user_pw)" to "user_pw_hash = hash_pw(i)" so that each password from pos_pw_list is run through the hash_pw function
+- We move `pos_pw_list` to inside the function so that we may call upon it later
+- We use a for loop to iterate through the list so that when the correct password is selected, it then prints the flag
+- We change `user_pw_hash = hash_pw(user_pw)` to `user_pw_hash = hash_pw(i)` so that each password from `pos_pw_list` is run through the `hash_pw` function
 
-After changing this and running the program with "python3 level4.py", we get the flag.
+After changing this and running the program with `python3 level4.py`, we get the flag.
