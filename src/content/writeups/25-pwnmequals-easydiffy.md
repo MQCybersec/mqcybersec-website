@@ -88,6 +88,5 @@ print(d)
 ```
 
 Running this script, we get the flag.
-```
-PWNME{411_my_h0m13s_h4t35_sm411_Gs}
-```
+
+Flag: `PWNME{411_my_h0m13s_h4t35_sm411_Gs}`
