@@ -5,7 +5,7 @@ Download the password checker here and you'll need the encrypted flag and the ha
 There are 100 potential passwords with only 1 being correct. You can find these by examining the password checker script."
 pubDate: 2025-03-06
 ctf: "PicoCTF"
-category: "general"
+category: "general skill"
 author: "sclux7"
 section: "PicoCTF"
 ---
