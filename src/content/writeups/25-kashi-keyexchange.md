@@ -94,6 +94,4 @@ Hint: DamnKeys
 
 So it's still encrypted, but with a weak cipher and a given key. The curly braces and the underscores are left untouched, which tells us that this is probably a caesar or vigenere or alike cipher. Plugging it into a vigenere decoder with the key `DamnKeys`, we get the flag:
 
-```
-KashiCTF{I_r3V3Al3d_my_Pub1Ic_K3y_4nd_4ll_1_g0t_w4s_th1s_L0usy_Fl4G_fjwREARo}
-```
+Flag: `KashiCTF{I_r3V3Al3d_my_Pub1Ic_K3y_4nd_4ll_1_g0t_w4s_th1s_L0usy_Fl4G_fjwREARo}`
