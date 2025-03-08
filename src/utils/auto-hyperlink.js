@@ -56,6 +56,7 @@ export const autoHyperlinkTerms = {
   // Ciphers
   "Caeser Cipher": "https://www.dcode.fr/caesar-cipher",
   "ROT Cipher": "https://www.dcode.fr/rot-cipher",
+  ROT8000: "https://www.dcode.fr/rot8000-cipher",
 
   //Windows
   DPAPI: "https://en.wikipedia.org/wiki/Data_Protection_API",
@@ -80,6 +81,9 @@ export const autoHyperlinkTerms = {
   SQLCipher: "https://github.com/sqlcipher/sqlcipher",
   mimikatz: "https://github.com/ParrotSec/mimikatz",
   dogbolt: "https://dogbolt.org/",
+  netcat: "https://en.wikipedia.org/wiki/Netcat",
+  nc: "https://en.wikipedia.org/wiki/Netcat",
+  gdb: "https://en.wikipedia.org/wiki/GNU_Debugger",
 
   // People
   sealldev: "https://seall.dev/",

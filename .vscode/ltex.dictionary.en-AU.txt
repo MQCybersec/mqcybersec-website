@@ -6,3 +6,5 @@ KnightCTF
 decompilation
 Ghidra
 dogbolt
+gdb
+netcat
