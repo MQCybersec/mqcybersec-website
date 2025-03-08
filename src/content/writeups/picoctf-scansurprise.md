@@ -7,6 +7,7 @@ category: "forensics"
 author: "sealldev"
 section: "PicoCTF"
 tags: ["easy"]
+image: "./images/picoctf/scansurprise/qr.png"
 ---
 
 We are given a `challenge.zip` that has a directory `home` with the following directory tree:

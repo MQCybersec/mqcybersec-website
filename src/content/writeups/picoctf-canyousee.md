@@ -7,6 +7,7 @@ category: "forensics"
 author: "sealldev"
 section: "PicoCTF"
 tags: ["easy"]
+image: "./images/picoctf/canyousee/ukn_reality.jpg"
 ---
 
 We are given a `unknown.zip`, once extracted it contains a `ukn_reality.jpg`.

@@ -7,6 +7,7 @@ category: "forensics"
 author: "sealldev"
 section: "PicoCTF"
 tags: ["easy"]
+image: "./images/picoctf/gloryofthegarden/garden.jpg"
 ---
 
 We start with a `garden.jpg`, viewing the contents having a picture of a garden but no flag visually.
