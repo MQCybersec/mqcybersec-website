@@ -67,6 +67,7 @@ export const autoHyperlinkTerms = {
   hashcat: "https://hashcat.net/hashcat/",
   Wireshark: "https://www.wireshark.org/download.html",
   CyberChef: "https://gchq.github.io/CyberChef/",
+  "Dcode.fr": "https://www.dcode.fr/cipher-identifier",
   Dcode: "https://www.dcode.fr/cipher-identifier",
   DetectItEasy: "https://github.com/horsicq/Detect-It-Easy",
   exiftool: "https://github.com/exiftool/exiftool",
