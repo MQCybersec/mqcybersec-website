@@ -78,6 +78,8 @@ export const autoHyperlinkTerms = {
   volatility: "https://github.com/volatilityfoundation/volatility3",
   volatility3: "https://github.com/volatilityfoundation/volatility3",
   SQLCipher: "https://github.com/sqlcipher/sqlcipher",
+  mimikatz: "https://github.com/ParrotSec/mimikatz",
+  dogbolt: "https://dogbolt.org/",
 
   // People
   sealldev: "https://seall.dev/",

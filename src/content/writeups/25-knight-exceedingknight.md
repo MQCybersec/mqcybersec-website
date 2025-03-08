@@ -11,7 +11,7 @@ image: "images/25-knight/icon.png"
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/knightctf2025#exceeding-knight)
 
-This was an open source web challenge and we were given a sizeable PHP application.
+This was an open source web challenge, and we were given a sizeable PHP application.
 
 The flag is stored inside the `.env` so we need to find a way to dump the environment.
 
@@ -19,7 +19,7 @@ This app used Laravel and had some applications: a calculator, a unit conversion
 
 ![exceedingviews.png](images/25-knight/exceedingviews.png)
 
-Looking through this app there is... nothing of interest initally. They seem to have covered all the possible bugs.
+Looking through this app there is... nothing of interest initially. They seem to have covered all the possible bugs.
 
 ```php
 <?php
@@ -99,8 +99,8 @@ class Handler extends ExceptionHandler {
 }
 ```
 
-If it hit's an error, the `.env` is dumped. So we just need to trigger some integer overflow.
+If it hits an error, the `.env` is dumped. So we just need to trigger some integer overflow.
 
-On the calculator app we calculate `1+11111111111111111111` and we get the flag in the `.env` printout.
+On the calculator app we calculate `1+11111111111111111111`, and we get the flag in the `.env` printout.
 
 Flag: `KCTF{_Y0U_sH0UlD_re4D_m0r3_Cod3_}`

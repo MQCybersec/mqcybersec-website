@@ -31,9 +31,9 @@ int shift = computeShiftFromKey(firstTen);
 String encodedUserInput = droidMagic(userInput, shift);
 ```
 
-It seems to be getting a key to 'shift' by which makes me think its a Caeser Cipher. I use [Dcode.fr](https://dcode.fr/) to check.
+It seems to be getting a key to 'shift' by which makes me think it's a Caesar Cipher. I use [Dcode.fr](https://dcode.fr/) to check.
 
-The Cipher Identifier thinks its a ROT Cipher, I decrypt it with a brute force and get the flag.
+The Cipher Identifier thinks it's a ROT Cipher, I decrypt it with a brute force and get the flag.
 
 ![droiddcode.png](images/25-knight/droiddcode.png)
 

@@ -13,7 +13,7 @@ image: "images/25-knight/icon.png"
 
 Another binary, ELF, you know the gist by now... I open Ghidra.
 
-We have to get 5 pair's of characters:
+We have to get 5 pairs of characters:
 
 First:
 
@@ -45,7 +45,7 @@ Fifth:
                       if (local_c8[9] == 0x69) {
 ```
 
-But this was incorrect and Ghidra was not being helpful, its decompilation was quite unclear and after calculating the values it was wrong. My teammate (Solopie) puts the binary into [dogbolt](https://dogbolt.org/) and the HexRays decompile was alot more helpful.
+But this was incorrect and Ghidra was not being helpful, its decompilation was quite unclear and after calculating the values it was wrong. My teammate (Solopie) puts the binary into [dogbolt](https://dogbolt.org/) and the HexRays decompile was a lot more helpful.
 
 First:
 
@@ -123,9 +123,9 @@ What this is doing is before doing a comparison it is modifying the input.
 2. Rotates left by 8 bits (swaps the bytes)
 3. Calculates MD5 hash
 
-We can replicate this process in Python and find the correct characters. We know its going to be a lowercase and uppercase letter.
+We can replicate this process in Python and find the correct characters. The characters are going to be a lowercase and uppercase letter.
 
-We can do it with this Python script:
+Let's do it with this Python script:
 
 ```python
 import hashlib

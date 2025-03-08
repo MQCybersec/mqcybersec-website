@@ -13,7 +13,7 @@ image: "images/25-knight/icon.png"
 
 We are given another ELF called `knight_s.enigma`. Load it into Ghidra and let's have a look.
 
-The main function of interest is again `FUN_001010a0` and it's **huge**... 1145 lines huge...
+The main function of interest is again `FUN_001010a0`, and it's **huge**... 1145 lines huge...
 
 Let's focus on the end of the code to see what it's using:
 
@@ -28,7 +28,7 @@ Let's focus on the end of the code to see what it's using:
   puts("Incorrect flag!");
 ```
 
-It seems to be looking at a `local_158` variable, let's find the defenition for that:
+It seems to be looking at a `local_158` variable, let's find the definition for that:
 
 ```c
   local_138 = 0x1450;
@@ -39,7 +39,7 @@ It seems to be looking at a `local_158` variable, let's find the defenition for 
   printf("Hello Knight\nEnter your secret: ");
 ```
 
-Right at the start when it ask's for a secret, alongside some other interesting values.
+Right at the start when it asks for a secret, alongside some other interesting values.
 
 Just below that we can see it's expecting a length of `32` / `0x22` for the input:
 
@@ -62,7 +62,7 @@ do {
         auVar87 = *(undefined (*) [16])(__s + lVar45);
 ```
 
-There is also some bitmasking here
+There is also some bit masking here
 
 ```c
 auVar87 = ~auVar86 & auVar87 | (auVar172 & auVar27 | ~auVar27 & auVar62) & auVar86;
@@ -70,7 +70,7 @@ auVar87 = ~auVar86 & auVar87 | (auVar172 & auVar27 | ~auVar27 & auVar62) & auVar
 
 This is doing bit manipulation with other variables (that we haven't figured out yet)...
 
-Due to the amount of reassigning, I used an LLM to help process this part. Turns out it's alot of fluff code and the general idea of whats happening is the following (as well as help write the Python solution):
+Due to the amount of reassigning, I used an LLM to help process this part. Turns out it's a lot of fluff code and the general idea of what's happening is the following (as well as help write the Python solution):
 
 1. It transforms the characters:
 
@@ -163,7 +163,7 @@ if __name__ == "__main__":
     print(f"Decoded flag: {final}")
 ```
 
-The LLM got it slightly wrong so I had to fix it at the end and added the `final` section in main myself.
+The LLM got it slightly wrong, so I had to fix it at the end and added the `final` section in main myself.
 
 ```bash
 $ python3 solve.py

@@ -73,7 +73,7 @@ byte do_fight(byte param_1)
 
 This is taking the input byte, then reversing the order of its bits. `local_d` is shifted left once then the rightmost bit of `local_1c` is extracted. This new extracted bit is added to `local_d` using `|` (OR). `local_1c` is then shifted right by 1 to process the next one. This is repeated 8 times (for each bit in the byte).
 
-eg. `10110011` becomes `11001101`.
+e.g. `10110011` becomes `11001101`.
 
 So the overall functionality is taking a string, getting each byte, reversing the bit order and then hex encoding it.
 

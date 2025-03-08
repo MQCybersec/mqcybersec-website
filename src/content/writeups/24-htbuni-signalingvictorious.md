@@ -34,6 +34,8 @@ Looking into Signal's encryption system they changed to a new one using the `Loc
 
 Dumping the memory of Signal.exe's parent process, you can then search for "SQLite 3 database" header, and find encryption key in hex!
 
+> You can also still do it with MemProcFS but it removes the `lsass.exe`, so you need to patch it out in `vmm.dll` so it dumps it. then you can utilise `mimikatz` and do the rest.
+
 Note: You could also do this properly by extracting DPAPI keys from memory and using to decrypt masterkey in `%APPDATA%\Microsoft\Protect` and using that decrypt the key from `config.json`.
 
 Open the database using SQLCipher with that key and view the messages table for the username and password of the Docker instance (connect according to instructions in readme.txt)
