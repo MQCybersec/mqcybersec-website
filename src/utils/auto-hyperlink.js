@@ -13,9 +13,9 @@ export const autoHyperlinkTerms = {
   SSRF: "https://owasp.org/www-community/attacks/Server_Side_Request_Forgery",
   XXE: "https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing",
   RCE: "https://owasp.org/www-community/attacks/rce/",
-  SSTI: "https://owasp.org/www-community/attacks/ssti/",
-  CRLF: "https://owasp.org/www-community/attacks/crlf/",
-  "DOM clobbering": "",
+  SSTI: "https://portswigger.net/web-security/server-side-template-injection",
+  CRLF: "https://www.invicti.com/learn/crlf-injection/",
+  "DOM clobbering": "https://portswigger.net/web-security/dom-based/dom-clobbering",
 
   // Binary Exploitation
   "Buffer Overflow":

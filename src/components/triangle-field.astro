@@ -11,23 +11,53 @@ const id = "triangle-field";
     constructor(x, y) {
       this.x = x;
       this.y = y;
-      this.vx = (Math.random() - 0.5) * 2;
-      this.vy = (Math.random() - 0.5) * 2;
+      this.baseVx = (Math.random() - 0.5) * 2;
+      this.baseVy = (Math.random() - 0.5) * 2;
+      this.vx = 0; // Start with zero velocity
+      this.vy = 0; // Start with zero velocity
       this.originalX = x;
       this.originalY = y;
+      this.startTime = Date.now();
+      this.holdDuration = 1500; // Hold for 3-5 seconds
+      this.accelerationDuration = 3000; // Speed up over 5 seconds
     }
 
     update(width, height, shouldAnimate) {
-      if (shouldAnimate) {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        if (this.x < 0 || this.x > width) this.vx *= -1;
-        if (this.y < 0 || this.y > height) this.vy *= -1;
-      } else {
-        // For mobile: keep points static at their original positions
+      const now = Date.now();
+      const elapsedTime = now - this.startTime;
+      
+      // Phase 1: Hold position for the hold duration
+      if (elapsedTime < this.holdDuration) {
+        // Keep at original position
         this.x = this.originalX;
         this.y = this.originalY;
+        return;
+      }
+      
+      // Phase 2: Acceleration phase - gradually increase velocity
+      const accelerationTime = elapsedTime - this.holdDuration;
+      if (accelerationTime < this.accelerationDuration) {
+        const accelerationFactor = accelerationTime / this.accelerationDuration;
+        this.vx = this.baseVx * accelerationFactor;
+        this.vy = this.baseVy * accelerationFactor;
+      } else {
+        // Phase 3: Full speed
+        this.vx = this.baseVx;
+        this.vy = this.baseVy;
+      }
+      
+      // Update position with current velocity
+      this.x += this.vx;
+      this.y += this.vy;
+
+      // Bounce off boundaries
+      if (this.x < 0 || this.x > width) {
+        this.vx *= -1;
+        this.baseVx *= -1; // Reverse the base velocity too
+      }
+      if (this.y < 0 || this.y > height) {
+        this.vy *= -1;
+        this.baseVy *= -1; // Reverse the base velocity too
       }
     }
   }
@@ -176,10 +206,41 @@ const id = "triangle-field";
     [346.99999999999994, -4.141131881851834e-14],
   ];
 
-  const POINT_COUNT = PREDEFINED_POSITIONS.length;
-  const DISTANCE_THRESHOLD = 100;
-  const MAX_LINE_DISTANCE = 150; // Maximum distance for full opacity
-  const FPS = 60;
+  // Function to double the number of points by interpolating between existing ones
+  function doublePoints(positions) {
+    if (positions.length <= 1) return positions;
+    
+    const newPositions = [];
+    
+    // Add the first point
+    newPositions.push(positions[0]);
+    
+    // Add interpolated points between each pair of original points
+    for (let i = 0; i < positions.length - 1; i++) {
+      const current = positions[i];
+      const next = positions[i + 1];
+      
+      // Calculate midpoint
+      const midX = (current[0] + next[0]) / 2;
+      const midY = (current[1] + next[1]) / 2;
+      
+      // Add midpoint and then the next original point
+      newPositions.push([midX, midY]);
+      newPositions.push(next);
+    }
+    
+    // Add one more point between last and first to close the loop
+    const last = positions[positions.length - 1];
+    const first = positions[0];
+    const midX = (last[0] + first[0]) / 2;
+    const midY = (last[1] + first[1]) / 2;
+    newPositions.push([midX, midY]);
+    
+    return newPositions;
+  }
+
+  // Double the points
+  const DOUBLED_POSITIONS = doublePoints(PREDEFINED_POSITIONS);
 
   class TriangleFieldAnimation {
     constructor(canvas, container) {
@@ -191,6 +252,18 @@ const id = "triangle-field";
       this.rafId = null;
       this.lastDrawTime = 0;
       this.isMobile = this.checkIfMobile();
+      this.lastTriangleCheck = 0;
+      this.triangleCheckInterval = 500; // Check for new triangles every 500ms
+      this.maxTriangles = 100; // Increased limit for doubled points
+      this.startTime = Date.now();
+      this.initialFormationDuration = 5000; // Keep initial formation for 5 seconds
+      
+      // Calculate base distance threshold for reference resolution
+      const referenceWidth = 1033;
+      const referenceHeight = 1728;
+      const referenceArea = referenceWidth * referenceHeight;
+      this.baseDistanceThreshold = 100;
+      this.baseMaxLineDistance = 150;
 
       this.setupCanvas();
       this.createPoints();
@@ -199,8 +272,6 @@ const id = "triangle-field";
     }
 
     checkIfMobile() {
-      // Check if device is mobile using window.innerWidth
-      // Common breakpoint for mobile devices is 768px
       return window.innerWidth < 768;
     }
 
@@ -212,18 +283,29 @@ const id = "triangle-field";
       this.canvas.style.width = `${width}px`;
       this.canvas.style.height = `${height}px`;
       this.ctx.scale(dpr, dpr);
+      
+      // Calculate scaled distance thresholds based on screen area
+      const referenceArea = 1033 * 1728;
+      const currentArea = width * height;
+      const scaleFactor = Math.sqrt(currentArea / referenceArea);
+      
+      this.distanceThreshold = this.baseDistanceThreshold * scaleFactor;
+      this.maxLineDistance = this.baseMaxLineDistance * scaleFactor;
     }
 
     createPoints() {
       const { clientWidth: width, clientHeight: height } = this.container;
 
+      // Use doubled positions
+      const positions = DOUBLED_POSITIONS;
+
       // Calculate scaling factors to fit the points within the container
       const pointsXRange =
-        Math.max(...PREDEFINED_POSITIONS.map((p) => p[0])) -
-        Math.min(...PREDEFINED_POSITIONS.map((p) => p[0]));
+        Math.max(...positions.map((p) => p[0])) -
+        Math.min(...positions.map((p) => p[0]));
       const pointsYRange =
-        Math.max(...PREDEFINED_POSITIONS.map((p) => p[1])) -
-        Math.min(...PREDEFINED_POSITIONS.map((p) => p[1]));
+        Math.max(...positions.map((p) => p[1])) -
+        Math.min(...positions.map((p) => p[1]));
 
       const scaleX = width / (pointsXRange || 1);
       const scaleY = height / (pointsYRange || 1);
@@ -232,11 +314,14 @@ const id = "triangle-field";
       const scale = Math.min(scaleX, scaleY) * 0.9; // 90% of container to add some margin
 
       // Find minimum values to offset the points
-      const minX = Math.min(...PREDEFINED_POSITIONS.map((p) => p[0]));
-      const minY = Math.min(...PREDEFINED_POSITIONS.map((p) => p[1]));
+      const minX = Math.min(...positions.map((p) => p[0]));
+      const minY = Math.min(...positions.map((p) => p[1]));
 
-      // Create points from predefined positions with scaling
-      this.points = PREDEFINED_POSITIONS.map(([x, y]) => {
+      // Reset the startTime when creating new points
+      this.startTime = Date.now();
+      
+      // Create points from doubled positions with scaling
+      this.points = positions.map(([x, y]) => {
         // Scale and center the points in the container
         const scaledX = (x - minX) * scale + (width - pointsXRange * scale) / 2;
         const scaledY =
@@ -251,13 +336,16 @@ const id = "triangle-field";
         this.isMobile = this.checkIfMobile();
         this.setupCanvas();
         this.createPoints();
+        
+        // Clear triangles on resize to prevent lag spikes
+        this.triangles = [];
       });
       this.resizeObserver.observe(this.container);
     }
 
     animate(timestamp) {
       const elapsed = timestamp - this.lastDrawTime;
-      if (elapsed < 1000 / FPS) {
+      if (elapsed < 1000 / 60) { // 60 FPS target
         this.rafId = requestAnimationFrame(this.animate.bind(this));
         return;
       }
@@ -268,37 +356,26 @@ const id = "triangle-field";
       this.ctx.fillStyle = "black";
       this.ctx.fillRect(0, 0, width, height);
 
-      // Draw lines between points
-      this.drawLines();
-
-      // Update and draw points
+      // Update and draw points - always animate now
       for (const point of this.points) {
-        // Only animate if not on mobile
-        point.update(width, height, !this.isMobile);
+        point.update(width, height, true);
         this.ctx.fillStyle = "purple";
         this.ctx.beginPath();
         this.ctx.arc(point.x, point.y, 2, 0, Math.PI * 2);
         this.ctx.fill();
       }
 
-      // Only check for new triangles on non-mobile devices
-      if (!this.isMobile) {
-        for (let i = 0; i < this.points.length - 2; i++) {
-          for (let j = i + 1; j < this.points.length - 1; j++) {
-            for (let k = j + 1; k < this.points.length; k++) {
-              const p1 = this.points[i];
-              const p2 = this.points[j];
-              const p3 = this.points[k];
+      // Draw lines between points
+      this.drawLines();
 
-              if (this.isValidTriangle(p1, p2, p3)) {
-                this.triangles.push(new Triangle(p1, p2, p3));
-              }
-            }
-          }
-        }
+      // Check for new triangles periodically, not every frame
+      // Now checking for triangles on mobile too
+      if (timestamp - this.lastTriangleCheck > this.triangleCheckInterval) {
+        this.checkForNewTriangles();
+        this.lastTriangleCheck = timestamp;
       }
 
-      // Update and draw triangles
+      // Update and draw existing triangles
       this.triangles = this.triangles.filter((triangle) => {
         if (triangle.update()) {
           triangle.draw(this.ctx);
@@ -311,23 +388,74 @@ const id = "triangle-field";
       this.rafId = requestAnimationFrame(this.animate.bind(this));
     }
 
+    checkForNewTriangles() {
+      // Get elapsed time since animation started
+      const elapsedTime = Date.now() - this.startTime;
+      
+      // Only start creating triangles after the initial formation period
+      if (elapsedTime < this.initialFormationDuration) {
+        return;
+      }
+      
+      // Only add new triangles if we're below the maximum
+      if (this.triangles.length < this.maxTriangles) {
+        // Calculate how many triangles we can add this cycle
+        const trianglesToAdd = this.maxTriangles - this.triangles.length;
+        let added = 0;
+        
+        // Use a more efficient sampling method to avoid checking all possible combinations
+        const sampleSize = Math.min(30, this.points.length); // Sample up to 30 points
+        const sampledPoints = this.getRandomSample(this.points, sampleSize);
+        
+        // Check only among sampled points
+        for (let i = 0; i < sampledPoints.length - 2 && added < trianglesToAdd; i++) {
+          for (let j = i + 1; j < sampledPoints.length - 1 && added < trianglesToAdd; j++) {
+            for (let k = j + 1; k < sampledPoints.length && added < trianglesToAdd; k++) {
+              const p1 = sampledPoints[i];
+              const p2 = sampledPoints[j];
+              const p3 = sampledPoints[k];
+
+              if (this.isValidTriangle(p1, p2, p3)) {
+                this.triangles.push(new Triangle(p1, p2, p3));
+                added++;
+                if (added >= trianglesToAdd) break;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    getRandomSample(array, size) {
+      const shuffled = [...array].sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, size);
+    }
+
     drawLines() {
+      // Adjusted line density based on screen size, but same for mobile now
+      // Using a higher density for larger screens to maintain visual quality
+      const screenSize = this.container.clientWidth * this.container.clientHeight;
+      const referenceSize = 1033 * 1728;
+      const sizeFactor = Math.min(1, screenSize / referenceSize);
+      
+      // Adjust line density based on screen size, smaller screens get lower density
+      const lineDensity = 0.3 + (sizeFactor * 0.5); // Range from 0.3 to 0.8
+      
       for (let i = 0; i < this.points.length; i++) {
-        for (let j = i + 1; j < this.points.length; j++) {
+        // Only check connections to nearby points to reduce computation
+        const nearbyPoints = this.points
+          .slice(i + 1)
+          .filter(() => Math.random() < lineDensity); // Randomly sample points based on density
+        
+        for (const p2 of nearbyPoints) {
           const p1 = this.points[i];
-          const p2 = this.points[j];
           const distance = Math.hypot(p1.x - p2.x, p1.y - p2.y);
 
-          // Mobile: only draw shorter lines to create less complex appearance
-          const mobileMaxDistance = this.isMobile
-            ? MAX_LINE_DISTANCE * 0.7
-            : MAX_LINE_DISTANCE;
-
-          if (distance <= mobileMaxDistance) {
-            // Calculate opacity between 0.15 and 1
+          if (distance <= this.maxLineDistance) {
+            // Calculate opacity between 0.05 and 1
             const opacity = Math.max(
               0.05,
-              Math.min(1, 1 - distance / mobileMaxDistance),
+              Math.min(1, 1 - distance / this.maxLineDistance)
             );
 
             this.ctx.strokeStyle = `rgba(128, 0, 128, ${opacity})`;
@@ -346,9 +474,9 @@ const id = "triangle-field";
       const d2 = Math.hypot(p2.x - p3.x, p2.y - p3.y);
       const d3 = Math.hypot(p3.x - p1.x, p3.y - p1.y);
       return (
-        d1 < DISTANCE_THRESHOLD &&
-        d2 < DISTANCE_THRESHOLD &&
-        d3 < DISTANCE_THRESHOLD
+        d1 < this.distanceThreshold &&
+        d2 < this.distanceThreshold &&
+        d3 < this.distanceThreshold
       );
     }
 

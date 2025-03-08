@@ -666,6 +666,10 @@ const relatedWriteups = allWriteups
         );
         border-left: 4px solid var(--color-primary);
         font-weight: 500;
+        overflow-wrap: break-word; /* Ensure text wraps */
+        word-wrap: break-word; /* Legacy support */
+        word-break: break-word; /* Allows breaking at appropriate points */
+        hyphens: auto; /* Enables hyphenation */
       }
 
       .prose .flag-code {
@@ -677,6 +681,27 @@ const relatedWriteups = allWriteups
         border-radius: 0.25rem;
         box-shadow: 0 0 10px rgba(236, 72, 153, 0.2);
         animation: flag-glow 2s ease-in-out infinite alternate;
+        display: inline-block; /* Change from inline to inline-block */
+        max-width: 100%; /* Ensure it doesn't exceed container width */
+        overflow-wrap: break-word; /* Enable word wrapping */
+        word-wrap: break-word; /* Legacy browsers */
+        word-break: break-word; /* Break words only when necessary */
+        white-space: pre-wrap; /* Preserve spaces but allow wrapping */
+        box-decoration-break: clone; /* For wrapped text across lines */
+        padding-left: 0.6rem; /* Maintain padding when wrapped */
+        padding-right: 0.6rem;
+      }
+
+      /* Mobile-specific adjustments */
+      @media (max-width: 640px) {
+        .prose .flag-paragraph {
+          padding: 0.75rem 1rem; /* Slightly reduce padding on mobile */
+        }
+        
+        .prose .flag-code {
+          font-size: 0.9em; /* Slightly smaller font on mobile */
+          padding: 0.25rem 0.5rem; /* Reduce padding on mobile */
+        }
       }
 
       @keyframes flag-glow {

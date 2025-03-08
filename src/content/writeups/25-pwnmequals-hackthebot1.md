@@ -13,7 +13,7 @@ image: "images/25-pwnmequals/icon.png"
 
 This was a medium whitebox challenge, the files are available for download [here](https://github.com/sajjadium/ctf-archives/tree/64792ed55d90e43deb30cca2aa1f09e106a0eee3/ctfs/PwnMe/2025/Quals/web/Hack_the_bot_1)
 
-## Initial look
+## Initial Look
 
 The first flag is stored in a cookie that the bot will have.
 
@@ -323,11 +323,11 @@ They used HTML escape codes inside an `iframe`'s `srcdoc` to run the following:
 
 Which then exfiltrated the cookie!
 
-### Puppeteer Shenanigans
+### Nginx Shenanigans
 
 Full credit to Discord user `minilucker` for this solve.
 
-Pulling out the browser cookies by using Puppeteer you can decrypt them for the flag.
+Pulling out the browser cookies from the Puppeteer cache you can decrypt them for the flag.
 
 Firstly send a report to the URL `http://localhost/` to initialise the cookies in the browser cache.
 
