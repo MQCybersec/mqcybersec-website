@@ -57,6 +57,9 @@ export const autoHyperlinkTerms = {
   "Caeser Cipher": "https://www.dcode.fr/caesar-cipher",
   "ROT Cipher": "https://www.dcode.fr/rot-cipher",
 
+  //Windows
+  DPAPI: "https://en.wikipedia.org/wiki/Data_Protection_API",
+
   // Tools - Added per request
   Autopsy: "https://www.autopsy.com/download/",
   PayloadAllTheThings: "https://github.com/swisskyrepo/PayloadsAllTheThings",
@@ -69,6 +72,11 @@ export const autoHyperlinkTerms = {
   exiftool: "https://github.com/exiftool/exiftool",
   tshark: "https://tshark.dev/setup/install/",
   "webhook.site": "https://webhook.site",
+  MemProcFS: "https://github.com/ufrisk/MemProcFS",
+  vol3: "https://github.com/volatilityfoundation/volatility3",
+  volatility: "https://github.com/volatilityfoundation/volatility3",
+  volatility3: "https://github.com/volatilityfoundation/volatility3",
+  SQLCipher: "https://github.com/sqlcipher/sqlcipher",
 
   // People
   sealldev: "https://seall.dev/",

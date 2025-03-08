@@ -209,3 +209,15 @@ HTB{c4n_y0u_pl34as3_cr4ck?}
 ```
 
 User Flag: `HTB{c4n_y0u_pl34as3_cr4ck?}`
+
+#### Root
+
+> From here on was information from other writeups after the CTF concluded!
+
+Investigate the service running "health" (there was a HealthCheck.exe in the Desktop)
+
+It starts creating a new handle process with full access, then it's creating a lower privileged process (but inheriting all the open handles of the main process).
+
+You can exploit [LeakedHandles](https://github.com/lab52io/LeakedHandlesFinder/) using this, but it's easy to make your own exploit.
+
+There was also an unintended to abuse the SQLi to get the reset token of the admin and upload a malicious plugin to MasaCMS.
