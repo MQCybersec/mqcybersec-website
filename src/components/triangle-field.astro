@@ -18,7 +18,7 @@ const id = "triangle-field";
       this.originalX = x;
       this.originalY = y;
       this.startTime = Date.now();
-      this.holdDuration = 1500; // Hold for 3-5 seconds
+      this.holdDuration = 2000; // Hold for 3-5 seconds
       this.accelerationDuration = 3000; // Speed up over 5 seconds
     }
 
@@ -206,42 +206,6 @@ const id = "triangle-field";
     [346.99999999999994, -4.141131881851834e-14],
   ];
 
-  // Function to double the number of points by interpolating between existing ones
-  function doublePoints(positions) {
-    if (positions.length <= 1) return positions;
-    
-    const newPositions = [];
-    
-    // Add the first point
-    newPositions.push(positions[0]);
-    
-    // Add interpolated points between each pair of original points
-    for (let i = 0; i < positions.length - 1; i++) {
-      const current = positions[i];
-      const next = positions[i + 1];
-      
-      // Calculate midpoint
-      const midX = (current[0] + next[0]) / 2;
-      const midY = (current[1] + next[1]) / 2;
-      
-      // Add midpoint and then the next original point
-      newPositions.push([midX, midY]);
-      newPositions.push(next);
-    }
-    
-    // Add one more point between last and first to close the loop
-    const last = positions[positions.length - 1];
-    const first = positions[0];
-    const midX = (last[0] + first[0]) / 2;
-    const midY = (last[1] + first[1]) / 2;
-    newPositions.push([midX, midY]);
-    
-    return newPositions;
-  }
-
-  // Double the points
-  const DOUBLED_POSITIONS = doublePoints(PREDEFINED_POSITIONS);
-
   class TriangleFieldAnimation {
     constructor(canvas, container) {
       this.canvas = canvas;
@@ -297,7 +261,7 @@ const id = "triangle-field";
       const { clientWidth: width, clientHeight: height } = this.container;
 
       // Use doubled positions
-      const positions = DOUBLED_POSITIONS;
+      const positions = PREDEFINED_POSITIONS;
 
       // Calculate scaling factors to fit the points within the container
       const pointsXRange =
