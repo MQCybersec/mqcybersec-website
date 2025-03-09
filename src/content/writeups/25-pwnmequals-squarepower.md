@@ -6,7 +6,6 @@ ctf: "PwnMe Quals 2025"
 category: "cryptography"
 author: "tulip & h8ckjv"
 section: "CTFs"
-image: "images/25-pwnmequals/icon.png"
 ---
 
 Another encryption script. This closely resembles the Paillier cryptosystem.
@@ -112,7 +111,7 @@ while gcd(k, n) != 1:
     k = randint(2, n-1)
 ```
 
-This part is crucial. Since $\mathrm{gcd}(k,n)=1$, $k$ **must** have a modular inverse mod $n$. Thus if we multiply both sides by $k^{-1}$ ($k^{-1}$ denotes the modular inverse of $k \mod{n}$), we get:
+This part is crucial. Since $\mathrm{gcd}(k,n)=1$, $k$ **must** a modular inverse mod $n$. Thus if we multiply both sides by $k^{-1}$ ($k^{-1}$ denotes the modular inverse of $k \mod{n}$), we get:
 
 \\[ k^{-1}\frac{M-1}{n} \equiv m \pmod{n} \\]
 
