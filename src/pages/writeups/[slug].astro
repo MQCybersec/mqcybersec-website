@@ -600,6 +600,12 @@ const difficultyInfo = getDifficultyInfo(difficultyTag);
         padding-bottom: 0.1rem;
       }
 
+      @media (max-width: 768px) { /* For handling KaTeX rendering on slim screens (mobile) */
+        .katex-display {
+          font-size: clamp(0.25rem, 6vw, 0.7rem) !important;
+        }
+      }
+
       /* Inline code styling */
       .prose code:not(pre code) {
         background-color: var(--color-background-alt);
