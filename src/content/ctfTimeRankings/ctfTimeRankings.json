@@ -1,0 +1,25 @@
+{
+    "rankings": [
+      {
+        "year": 2022,
+        "globalRank": 307,
+        "countryRank": 2,
+        "countryName": "Australia",
+        "teamName": "MQCyberSec"
+      },
+      {
+        "year": 2021,
+        "globalRank": 507,
+        "countryRank": 12,
+        "countryName": "Australia",
+        "teamName": "MQCyberSec"
+      },
+      {
+        "year": 2020,
+        "globalRank": 912,
+        "countryRank": 14,
+        "countryName": "Australia",
+        "teamName": "MQCyberSec"
+      }
+    ]
+  }

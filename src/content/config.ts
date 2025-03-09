@@ -53,6 +53,15 @@ const placementSchema = z.object({
   totalTeams: z.number().optional(),
 });
 
+const ctfTimeRankingSchema = z.object({
+  year: z.number(),
+  globalRank: z.number(),
+  totalTeams: z.number().optional(),
+  countryRank: z.number().optional(),
+  countryName: z.string(),
+  teamName: z.string(),
+});
+
 export const ctfs = defineCollection({
   type: "data",
   schema: ({ image }) =>
@@ -60,6 +69,14 @@ export const ctfs = defineCollection({
       name: z.string(),
       image: image().optional(),
       placements: z.array(placementSchema),
+    }),
+});
+
+export const ctfTimeRankings = defineCollection({
+  type: "data",
+  schema: () =>
+    z.object({
+      rankings: z.array(ctfTimeRankingSchema)
     }),
 });
 
@@ -71,7 +88,7 @@ const writeups = defineCollection({
     updatedDate: z.date().optional(),
     ctf: z.string().optional(),
     category: z.string().optional(),
-    section: z.string().optional(), 
+    section: z.string().optional(),
     tags: z.array(z.string()).optional().default([]),
     author: z.string().optional(),
     image: image().optional(),
@@ -80,13 +97,13 @@ const writeups = defineCollection({
 });
 
 const sections = defineCollection({
-  type: 'data', 
+  type: 'data',
   schema: ({ image }) => z.object({
-    name: z.string(), 
-    icon: z.string().optional(), 
-    iconImage: image().optional(), 
-    description: z.string().optional(), 
-    color: z.string().optional(), 
+    name: z.string(),
+    icon: z.string().optional(),
+    iconImage: image().optional(),
+    description: z.string().optional(),
+    color: z.string().optional(),
   }),
 });
 
@@ -94,6 +111,7 @@ export const collections = {
   showcase,
   people,
   ctfs,
+  ctfTimeRankings,
   gridImages,
   writeups,
   sections,

@@ -4,10 +4,17 @@ import { Image } from "astro:assets";
 import ContentSection from "~/components/content-section.astro";
 import { getImage } from "astro:assets";
 import { getCollection } from "astro:content";
+import WriteupCard from "~/components/writeups/WriteupCard.astro";
 
+// Fetch CTF competitions data
 const competitions = await getCollection("ctfs", ({ data }) => "name" in data);
 
-// Rest of the imports and constants remain the same until the return statement
+// Fetch CTF Time rankings data
+const ctfTimeData = await getCollection("ctfTimeRankings");
+const ctfTimeRankings = ctfTimeData.length > 0 ? ctfTimeData[0].data.rankings : [];
+
+// Sort rankings by year (newest first)
+const sortedRankings = [...ctfTimeRankings].sort((a, b) => b.year - a.year);
 
 const ctfWins = competitions.reduce(
   (acc, competition) => {
@@ -78,22 +85,28 @@ const getPlacementInfo = (placement: number, total?: number) => {
     display = `Global Rank: #${placement} / ${total}`;
   }
 
+  // Pre-calculate the percentage display
+  let percentageDisplay = null;
+  if (percentage !== null) {
+    if (percentage <= 5 && !isTopTen) {
+      percentageDisplay = percentage.toFixed(1);
+    }
+  }
+
   return {
     display,
-    percentage:
-      percentage !== null && percentage <= 5 && !isTopTen
-        ? percentage.toFixed(1)
-        : null,
+    percentage: percentageDisplay,
     medalInfo,
   };
 };
 
 const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
   return competitions.sort((a, b) => {
+    // Pre-calculate top placement flags
     const aGlobalTop5 = a.globalPlacement < 6;
     const bGlobalTop5 = b.globalPlacement < 6;
-    const aAusTop5 = a.australiaPlacement && a.australiaPlacement < 6;
-    const bAusTop5 = b.australiaPlacement && b.australiaPlacement < 6;
+    const aAusTop5 = a.australiaPlacement ? (a.australiaPlacement < 6) : false;
+    const bAusTop5 = b.australiaPlacement ? (b.australiaPlacement < 6) : false;
 
     if (aGlobalTop5 !== bGlobalTop5) return aGlobalTop5 ? -1 : 1;
     if (aGlobalTop5 && bGlobalTop5)
@@ -111,8 +124,79 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
     return aPercentage - bPercentage;
   });
 };
+
+const displayPercentage = (percentage: number) => {
+ return percentage !== null ? (percentage <= 10 ? percentage.toFixed(1) : '') : '';
+}
+
+// Optionally fetch a few recent writeups to display
+const recentWriteups = await getCollection("writeups", ({ data }) => !data.hidden)
+  .then(writeups => writeups
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, 3)
+  );
+
 ---
 
+<!-- CTF Time Rankings Section -->
+<ContentSection title="CTF Time Rankings" id="ctf-rankings" altBackground={true}>
+  <Fragment slot="lead">
+    Our team's <span class="text-primary">global</span> and <span class="text-primary">regional</span> 
+    standings on <a href="https://ctftime.org/" target="_blank" rel="noopener" class="text-primary hover:underline">CTF Time</a>.
+  </Fragment>
+
+  <div class="max-w-6xl mx-auto mb-16">
+    <ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        // Process rankings data before rendering to avoid JSX fragment issues
+        sortedRankings.map((ranking) => {
+          // Pre-calculate all values
+          const globalMedalInfo = getMedalInfo(ranking.globalRank);
+          const countryMedalInfo = ranking.countryRank ? getMedalInfo(ranking.countryRank) : null;
+          const percentage = calculatePercentage(ranking.globalRank, ranking.totalTeams);
+          const percentageDisplay = displayPercentage(percentage);
+          const globalRankDisplay = ranking.totalTeams ? ` / ${ranking.totalTeams}` : '';
+          
+          // Render the card
+          return (
+            <li class="achievement-item flex flex-col items-center gap-4 rounded-lg border border-default bg-offset p-6">
+              <div class="relative size-16">
+                <div class="size-full rounded-full border-2 border-current p-3">
+                  <Icon name="mdi:trophy-award" class="size-full" />
+                </div>
+              </div>
+              <p class="text-center font-extrabold text-xl">
+                {ranking.year} Rankings
+              </p>
+              <div class="space-y-3 text-center text-offset text-sm">
+                <div class="space-y-1">
+                  <p class="font-medium text-base">
+                    {ranking.teamName}
+                  </p>
+                  {ranking.countryRank && (
+                    <p class={countryMedalInfo?.color || ""}>
+                      {countryMedalInfo?.emoji} {ranking.countryName} Rank: #{ranking.countryRank}
+                    </p>
+                  )}
+                  <p class={globalMedalInfo?.color}>
+                    {globalMedalInfo?.emoji} Global Rank: #{ranking.globalRank}{globalRankDisplay}
+                  </p>
+                  {percentageDisplay && (
+                    <p class="text-primary">
+                      Top {percentageDisplay}% Globally
+                    </p>
+                  )}
+                </div>
+              </div>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</ContentSection>
+
+<!-- Original CTF Achievements Section -->
 <ContentSection title="CTF Achievements" id="ctf-achievements">
   <Fragment slot="lead">
     Our team has <span class="text-primary">excelled</span> in various Capture The
@@ -278,11 +362,18 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
   }, observerOptions);
 
   document.addEventListener("DOMContentLoaded", () => {
+    // Observe the CTF Achievements section for animation
     const section = document.querySelector(".timeline-container");
     if (section) {
       section.classList.add("achievement-item-hidden");
       observer.observe(section);
     }
+    
+    // Make sure CTF Time rankings items are visible on page load
+    const ctfTimeItems = document.querySelectorAll("#ctf-rankings .achievement-item");
+    ctfTimeItems.forEach((item) => {
+      item.classList.add("achievement-item-visible");
+    });
   });
 </script>
 <script>
@@ -465,7 +556,7 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
 
   // Initial setup
   document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".achievement-item").forEach(hideItem);
+    document.querySelectorAll("#ctf-achievements .achievement-item").forEach(hideItem);
 
     if (yearButtons.length > 0) {
       const firstYear = yearButtons[0].getAttribute("data-year");
@@ -510,5 +601,52 @@ const getSortPriority = (competitions: Array<(typeof ctfWins)[number]>) => {
   .achievement-page {
     opacity: 1 !important;
     transform: none !important;
+  }
+  
+  /* CTF Time Rankings styling */
+  #ctf-rankings {
+    margin-bottom: 1rem;
+  }
+  
+  #ctf-rankings .achievement-item {
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+  
+  #ctf-rankings .achievement-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+<ContentSection title="CTF Writeups" id="ctf-writeups" altBackground={true}>
+  <Fragment slot="lead">
+    Explore our <span class="text-primary">detailed writeups</span> for various CTF challenges we've solved and learn from our <span class="text-primary">experiences</span>.
+  </Fragment>
+
+  <div class="mx-auto max-w-8xl">
+    <div class="mb-8 flex flex-col items-center">
+      
+      {recentWriteups.length > 0 && (
+        <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          {recentWriteups.map((writeup) => (
+            <WriteupCard writeup={writeup} />
+          ))}
+        </div>
+      )}
+
+      <a 
+        href="/writeups" 
+        class="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-white font-medium hover:bg-primary-dark transition-colors"
+      >
+        Browse All Writeups
+        <Icon name="mdi:arrow-right" class="size-5 transition-transform group-hover:translate-x-1" />
+      </a>
+    </div>
+  </div>
+</ContentSection>
+
+<style>
+  .bg-primary-dark {
+    background-color: var(--color-primary-dark, hsl(var(--color-primary-hue, 240), var(--color-primary-saturation, 100%), calc(var(--color-primary-lightness, 50%) - 10%)));
   }
 </style>
