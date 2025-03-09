@@ -8,3 +8,4 @@ Ghidra
 dogbolt
 gdb
 netcat
+CodeBrowser

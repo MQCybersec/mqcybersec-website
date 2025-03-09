@@ -85,6 +85,48 @@ const relatedWriteups = allWriteups
   )
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3); // Limit to 3 related writeups
+
+  const difficultyTags = ["easy", "medium", "hard"];
+
+
+// Get difficulty color and icon
+function getDifficultyInfo(tag) {
+  if (!tag) return null;
+  
+  const tagLower = tag.toLowerCase();
+  
+  switch(tagLower) {
+    case 'easy':
+      return {
+        color: '#4ade80', // green
+        bgColor: 'rgba(74, 222, 128, 0.2)',
+        icon: 'mdi:shield-check-outline'
+      };
+    case 'medium':
+      return {
+        color: '#fb923c', // orange
+        bgColor: 'rgba(251, 146, 60, 0.2)',
+        icon: 'mdi:shield-alert-outline'
+      };
+    case 'hard':
+      return {
+        color: '#f87171', // red
+        bgColor: 'rgba(248, 113, 113, 0.2)',
+        icon: 'mdi:shield-alert'
+      };
+    default:
+      return null;
+  }
+}
+
+const difficultyTag = (entry.data.tags || []).find(tag => 
+  difficultyTags.includes(tag.toLowerCase())
+);
+
+const difficultyInfo = getDifficultyInfo(difficultyTag);
+
+
+
 ---
 
 <!doctype html>
@@ -207,18 +249,35 @@ const relatedWriteups = allWriteups
               }
             </div>
 
-            <!-- Display tags if available -->
+            <!-- Display tags, filtering out difficulty tags for PicoCTF -->
             <div class="mb-3 flex flex-wrap gap-1">
               {
-                existingTags.map((tag) => (
-                  <a
-                    href={`/writeups?tag=${tag}`}
-                    class="bg-background-alt hover:bg-primary/10 rounded-full px-2 py-0.5 text-primary transition-colors text-xs"
-                  >
-                    #{tag}
-                  </a>
-                ))
+                (() => {
+                  
+                  // Filter out difficulty tags for PicoCTF section
+                  const filteredTags = entry.data.section === "PicoCTF" 
+                    ? existingTags.filter(tag => !difficultyTags.includes(tag.toLowerCase())) 
+                    : existingTags;
+                  
+                  return filteredTags.map((tag) => (
+                    <a
+                      href={`/writeups?tag=${tag}`}
+                      class="bg-background-alt hover:bg-primary/10 rounded-full px-2 py-0.5 text-primary transition-colors text-xs"
+                    >
+                      #{tag}
+                    </a>
+                  ));
+                })()
               }
+              {
+              difficultyInfo && entry.data.section === "PicoCTF" && (
+              <span 
+                class="rounded-full px-2 py-1 text-xs font-medium flex items-center"
+                style={`background-color: ${difficultyInfo.bgColor}; color: ${difficultyInfo.color};`}>
+                <Icon name={difficultyInfo.icon} class="size-3 mr-1" />
+                <span class="capitalize">{difficultyTag}</span>
+              </span>
+            )}
 
               {/* Suggested tags with different styling */}
               {

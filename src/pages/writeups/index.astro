@@ -39,15 +39,30 @@ const sortedWriteups = writeups.sort(
 // Collect all tags and their frequencies
 const tagFrequencyMap = new Map();
 sortedWriteups.forEach((writeup) => {
+  // Add regular tags
   (writeup.data.tags || []).forEach((tag) => {
     tagFrequencyMap.set(tag, (tagFrequencyMap.get(tag) || 0) + 1);
   });
+  
+  // Extract and add suggested tags
+  if (!writeup.data.tags || writeup.data.tags.length < 3) {
+    const suggestedTags = extractTagSuggestions(writeup.body, writeup.data.tags || []).slice(0, 3);
+    suggestedTags.forEach((tag) => {
+      // Suggested tags get a lower frequency weight (0.5) to rank them lower than regular tags
+      tagFrequencyMap.set(tag, (tagFrequencyMap.get(tag) || 0) + 0.5);
+    });
+  }
 });
+
 
 // Get tags sorted by frequency for UI
 const tags = [...tagFrequencyMap.entries()]
   .sort((a, b) => b[1] - a[1])
-  .map((entry) => entry[0]);
+  .map((entry) => ({
+    name: entry[0],
+    frequency: Math.round(entry[1]),
+    isSuggested: entry[1] % 1 !== 0 // If frequency has a decimal part, it's a suggested tag
+  }));
 
 // Categories for filtering
 const categories = [
@@ -86,8 +101,44 @@ const sections = sectionNames.map((name) => {
   };
 });
 
+// Detect sections that should have difficulty filters
+const hasPicoCTF = sections.some(section => section.name === "PicoCTF");
+const hasHackTheBox = sections.some(section => 
+  section.name === "HackTheBox Machines" || 
+  section.name === "HackTheBox Challenges"
+);
+
+// Difficulty info configuration
+const difficultyInfo = {
+  easy: {
+    color: '#4ade80', // green
+    bgColor: 'rgba(74, 222, 128, 0.2)',
+    icon: 'mdi:shield-check-outline'
+  },
+  medium: {
+    color: '#fb923c', // orange
+    bgColor: 'rgba(251, 146, 60, 0.2)',
+    icon: 'mdi:shield-alert-outline'
+  },
+  hard: {
+    color: '#f87171', // red
+    bgColor: 'rgba(248, 113, 113, 0.2)',
+    icon: 'mdi:shield-alert'
+  },
+  insane: {
+    color: '#a1a1aa', // grey
+    bgColor: 'rgba(161, 161, 170, 0.2)',
+    icon: 'mdi:shield-crown-outline'
+  }
+};
+
 // Create a searchable index for client-side search
 const searchIndex = sortedWriteups.map((writeup) => {
+  // Extract suggested tags for this writeup
+  const suggestedTags = (!writeup.data.tags || writeup.data.tags.length < 3) 
+    ? extractTagSuggestions(writeup.body, writeup.data.tags || []).slice(0, 3)
+    : [];
+  
   const searchableText = [
     writeup.data.title,
     writeup.data.description,
@@ -106,6 +157,7 @@ const searchIndex = sortedWriteups.map((writeup) => {
     searchableText,
     section: writeup.data.section || "",
     tags: writeup.data.tags || [],
+    suggestedTags,
     ctf: writeup.data.ctf || "",
     category: writeup.data.category || "",
   };
@@ -250,10 +302,11 @@ const title = "CTF Writeups | MQCyberSec";
                 <div class="mb-2 flex flex-wrap gap-2" id="tags-container">
                   {tags.map((tag) => (
                     <button
-                      class="tag-btn bg-background-offset text-text-offset hover:bg-background-alt rounded-full px-3 py-1 transition-colors text-sm"
-                      data-tag={tag}
+                      class={`tag-btn ${tag.isSuggested ? 'border border-dashed border-primary/30 text-text-offset' : 'bg-background-offset text-text-offset'} hover:bg-background-alt rounded-full px-3 py-1 transition-colors text-sm`}
+                      data-tag={tag.name}
+                      data-suggested={tag.isSuggested}
                     >
-                      #{tag}
+                      #{tag.name}
                     </button>
                   ))}
                 </div>
@@ -326,7 +379,7 @@ const title = "CTF Writeups | MQCyberSec";
 
     <Footer />
 
-    <script define:vars={{ searchIndex, sections }}>
+    <script define:vars={{ searchIndex, sections, difficultyInfo }}>
       // Client-side filtering and searching
       const categoryFilter = document.getElementById("category-filter");
       const ctfFilter = document.getElementById("ctf-filter");
@@ -339,10 +392,12 @@ const title = "CTF Writeups | MQCyberSec";
       const clearTagsBtn = document.getElementById("clear-tags");
       const sectionBtns = document.querySelectorAll(".section-btn");
       const tagBtns = document.querySelectorAll(".tag-btn");
+      const difficultyBtns = document.querySelectorAll(".difficulty-btn");
 
       let debounceTimeout;
       let selectedTags = [];
       let currentSection = "";
+      let currentDifficulty = "";
 
       function debounce(func, wait) {
         return function executedFunction(...args) {
@@ -360,12 +415,19 @@ const title = "CTF Writeups | MQCyberSec";
       function updateTagUI() {
         tagBtns.forEach((btn) => {
           const tag = btn.getAttribute("data-tag");
+          const isSuggested = btn.getAttribute("data-suggested") === "true";
+          
           if (selectedTags.includes(tag)) {
             btn.classList.add("bg-primary", "text-white");
-            btn.classList.remove("bg-background-offset", "text-text-offset");
+            btn.classList.remove("bg-background-offset", "text-text-offset", "border", "border-dashed", "border-primary/30");
           } else {
             btn.classList.remove("bg-primary", "text-white");
-            btn.classList.add("bg-background-offset", "text-text-offset");
+            
+            if (isSuggested) {
+              btn.classList.add("border", "border-dashed", "border-primary/30", "text-text-offset");
+            } else {
+              btn.classList.add("bg-background-offset", "text-text-offset");
+            }
           }
         });
 
@@ -403,6 +465,38 @@ const title = "CTF Writeups | MQCyberSec";
         });
       }
 
+      // Update UI when difficulty selection changes
+      function updateDifficultyUI() {
+        difficultyBtns.forEach((btn) => {
+          const difficulty = btn.getAttribute("data-difficulty");
+          const diffInfo = difficultyInfo[difficulty];
+          
+          if (difficulty === currentDifficulty) {
+            btn.classList.add("bg-primary", "text-white", "active");
+            btn.classList.remove("bg-background-offset", "text-text", "hover:bg-background-alt");
+            
+            // Override custom styles when active
+            if (diffInfo) {
+              btn.dataset.originalBgColor = diffInfo.bgColor;
+              btn.dataset.originalColor = diffInfo.color;
+              btn.style.backgroundColor = "var(--color-primary)";
+              btn.style.color = "white";
+            }
+          } else {
+            btn.classList.remove("bg-primary", "text-white", "active");
+            
+            // Restore custom styles
+            if (diffInfo) {
+              btn.style.backgroundColor = diffInfo.bgColor;
+              btn.style.color = diffInfo.color;
+            } else {
+              btn.classList.add("hover:bg-primary/80");
+            }
+          }
+        });
+      }
+
+      // Updated filtering function to include suggested tags and difficulty
       function applyFiltersAndSearch() {
         const selectedCategory = categoryFilter.value;
         const selectedCTF = ctfFilter.value;
@@ -415,7 +509,15 @@ const title = "CTF Writeups | MQCyberSec";
           const ctf = card.getAttribute("data-ctf");
           const section = card.getAttribute("data-section") || "";
           const tagsAttr = card.getAttribute("data-tags") || "[]";
+          const suggestedTagsAttr = card.getAttribute("data-suggested-tags") || "[]";
+          
+          // Parse JSON strings into arrays
           const tags = tagsAttr ? JSON.parse(tagsAttr) : [];
+          const suggestedTags = suggestedTagsAttr ? JSON.parse(suggestedTagsAttr) : [];
+          
+          // Combine both for matching
+          const allTags = [...tags, ...suggestedTags];
+          
           const slug = card.getAttribute("href").split("/").pop();
 
           const categoryMatch =
@@ -423,23 +525,48 @@ const title = "CTF Writeups | MQCyberSec";
           const ctfMatch = !selectedCTF || ctf === selectedCTF;
           const sectionMatch = !currentSection || section === currentSection;
 
-          // Tag matching - if tags are selected, at least one must match
+          // Difficulty matching based on tags and sections
+          let difficultyMatch = true;
+          if (currentDifficulty) {
+            // For PicoCTF or HTB sections, check for matching difficulty tag
+            const relevantSections = ['PicoCTF', 'HackTheBox Machines', 'HackTheBox Challenges'];
+            if (relevantSections.includes(section)) {
+              difficultyMatch = tags.includes(currentDifficulty);
+            } else {
+              // For other sections, no difficulty filtering
+              difficultyMatch = true;
+            }
+          }
+
+          // Tag matching - check both regular tags and suggested tags
           const tagMatch =
             selectedTags.length === 0 ||
-            (tags && selectedTags.some((tag) => tags.includes(tag)));
+            selectedTags.some((tag) => allTags.includes(tag));
 
-          // Search match
+          // Search match - include suggested tags in search
           let searchMatch = true;
           if (searchTerm) {
             const indexEntry = searchIndex.find((entry) => entry.slug === slug);
-            searchMatch =
-              indexEntry && indexEntry.searchableText.includes(searchTerm);
+            if (indexEntry) {
+              // Handle tag-specific searches (starting with #)
+              if (searchTerm.startsWith('#')) {
+                const tagSearch = searchTerm.substring(1).toLowerCase();
+                searchMatch = allTags.some(tag => tag.toLowerCase().includes(tagSearch));
+              } else {
+                // Regular search in all content
+                const allSearchableContent = `${indexEntry.searchableText} ${suggestedTags.join(' ')}`;
+                searchMatch = allSearchableContent.includes(searchTerm);
+              }
+            } else {
+              searchMatch = false;
+            }
           }
 
           if (
             categoryMatch &&
             ctfMatch &&
             sectionMatch &&
+            difficultyMatch &&
             tagMatch &&
             searchMatch
           ) {
@@ -475,9 +602,11 @@ const title = "CTF Writeups | MQCyberSec";
         ctfFilter.value = "";
         selectedTags = [];
         currentSection = "";
+        currentDifficulty = "";
 
         updateTagUI();
         updateSectionUI();
+        updateDifficultyUI();
         applyFiltersAndSearch();
       }
 
@@ -502,6 +631,15 @@ const title = "CTF Writeups | MQCyberSec";
         btn.addEventListener("click", () => {
           currentSection = btn.getAttribute("data-section");
           updateSectionUI();
+          applyFiltersAndSearch();
+        });
+      });
+      
+      // Difficulty button clicks
+      difficultyBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          currentDifficulty = btn.getAttribute("data-difficulty");
+          updateDifficultyUI();
           applyFiltersAndSearch();
         });
       });
@@ -534,16 +672,19 @@ const title = "CTF Writeups | MQCyberSec";
     <style>
       /* Transitions for buttons */
       .section-btn,
-      .tag-btn {
+      .tag-btn,
+      .difficulty-btn {
         transition: all 0.2s ease-in-out;
       }
 
       /* Active states */
-      .section-btn.active {
+      .section-btn.active,
+      .difficulty-btn.active {
         font-weight: 600;
       }
 
-      .tag-btn:hover {
+      .tag-btn:hover,
+      .difficulty-btn:hover {
         transform: translateY(-1px);
       }
     </style>

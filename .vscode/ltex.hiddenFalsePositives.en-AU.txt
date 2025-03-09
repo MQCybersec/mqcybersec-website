@@ -1,0 +1,1 @@
+{"rule":"THERE_IS_A_LOT_OF","sentence":"^\\QOpening up the PCAP file there is only a couple packets and they are all part of the one stream.\\E$"}

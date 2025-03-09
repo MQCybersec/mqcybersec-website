@@ -60,30 +60,49 @@ export const autoHyperlinkTerms = {
 
   //Windows
   DPAPI: "https://en.wikipedia.org/wiki/Data_Protection_API",
-
-  // Tools - Added per request
+   /* TOOLS */
+  // forens
   Autopsy: "https://www.autopsy.com/download/",
-  PayloadAllTheThings: "https://github.com/swisskyrepo/PayloadsAllTheThings",
-  SecLists: "https://github.com/danielmiessler/SecLists",
-  hashcat: "https://hashcat.net/hashcat/",
   Wireshark: "https://www.wireshark.org/download.html",
-  CyberChef: "https://gchq.github.io/CyberChef/",
-  "Dcode.fr": "https://www.dcode.fr/cipher-identifier",
-  Dcode: "https://www.dcode.fr/cipher-identifier",
-  DetectItEasy: "https://github.com/horsicq/Detect-It-Easy",
   exiftool: "https://github.com/exiftool/exiftool",
   tshark: "https://tshark.dev/setup/install/",
-  "webhook.site": "https://webhook.site",
   MemProcFS: "https://github.com/ufrisk/MemProcFS",
   vol3: "https://github.com/volatilityfoundation/volatility3",
   volatility: "https://github.com/volatilityfoundation/volatility3",
   volatility3: "https://github.com/volatilityfoundation/volatility3",
-  SQLCipher: "https://github.com/sqlcipher/sqlcipher",
-  mimikatz: "https://github.com/ParrotSec/mimikatz",
-  dogbolt: "https://dogbolt.org/",
+
+  //crypto
+  CyberChef: "https://gchq.github.io/CyberChef/",
+  "Dcode.fr": "https://www.dcode.fr/cipher-identifier",
+  Dcode: "https://www.dcode.fr/cipher-identifier",
+
+  //general
+  PayloadAllTheThings: "https://github.com/swisskyrepo/PayloadsAllTheThings",
+  SecLists: "https://github.com/danielmiessler/SecLists",
+  "webhook.site": "https://webhook.site",
   netcat: "https://en.wikipedia.org/wiki/Netcat",
   nc: "https://en.wikipedia.org/wiki/Netcat",
+
+  //hachcrack
+  hashcat: "https://hashcat.net/hashcat/",
+  
+  //pwn
+  DetectItEasy: "https://github.com/horsicq/Detect-It-Easy",
   gdb: "https://en.wikipedia.org/wiki/GNU_Debugger",
+  
+  //rev
+  dogbolt: "https://dogbolt.org/",
+
+  //fullpwn/windows/stuff
+  SQLCipher: "https://github.com/sqlcipher/sqlcipher",
+  mimikatz: "https://github.com/ParrotSec/mimikatz",
+
+  //web
+  wappalyzer: "https://www.wappalyzer.com/",
+
+  //osint
+  gitfive: "https://github.com/mxrch/gitfive",
+  ghunt: "https://github.com/mxrch/ghunt",
 
   // People
   sealldev: "https://seall.dev/",
