@@ -1,0 +1,9 @@
+---
+// WriteupMeta.astro - Create a new component for displaying the meta information
+const { entry } = Astro.props;
+---
+
+<div class="writeup-meta">
+  <h2>Description</h2>
+  <p>{entry.data.description}</p>
+</div>

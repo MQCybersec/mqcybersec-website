@@ -5,6 +5,7 @@ import Footer from "~/components/footer.astro";
 import ContentSection from "~/components/content-section.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
+import WriteupMeta from "~/components/writeups/WriteupMeta.astro";
 
 import "~/styles/theme.css";
 import {
@@ -333,6 +334,7 @@ const difficultyInfo = getDifficultyInfo(difficultyTag);
               </div>
             </div>
           )}
+          <WriteupMeta entry={entry} />
 
           <div
             class="prose prose-lg dark:prose-invert max-w-none"
@@ -606,6 +608,13 @@ const difficultyInfo = getDifficultyInfo(difficultyTag);
         border-radius: 0.25rem;
         font-size: 0.9em;
         font-weight: 500;
+        white-space: pre-wrap;       /* Allow wrapping */
+        word-wrap: break-word;       /* Break words when necessary */
+        word-break: break-word;      /* More sophisticated word breaking */
+        overflow-wrap: break-word;   /* Modern property for word wrapping */
+        display: inline-block;       /* Change from inline to inline-block for better wrapping */
+        max-width: 100%;             /* Ensure it doesn't exceed container width */
+        box-decoration-break: clone; /* For consistent styling across line breaks */
       }
 
       /* Ensure paragraphs have proper spacing */
@@ -822,6 +831,59 @@ const difficultyInfo = getDifficultyInfo(difficultyTag);
         color: var(--color-primary);
         font-weight: 500;
       }
+      /* Meta information section styling with improved aesthetics */
+.writeup-meta {
+  background-color: rgba(var(--color-background-alt-rgb), 0.5);
+  border-left: 4px solid var(--color-primary);
+  padding: 1.5rem;
+  margin-bottom: 2.5rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.writeup-meta h2 {
+  font-size: 1.25rem !important; 
+  margin-top: 0 !important;
+  margin-bottom: 1rem !important;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  color: var(--color-primary) !important;
+  font-weight: 600 !important;
+}
+
+.writeup-meta p {
+  margin-bottom: 1rem !important;
+  line-height: 1.6 !important;
+  color: var(--color-text) !important;
+}
+
+.writeup-meta ul {
+  margin-top: 0.75rem !important;
+  margin-bottom: 0 !important;
+  list-style-type: none !important;
+  padding-left: 0 !important;
+}
+
+.writeup-meta li {
+  margin-bottom: 0.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.writeup-meta li::before {
+  content: "•";
+  color: var(--color-primary);
+  font-weight: bold;
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+.writeup-meta li strong {
+  color: var(--color-primary);
+  font-weight: 600;
+  margin-right: 0.25rem;
+}
     </style>
   </body>
 </html>

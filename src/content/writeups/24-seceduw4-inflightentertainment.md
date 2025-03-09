@@ -9,7 +9,7 @@ section: "CTFs"
 image: "images/24-secedu/icon.png"
 ---
 
-> Original Writeup on [seall.dev](https://seall.dev/post/seceduweek42024#in_flight_entertainment)
+> Original Writeup on [seall.dev](https://seall.dev/posts/seceduweek42024#in_flight_entertainment)
 
 This challenge we got close to but missed some pieces, we are given a photo of an airborne plane:
 ![pretty_landscape.jpg](images/24-secedu/pretty_landscape.jpg)

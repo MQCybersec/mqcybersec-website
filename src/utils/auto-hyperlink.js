@@ -16,6 +16,7 @@ export const autoHyperlinkTerms = {
   SSTI: "https://portswigger.net/web-security/server-side-template-injection",
   CRLF: "https://www.invicti.com/learn/crlf-injection/",
   "DOM clobbering": "https://portswigger.net/web-security/dom-based/dom-clobbering",
+  "Prototype pollution": "https://portswigger.net/web-security/prototype-pollution",
 
   // Binary Exploitation
   "Buffer Overflow":
@@ -70,6 +71,7 @@ export const autoHyperlinkTerms = {
   vol3: "https://github.com/volatilityfoundation/volatility3",
   volatility: "https://github.com/volatilityfoundation/volatility3",
   volatility3: "https://github.com/volatilityfoundation/volatility3",
+  oletools: "https://github.com/decalage2/oletools",
 
   //crypto
   CyberChef: "https://gchq.github.io/CyberChef/",
@@ -137,6 +139,10 @@ export function processAutoHyperlinks(content) {
 export function extractTagSuggestions(content, existingTags = []) {
   // Define term groups that should map to the same tag
   const tagMappings = {
+    //ssti
+    ssti: "ssti",
+    //protoptye
+    "prototype pollution": "prototype-pollution",
     // Steganography variants
     stego: "steganography",
     steganography: "steganography",
@@ -222,6 +228,7 @@ export function extractTagSuggestions(content, existingTags = []) {
 
     // Network analysis
     pcap: "network-forensics",
+    pcapng: "network-forensics",
     wireshark: "network-forensics",
 
     // Tools
@@ -229,6 +236,7 @@ export function extractTagSuggestions(content, existingTags = []) {
     autopsy: "autopsy",
     hashcat: "hashcat",
     cyberchef: "cyberchef",
+    gdb: "gdb",
   };
 
   // List of all terms to search for

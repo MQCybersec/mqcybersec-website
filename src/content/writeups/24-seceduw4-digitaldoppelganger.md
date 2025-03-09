@@ -9,7 +9,7 @@ section: "CTFs"
 image: "images/24-secedu/icon.png"
 ---
 
-> Original Writeup on [seall.dev](https://seall.dev/post/seceduweek42024#add-to-cartel)
+> Original Writeup on [seall.dev](https://seall.dev/posts/seceduweek42024#add-to-cartel)
 
 Given an attached `IMG_8080.jpg` which displays the following:
 ![IMG_8080.jpg](images/24-secedu/IMG_8080.jpg)
