@@ -1,6 +1,6 @@
 ---
 title: "Vaulting"
-description: "We have retrieved an interesting file with our investigation. What is the password for the decryption script? Wrap whatever the 'supersecretpass' is into 'SECEDU{}' Flag formatting note: the decryption script requires 3 pieces of information to decrypt the file. Say these 3 pieces are \"Super\", \"Secret\" and \"Pass\", the flag you should enter is SECEDU{SuperSecretPass}."
+description: "We have retrieved an interesting file with our investigation. What is the password for the decryption script? Wrap whatever the `supersecretpass` is into `SECEDU{}` Flag formatting note: the decryption script requires 3 pieces of information to decrypt the file. Say these 3 pieces are \"Super\", \"Secret\" and \"Pass\", the flag you should enter is `SECEDU{SuperSecretPass}`"
 pubDate: 2024-10-01
 ctf: "SecEdu CTF 2024"
 category: "forensics"

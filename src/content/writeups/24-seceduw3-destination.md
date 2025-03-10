@@ -1,6 +1,6 @@
 ---
 title: "Destination"
-description: "Interesting, Layton has popped up once or twice before... Why does he have encrypted data? He seems like the kind of guy to use fairly common passwords, I'm sure he can't be too malicious. But, what could his involvement be? What secrets is he hiding? **There is no requirement to brute-force infra here, please avoid doing so** Search for the flag by decrypting the data. 'http://files.secedu.site/'"
+description: "Interesting, Layton has popped up once or twice before... Why does he have encrypted data? He seems like the kind of guy to use fairly common passwords, I'm sure he can't be too malicious. But, what could his involvement be? What secrets is he hiding? **There is no requirement to brute-force infra here, please avoid doing so** Search for the flag by decrypting the data.\n\n`http://files.secedu.site/`"
 pubDate: 2024-10-01
 ctf: "SecEdu CTF 2024"
 category: "forensics"

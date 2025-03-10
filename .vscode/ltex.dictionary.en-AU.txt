@@ -9,3 +9,4 @@ dogbolt
 gdb
 netcat
 CodeBrowser
+SSTI

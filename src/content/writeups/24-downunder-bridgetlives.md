@@ -1,6 +1,6 @@
 ---
 title: "Bridget Lives"
-description: "After dropping numerous 0days last year Bridget has flown the coop. This is the last picture she posted before going dark. Where was this photo taken from? NOTE: Flag is case-insensitive and requires placing inside 'DUCTF{}'! e.g. 'DUCTF{name_of_building}'"
+description: "After dropping numerous 0days last year Bridget has flown the coop. This is the last picture she posted before going dark. Where was this photo taken from?\nNOTE: Flag is case-insensitive and requires placing inside `DUCTF{}`! e.g. `DUCTF{name_of_building}`"
 pubDate: 2024-07-10
 ctf: "DownUnderCTF 2024"
 category: "osint"

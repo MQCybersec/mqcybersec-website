@@ -1,6 +1,6 @@
 ---
 title: "Happy Birthday, Cipher!"
-description: "When is Cipher's birthday? The flag format is: 'SECEDU{Month_XX}', where XX is the date."
+description: "When is Cipher's birthday?\nThe flag format is: `SECEDU{Month_XX}`, where XX is the date."
 pubDate: 2024-10-01
 ctf: "SecEdu CTF 2024"
 category: "osint"

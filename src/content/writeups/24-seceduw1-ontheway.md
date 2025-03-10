@@ -1,6 +1,6 @@
 ---
 title: "On the way!"
-description: "On our way to the main office, one of the employees sent us this photo, telling us that we needed to stop by on our way down. But unfortunately, they forgot to tell us where this was. Nice. Where abouts was this photo taken? Wrap in SECEDU{}. If it's a city with one or more words, space with \"_\". Hint: Don't forget to capitalise the city name"
+description: "On our way to the main office, one of the employees sent us this photo, telling us that we needed to stop by on our way down. But unfortunately, they forgot to tell us where this was. Nice. Where abouts was this photo taken? Wrap in `SECEDU{}`. If it's a city with one or more words, space with \"_\". \nHint: Don't forget to capitalise the city name"
 pubDate: 2024-09-12
 ctf: "SecEdu CTF 2024"
 category: "osint"

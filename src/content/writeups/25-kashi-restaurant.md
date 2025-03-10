@@ -1,6 +1,6 @@
 ---
 title: "Restaurant"
-description: "I just asked for my favourite pasta and they gave me this. Are these guys STUPID? Maybe in the end they may give me something real. (Wrap the text in KashiCTF{})"
+description: "I just asked for my favourite pasta and they gave me this. Are these guys STUPID? Maybe in the end they may give me something real. (Wrap the text in `KashiCTF{}`)"
 pubDate: 2025-02-27
 ctf: "KashiCTF 2025"
 category: "forensics"

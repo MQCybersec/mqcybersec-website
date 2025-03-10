@@ -1,6 +1,6 @@
 ---
 title: "commitment_issues"
-description: "The extremists are believed to be operating under a number of front companies, including Redfield Industries. Intelligence gathering has led to the discovery of the company's website. Careful analysis of how this website was made may reveal crucial information linking back to the extremist group, potentially exposing their true identities or operational details. 'https://tobiasredfield.github.io/redfield-industries/'"
+description: "The extremists are believed to be operating under a number of front companies, including Redfield Industries. Intelligence gathering has led to the discovery of the company's website. Careful analysis of how this website was made may reveal crucial information linking back to the extremist group, potentially exposing their true identities or operational details.\n\nhttps://tobiasredfield.github.io/redfield-industries/"
 pubDate: 2024-10-02
 ctf: "SecEdu CTF 2024"
 category: "osint"

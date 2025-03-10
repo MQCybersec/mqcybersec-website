@@ -1,6 +1,6 @@
 ---
 title: "Portal"
-description: "They've given us one of their programs running in the background to us. Let's hope it's not insecure!! (or in your case, that it's not secure instead ;) ) nc chals.secedu.site 5000"
+description: "They've given us one of their programs running in the background to us. Let's hope it's not insecure!! (or in your case, that it's not secure instead ;) )\n\n`nc chals.secedu.site 5000`"
 pubDate: 2024-09-12
 ctf: "SecEdu CTF 2024"
 category: "pwn"

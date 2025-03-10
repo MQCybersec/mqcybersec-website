@@ -1,6 +1,6 @@
 ---
 title: "Score"
-description: "After a review, we found that ORG-C is hosting an unusual website on their servers... It looks like they're pretty competitive -- let's make sure they know who's boss! 'http://chals.secedu.site:5007/'"
+description: "After a review, we found that ORG-C is hosting an unusual website on their servers... It looks like they're pretty competitive -- let's make sure they know who's boss!\n\n`http://chals.secedu.site:5007/`"
 pubDate: 2024-10-01
 ctf: "SecEdu CTF 2024"
 category: "web"

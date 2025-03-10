@@ -1,6 +1,6 @@
 ---
 title: "Et tu, Cipher?"
-description: "Woah, Cipher seems to have hosted a mysterious website?! I wonder what we can find here? I don't think they're very creative -- perhaps they stole a file name from a list they found online? 'win.secedu.site'"
+description: "Woah, Cipher seems to have hosted a mysterious website?! I wonder what we can find here? I don't think they're very creative -- perhaps they stole a file name from a list they found online?\n\n`win.secedu.site`"
 pubDate: 2024-10-01
 ctf: "SecEdu CTF 2024"
 category: "web"

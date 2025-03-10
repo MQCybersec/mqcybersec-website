@@ -1,6 +1,6 @@
 ---
 title: "Photo-oops"
-description: "They've cleared out some old files from storage, as they're needing to reference some physical documents due to the partial outage. One of these photos is brought up to your team by an intreigued employee -- it belongs to a 'Tanya', but that's not a name of one of their employees. Where was this photo taken?? Wrap the city name in 'SECEDU{}'. Don't forget to capitalise the city name!"
+description: "They've cleared out some old files from storage, as they're needing to reference some physical documents due to the partial outage. One of these photos is brought up to your team by an intreigued employee -- it belongs to a `Tanya`, but that's not a name of one of their employees. Where was this photo taken?? \bWrap the city name in`'SECEDU{}`. \bDon't forget to capitalise the city name!"
 pubDate: 2024-10-01
 ctf: "SecEdu CTF 2024"
 category: "osint"

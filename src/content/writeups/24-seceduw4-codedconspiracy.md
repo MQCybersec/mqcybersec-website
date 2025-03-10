@@ -1,6 +1,6 @@
 ---
 title: "coded_conspiracy"
-description: "Our team has discovered a series of binaries on a seized web server associated with NO_NO_NO. These binaries seem to communicate extensively. Your task is to find a way to analyse these messages. 'nc chals.secedu.site 5018'"
+description: "Our team has discovered a series of binaries on a seized web server associated with NO_NO_NO. These binaries seem to communicate extensively. Your task is to find a way to analyse these messages.\n\n`nc chals.secedu.site 5018`"
 pubDate: 2024-10-02
 ctf: "SecEdu CTF 2024"
 category: "rev"

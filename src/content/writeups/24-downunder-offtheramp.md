@@ -1,6 +1,6 @@
 ---
 title: "offtheramp"
-description: "That looks like a pretty cool place to escape by boat, EXAMINE the image and discover the name of this structure. NOTE: Flag is case-insensitive and requires placing inside 'DUCTF{}'! e.g 'DUCTF{name_of_structure}'"
+description: "That looks like a pretty cool place to escape by boat, EXAMINE the image and discover the name of this structure.\nNOTE: Flag is case-insensitive and requires placing inside `DUCTF{}`! e.g `DUCTF{name_of_structure}`"
 pubDate: 2024-07-10
 ctf: "DownUnderCTF 2024"
 category: "osint"

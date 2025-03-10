@@ -132,7 +132,7 @@ So the injection points are of varying interest:
 
 - The injection point inside the `<a>` isn't interesting as we can't create new tags without `<` and `>`.
 - We can't escape the `href` with the `\"` method
-- The injection point inside the `onfocus` is filtered through `safe`, but we can still achieve XSS!
+- The injection point inside the `onfocus` is passed with `safe`, which does not filter the input at all (as it is marked `safe`), allowing for XSS!
 
 `onfocus` as well as other `on` attributes can execute JavaScript. This particular one is using `document.location` to redirect the user, we can escape the string its redirecting to and add our own JavaScript!
 

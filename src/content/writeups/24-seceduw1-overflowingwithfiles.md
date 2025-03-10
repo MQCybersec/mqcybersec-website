@@ -1,6 +1,6 @@
 ---
 title: "Overflowing with files"
-description: "They also seem to have quite an interesting top-secret file delivery system, developed in C of all things?! Find a way to get the contents of the top-secret document. nc chals.secedu.site 5001"
+description: "They also seem to have quite an interesting top-secret file delivery system, developed in C of all things?! Find a way to get the contents of the top-secret document.\n\n`nc chals.secedu.site 5001`"
 pubDate: 2024-09-12
 ctf: "SecEdu CTF 2024"
 category: "pwn"

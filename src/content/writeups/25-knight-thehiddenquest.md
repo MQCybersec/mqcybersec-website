@@ -1,6 +1,6 @@
 ---
 title: "The Hidden Quest"
-description: "The journey begins even before the battle starts! 🕵️‍♂️ In the world of knights and hackers, not everything is as it seems. Somewhere in our recent posts, a secret lies hidden, waiting to be discovered. 🕵️‍♂️ Look closer, think sharper, and let your curiosity guide you. The answer is out there – will you find it? 🛡️ Flag Format : KCTF{s0mething_here}"
+description: "The journey begins even before the battle starts! 🕵️‍♂️ In the world of knights and hackers, not everything is as it seems. Somewhere in our recent posts, a secret lies hidden, waiting to be discovered. 🕵️‍♂️ Look closer, think sharper, and let your curiosity guide you. The answer is out there – will you find it?\n🛡️ Flag Format : `KCTF{s0mething_here}`"
 pubDate: 2025-01-22
 ctf: "KnightCTF 2025"
 category: "osint"

@@ -1,6 +1,6 @@
 ---
 title: "Secret meeting!?"
-description: "Cipher had a secret meeting!! We should probably report this to the police. The flag should be of the format: 'SECEDU{<LAT>,<LONG>}', where the accuracy of the coordinates is to three decimal places."
+description: "Cipher had a secret meeting!! We should probably report this to the police.\nThe flag should be of the format: `SECEDU{<LAT>,<LONG>}`, where the accuracy of the coordinates is to three decimal places."
 pubDate: 2024-10-01
 ctf: "SecEdu CTF 2024"
 category: "osint"

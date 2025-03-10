@@ -1,6 +1,6 @@
 ---
 title: "Crawler"
-description: "Instead of properly updating their list of websites when they need to, ORG-A has instead just appended their new pages, and hasn't removed any pages that they've taken down. Find the page that is still up and running. Vuln scans on infrastructure are out of scope, and aren't very relevant here. To be clear, there is no requirement to probe infrastructure in this way. Is there a conventional way to indicate to crawlers that you don't want a website indexed?"
+description: "Instead of properly updating their list of websites when they need to, ORG-A has instead just appended their new pages, and hasn't removed any pages that they've taken down. Find the page that is still up and running. Vuln scans on infrastructure are out of scope, and aren't very relevant here. To be clear, there is no requirement to probe infrastructure in this way.\b\bHint: Is there a conventional way to indicate to crawlers that you don't want a website indexed?"
 pubDate: 2024-09-12
 ctf: "SecEdu CTF 2024"
 category: "web"

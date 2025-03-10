@@ -1,6 +1,6 @@
 ---
 title: "add_to_cartel"
-description: "Whispers in the digital underground hint at a startling revelation about NO_NO_NO's elusive funding source. Buried in encrypted data streams, links to a cryptic online storefront have surfaced. Could this innocuous merch shop be the key to NO_NO_NO's financial puzzle? Stranger still, the store is offering free merchandise as part of a limited time promotion. Might as well grab some free merch while it’s available? 'http://chals.secedu.site:5016'"
+description: "Whispers in the digital underground hint at a startling revelation about NO_NO_NO's elusive funding source. Buried in encrypted data streams, links to a cryptic online storefront have surfaced. Could this innocuous merch shop be the key to NO_NO_NO's financial puzzle? Stranger still, the store is offering free merchandise as part of a limited time promotion. Might as well grab some free merch while it’s available?\n\n`http://chals.secedu.site:5016`"
 pubDate: 2024-10-02
 ctf: "SecEdu CTF 2024"
 category: "osint"

@@ -1,6 +1,6 @@
 ---
 title: "Wayyyy back, I liked?"
-description: "Can you find Cipher's favourite colour? Format the flag accordingly: 'SECEDU{HH:MM:SS_MM_DD,_YYYY}'. This should be when this discussion was recorded."
+description: "Can you find Cipher's favourite colour?\nFormat the flag accordingly: `SECEDU{HH:MM:SS_MM_DD,_YYYY}`\nThis should be when this discussion was recorded."
 pubDate: 2024-10-01
 ctf: "SecEdu CTF 2024"
 category: "osint"

@@ -1,6 +1,6 @@
 ---
 title: "Upgrading your diet"
-description: "After a review, we found that ORG-C is hosting an unusual website on their servers... How can we break through, and find what secrets lay beneath? 'http://chals.secedu.site:5007/'. This type of challenge is quite confusing."
+description: "After a review, we found that ORG-C is hosting an unusual website on their servers... How can we break through, and find what secrets lay beneath? \n\n`http://chals.secedu.site:5007/`.\nHint: This type of challenge is quite confusing."
 pubDate: 2024-10-01
 ctf: "SecEdu CTF 2024"
 category: "web"

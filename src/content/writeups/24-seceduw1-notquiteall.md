@@ -1,6 +1,6 @@
 ---
 title: "Not quite all"
-description: "The previously captured traffic contained an interesting tidbit towards the end of the file. What was the second line sent in the secret message? The message should wrapped in SECEDU{}. If it's another language, do not translate it. The text is in cyrillic, so ASCII doesn't display it nicely. What encoding scheme can cyrillic utilise?"
+description: "The previously captured traffic contained an interesting tidbit towards the end of the file. What was the second line sent in the secret message? The message should wrapped in `SECEDU{}`. If it's another language, do not translate it. The text is in cyrillic, so ASCII doesn't display it nicely. What encoding scheme can cyrillic utilise?"
 pubDate: 2024-09-12
 ctf: "SecEdu CTF 2024"
 category: "forensics"

@@ -1,6 +1,6 @@
 ---
 title: "digital_doppelganger"
-description: "An undercover informant has provided this image of what we believe to be a NO_NO_NO member’s screen. Unfortunately, our informant went dark before we could get more context, so it’s up to you. This could hold the final key to understanding NO_NO_NO’s operations. 'http://chals.secedu.site:5015/'."
+description: "An undercover informant has provided this image of what we believe to be a NO_NO_NO member’s screen. Unfortunately, our informant went dark before we could get more context, so it’s up to you. This could hold the final key to understanding NO_NO_NO’s operations."
 pubDate: 2024-10-02
 ctf: "SecEdu CTF 2024"
 category: "forensics"

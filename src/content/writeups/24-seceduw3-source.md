@@ -1,6 +1,6 @@
 ---
 title: "Source"
-description: "ORG-C has given us access to one of their file servers -- conveniently served over HTTP without authentication. There is no requirement to brute-force infra here, please avoid doing so. 'http://files.secedu.site/'"
+description: "ORG-C has given us access to one of their file servers -- conveniently served over HTTP without authentication. There is no requirement to brute-force infra here, please avoid doing so.\n\n`http://files.secedu.site/`"
 pubDate: 2024-10-01
 ctf: "SecEdu CTF 2024"
 category: "web"

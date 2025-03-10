@@ -1,6 +1,6 @@
 ---
 title: "Layment Portal"
-description: "There is something else they want to quickly test -- a portal where the employees enter their hours. They're worried that Layton may have also tricked the system somehow, and recieved more pay than they had wanted to give out. Automation for this company is a bane.. 'nc chals.secedu.site 5005'. Who might have access to this employee portal?"
+description: "There is something else they want to quickly test -- a portal where the employees enter their hours. They're worried that Layton may have also tricked the system somehow, and recieved more pay than they had wanted to give out. Automation for this company is a bane..\n\n`nc chals.secedu.site 5005`\nHint: Who might have access to this employee portal?"
 pubDate: 2024-10-01
 ctf: "SecEdu CTF 2024"
 category: "misc"

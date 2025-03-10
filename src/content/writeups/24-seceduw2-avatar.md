@@ -1,6 +1,6 @@
 ---
 title: "Avatar"
-description: "We've now found a link to a \"Leet Hacker\" that has probed ORG-B systems a bit. Can you find their alias? http://ec2-54-79-58-135.ap-southeast-2.compute.amazonaws.com"
+description: "We've now found a link to a \"Leet Hacker\" that has probed ORG-B systems a bit. Can you find their alias?\n\n`http://ec2-54-79-58-135.ap-southeast-2.compute.amazonaws.com`"
 pubDate: 2024-10-01
 ctf: "SecEdu CTF 2024"
 category: "osint"

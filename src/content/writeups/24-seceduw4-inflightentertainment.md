@@ -1,6 +1,6 @@
 ---
 title: "in_flight_entertainment"
-description: "Intelligence suggests a key NO_NO_NO member travels frequently between multiple countries. A photograph, likely taken by this individual during one of their trips, has been intercepted. Help us find the flight number. This information could be crucial in predicting their movements and potentially intercepting them at an airport. 'flag format: <flight number>'."
+description: "Intelligence suggests a key NO_NO_NO member travels frequently between multiple countries. A photograph, likely taken by this individual during one of their trips, has been intercepted. Help us find the flight number. This information could be crucial in predicting their movements and potentially intercepting them at an airport.\nflag format: `<flight number>`."
 pubDate: 2024-10-02
 ctf: "SecEdu CTF 2024"
 category: "osint"
