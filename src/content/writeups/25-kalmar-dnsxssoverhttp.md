@@ -1,5 +1,5 @@
 ---
-title: "DNSXSS-over-HTTP"
+title: "DNSXSS-over-HTTPS"
 description: "Do you like DNS-over-HTTPS? Well, I'm proxying `https://dns.google/`! Would be cool if you can find an XSS!\n\nReport to admin locally:\n`curl http://localhost:8008/report -H \"Content-Type: application/json\" -d '{\"url\":\"http://proxy/\"}'`\n\nReport to admin for the real flag:\n`curl https://dnxss.chal-kalmarc.tf/report -H \"Content-Type: application/json\" -d '{\"url\":\"http://proxy/\"}'`\n\n`https://dnxss.chal-kalmarc.tf/`" 
 pubDate: 2025-03-11
 ctf: "KalmarCTF 2025"
@@ -199,7 +199,7 @@ We get a response on webhook.site after some delay:
 https://webhook.site/...?ZmxhZz1rYWxtYXJ7dGhhdF9jb250ZW50X3R5cGVfaGVhZGVyX2lzX2RvaW5nX3NvbWVfaGVhdnlfbGlmdGluZyFfZGlkX3lvdV91c2VfZG5zLXF1ZXJ5X29yX3Jlc29sdmU/fQ==
 ```
 
-We can then Base64 decode that string (CyberChef, Dcode.fr, `bsae64` util, whatever) to get the flag
+We can then Base64 decode that string (CyberChef, Dcode.fr, `base64` util, whatever) to get the flag.
 ```
 flag=kalmar{that_content_type_header_is_doing_some_heavy_lifting!_did_you_use_dns-query_or_resolve?}
 ```
