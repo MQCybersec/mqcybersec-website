@@ -244,7 +244,7 @@ def api_create_note():
     else:
         return jsonify({'error': 'Note creation failed'}), 400
 ```
-- `/api/note/new` takes a `title ` and `content` from a `POST` request and returns either a success or fail response if the note was created in the `db`.
+- `/api/note/new` takes a `title` and `content` from a `POST` request and returns either a success or fail response if the note was created in the `db`.
 ```python
 @app.route('/api/note/<int:note_id>', methods=['DELETE'])
 @authenticated_only
