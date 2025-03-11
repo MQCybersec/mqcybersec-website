@@ -496,7 +496,7 @@ sub vcl_backend_response {
 Now as the `long` view is the default for any input set in the `view_type` portion of the URL, could we:
 - Make an XSS payload to retrieve the contents of `/api/notes` for the current user and exfiltrate it to a webhook.site URL.
 - Make a user with that payload as their username and create a note.
-- Visit the note with the `view_type` rendered as `long`, making sure the endpoint ends in `.js`, `.css`, `.png` or `.gif`, such as `/note/<id>/long.js` or `/note/<id>/long?example.png`.
+- Visit the note with the `view_type` rendered as `long`, making sure the endpoint ends in `.js`, `.css`, `.png` or `.gif`, such as `/note/<id>/long.js` or `/note/<id>/long?example.png` and setup cache poisoning.
 - Send the URL to the bot to retrieve the poisoned cache and trigger the payload?
 
 ### Stringing it all together

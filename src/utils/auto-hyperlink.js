@@ -139,6 +139,9 @@ export function processAutoHyperlinks(content) {
 export function extractTagSuggestions(content, existingTags = []) {
   // Define term groups that should map to the same tag
   const tagMappings = {
+    //cache poisoning
+    "cache poisoning": "cache-poisoning",
+    "poison cache": "cache-poisoning",
     //auth bypass
     "authentication bypass": "authentication-bypass",
     //ssti
