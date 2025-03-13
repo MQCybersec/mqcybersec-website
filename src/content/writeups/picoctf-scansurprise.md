@@ -2,7 +2,6 @@
 title: "Scan Surprise"
 description: "I've gotten bored of handing out flags as text. Wouldn't it be cool if they were an image instead?"
 pubDate: 2025-03-09
-ctf: "PicoCTF"
 category: "forensics"
 author: "sealldev"
 section: "PicoCTF"

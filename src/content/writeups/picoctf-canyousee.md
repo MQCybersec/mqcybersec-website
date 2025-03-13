@@ -2,7 +2,6 @@
 title: "CanYouSee"
 description: "How about some hide and seek?"
 pubDate: 2025-03-09
-ctf: "PicoCTF"
 category: "forensics"
 author: "sealldev"
 section: "PicoCTF"

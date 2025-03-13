@@ -2,7 +2,6 @@
 title: "Cookies"
 description: "Who doesn't love cookies? Try to figure out the best one. http://mercury.picoctf.net:17781/"
 pubDate: 2025-03-13
-ctf: "PicoCTF"
 category: "web"
 author: "sealldev"
 section: "PicoCTF"

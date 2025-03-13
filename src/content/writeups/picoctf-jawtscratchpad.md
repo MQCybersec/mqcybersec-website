@@ -2,7 +2,6 @@
 title: "JaWT Scratchpad"
 description: "Check the admin scratchpad! https://jupiter.challenges.picoctf.org/problem/58210/ or http://jupiter.challenges.picoctf.org:58210\n\nHint: What is that cookie?\nHint: Have you heard of JWT?"
 pubDate: 2025-03-13
-ctf: "PicoCTF"
 category: "web"
 author: "sealldev"
 section: "PicoCTF"

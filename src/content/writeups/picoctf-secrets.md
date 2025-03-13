@@ -2,7 +2,6 @@
 title: "Secrets"
 description: "We have several pages hidden. Can you find the one with the flag? The website is running here.\n\nHint: folders folders folders"
 pubDate: 2025-03-13
-ctf: "PicoCTF"
 category: "web"
 author: "sealldev"
 section: "PicoCTF"

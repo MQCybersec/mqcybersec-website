@@ -2,7 +2,6 @@
 title: "findme"
 description: "Help us test the form by submiting the username as `test` and password as `test!`\n\nHint: any redirections?"
 pubDate: 2025-03-13
-ctf: "PicoCTF"
 category: "web"
 author: "sealldev"
 section: "PicoCTF"

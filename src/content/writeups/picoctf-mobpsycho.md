@@ -2,7 +2,6 @@
 title: "Mob psycho"
 description: "Can you handle APKs?"
 pubDate: 2025-03-13
-ctf: "PicoCTF"
 category: "forensics"
 author: "sealldev"
 section: "PicoCTF"

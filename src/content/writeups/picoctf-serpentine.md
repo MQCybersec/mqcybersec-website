@@ -2,7 +2,6 @@
 title: "serpentine"
 description: "Find the flag in the Python script!"
 pubDate: 2025-03-06
-ctf: "PicoCTF"
 category: "general skill"
 author: "sclux7"
 section: "PicoCTF"

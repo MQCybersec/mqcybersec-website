@@ -2,7 +2,6 @@
 title: "Information"
 description: "Files can always be changed in a secret way. Can you find the flag?\n\nHint: Look at the details of the file\nHint: Make sure to submit the flag as `picoCTF{XXXXX}`"
 pubDate: 2025-03-13
-ctf: "PicoCTF"
 category: "forensics"
 author: "sealldev"
 section: "PicoCTF"

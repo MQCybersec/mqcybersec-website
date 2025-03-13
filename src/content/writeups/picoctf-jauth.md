@@ -2,7 +2,6 @@
 title: "JAuth"
 description: "Most web application developers use third party components without testing their security. Some of the past affected companies are:\n\nEquifax (a US credit bureau organization) - breach due to unpatched Apache Struts web framework CVE-2017-5638\nMossack Fonesca (Panama Papers law firm) breach - unpatched version of Drupal CMS used\nVerticalScope (internet media company) - outdated version of vBulletin forum software used\n\nCan you identify the components and exploit the vulnerable one? Can you become an `admin`? You can login as `test` with the password `Test123!` to get started.\n\nHint: Use the web browser tools to check out the JWT cookie.\nHint: The JWT should always have two (2) . separators."
 pubDate: 2025-03-13
-ctf: "PicoCTF"
 category: "web"
 author: "sealldev"
 section: "PicoCTF"

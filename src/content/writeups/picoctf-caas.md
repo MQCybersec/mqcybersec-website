@@ -2,7 +2,6 @@
 title: "caas"
 description: "Now presenting cowsay as a service\n\nhttps://caas.mars.picoctf.net/"
 pubDate: 2025-03-13
-ctf: "PicoCTF"
 category: "web"
 author: "sealldev"
 section: "PicoCTF"

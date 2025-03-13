@@ -2,7 +2,6 @@
 title: "GET aHEAD"
 description: "Find the flag being held on this server to get ahead of the competition http://mercury.picoctf.net:28916/\n\nHint: Maybe you have more than 2 choices\nHint: Check out tools like Burpsuite to modify your requests and look at the responses"
 pubDate: 2025-03-13
-ctf: "PicoCTF"
 category: "web"
 author: "sealldev"
 section: "PicoCTF"

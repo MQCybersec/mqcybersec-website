@@ -2,7 +2,6 @@
 title: "IntroToBurp"
 description: "Try here to find the flag\n\nHint: Try using burpsuite to intercept request to capture the flag.\nHint: Try mangling the request, maybe their server-side code doesn't handle malformed requests very well."
 pubDate: 2025-03-13
-ctf: "PicoCTF"
 category: "web"
 author: "sealldev"
 section: "PicoCTF"

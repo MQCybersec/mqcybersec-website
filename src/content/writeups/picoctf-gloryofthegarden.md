@@ -2,7 +2,6 @@
 title: "Glory of the Garden"
 description: "This garden contains more than it seems."
 pubDate: 2025-03-09
-ctf: "PicoCTF"
 category: "forensics"
 author: "sealldev"
 section: "PicoCTF"
