@@ -47,7 +47,7 @@ Image Size                      : 2560x1598
 Megapixels                      : 4.1
 ```
 
-The 'License' header has a value on interest. It looks like Base64 encoding. We can decode this with various tools (CyberChef, Dcode.fr, etc) but I use the `base64` utility on the command line:
+The `License` header has a value of interest. It looks like Base64 encoding. We can decode this with various tools (CyberChef, Dcode.fr, etc) but I use the `base64` utility on the command line:
 ```bash
 $ echo "cGljb0NURnt0aGVfbTN0YWRhdGFfMXNfbW9kaWZpZWR9" | base64 -d
 picoCTF{the_m3tadata_1s_modified}
