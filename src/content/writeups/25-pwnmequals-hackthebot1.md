@@ -334,7 +334,7 @@ Firstly send a report to the URL `http://localhost/` to initialise the cookies i
 Then visit `http://localhost/logs../browser_cache/Default/Cookies` to download the Cookies file with a path traversal.
 
 This occurs due to a misconfiguration in the nginx config:
-```conf
+```
 events{}
 user root;
 
