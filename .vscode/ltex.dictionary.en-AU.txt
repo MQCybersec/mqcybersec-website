@@ -10,3 +10,4 @@ gdb
 netcat
 CodeBrowser
 SSTI
+CyberChef
