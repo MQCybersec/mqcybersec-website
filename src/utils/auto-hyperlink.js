@@ -101,6 +101,9 @@ export const autoHyperlinkTerms = {
 
   //web
   wappalyzer: "https://www.wappalyzer.com/",
+  pwnfox: "https://github.com/yeswehack/PwnFox",
+  "burp suite": "https://portswigger.net/burp",
+  burpsuite: "https://portswigger.net/burp",
 
   //osint
   gitfive: "https://github.com/mxrch/gitfive",
