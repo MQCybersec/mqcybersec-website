@@ -7,6 +7,7 @@ category: "forensics"
 author: "sealldev"
 section: "PicoCTF"
 tags: ["medium"]
+image: "./images/picoctf/mobpsycho/icon.png"
 ---
 
 We are given a `mobpsycho.apk`, APKs are Android Application Packages and can be decompiled and extracted like ZIP archives to view their contents.

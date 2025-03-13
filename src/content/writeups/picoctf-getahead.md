@@ -7,7 +7,6 @@ category: "web"
 author: "sealldev"
 section: "PicoCTF"
 tags: ["easy"]
-image: "./images/picoctf/getahead/redorblue.png"
 ---
 
 We are supplied a web application that has a red or a blue option to choose from:

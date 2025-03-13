@@ -7,7 +7,7 @@ category: "web"
 author: "sealldev"
 section: "PicoCTF"
 tags: ["medium"]
-image: "./images/picoctf/secrets/home.png"
+image: "./images/picoctf/secrets/icon.png"
 ---
 
 We are supplied a web application that a home page talking about security:

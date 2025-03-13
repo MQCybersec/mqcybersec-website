@@ -7,7 +7,7 @@ category: "web"
 author: "sealldev"
 section: "PicoCTF"
 tags: ["easy"]
-image: "./images/picoctf/cookies/home.png"
+image: "./images/picoctf/cookies/icon.png"
 ---
 
 We are supplied a web application that has a 'cookie search page' with an input field:

@@ -7,7 +7,7 @@ category: "web"
 author: "sealldev"
 section: "PicoCTF"
 tags: ["easy"]
-image: "./images/picoctf/introtoburp/form.png"
+image: "./images/picoctf/introtoburp/icon.png"
 ---
 
 We are supplied a web application that has a registration form:

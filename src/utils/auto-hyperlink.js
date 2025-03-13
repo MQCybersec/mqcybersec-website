@@ -87,6 +87,7 @@ export const autoHyperlinkTerms = {
 
   //hachcrack
   hashcat: "https://hashcat.net/hashcat/",
+  johntheripper: "https://github.com/openwall/john",
   
   //pwn
   DetectItEasy: "https://github.com/horsicq/Detect-It-Easy",
@@ -104,6 +105,9 @@ export const autoHyperlinkTerms = {
   pwnfox: "https://github.com/yeswehack/PwnFox",
   "burp suite": "https://portswigger.net/burp",
   burpsuite: "https://portswigger.net/burp",
+  "jwt.io": "https://jwt.io/",
+  editthiscookie2: "https://addons.mozilla.org/en-US/firefox/addon/etc2/",
+  jwt_tool: "https://github.com/ticarpi/jwt_tool",
 
   //osint
   gitfive: "https://github.com/mxrch/gitfive",
@@ -142,6 +146,12 @@ export function processAutoHyperlinks(content) {
 export function extractTagSuggestions(content, existingTags = []) {
   // Define term groups that should map to the same tag
   const tagMappings = {
+    //hashcrack
+    hashcat: "hash-cracking",
+    johntheripper: "hash-cracking",
+    // command inj
+    "command injection": "command-injection",
+    "cmd injection": "command-injection",
     // jadx
     "jadx": "jadx",
     "jadx-gui": "jadx",
@@ -245,7 +255,6 @@ export function extractTagSuggestions(content, existingTags = []) {
     // Tools
     ghidra: "ghidra",
     autopsy: "autopsy",
-    hashcat: "hashcat",
     cyberchef: "cyberchef",
     gdb: "gdb",
   };

@@ -7,7 +7,7 @@ category: "web"
 author: "sealldev"
 section: "PicoCTF"
 tags: ["medium"]
-image: "./images/picoctf/findme/login.png"
+image: "./images/picoctf/findme/icon.png"
 ---
 
 We are supplied a web application with a login page:
