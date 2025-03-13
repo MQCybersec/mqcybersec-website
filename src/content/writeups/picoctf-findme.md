@@ -18,7 +18,7 @@ Before I begin, I set up Burp Suite with PwnFox to intercept my requests, and vi
 We can use the supplied credentials in the description (and on the page) with username `test` and password `test`.
 
 We are redirected to `/home`:
-![home.png](images/picoctf/fineme/home.png)
+![home.png](images/picoctf/findme/home.png)
 
 We can also do inputs on this page, I type 'pico' and press 'Go'. There is no visual changes.
 
