@@ -243,6 +243,27 @@ const title = "CTF Writeups | MQCyberSec";
               </div>
             </div>
           </div>
+          <script is:inline define:vars={{ searchIndex, writeups }}>
+            function countWords(text) {
+              return text.trim().split(/\s+/).length;
+            }
+          
+            // Calculate total word count across all writeups
+            const totalWordCount = searchIndex.reduce((total, entry) => {
+              // Only count words from searchableText, which contains title, description, etc.
+              return total + countWords(entry.searchableText);
+            }, 0);
+          
+            // Format the number with commas for readability
+            const formattedWordCount = totalWordCount.toLocaleString();
+            const formattedWriteupCount = writeups.length.toLocaleString();
+          
+            // Update the placeholder text immediately
+            console.log(1);
+            if (document.getElementById('search-input')) {
+              (document.getElementById('search-input')).placeholder = `Searching ${formattedWordCount} words across ${formattedWriteupCount} writeups...`;
+            }
+          </script>
 
           <!-- Section buttons -->
           {
@@ -499,7 +520,7 @@ const title = "CTF Writeups | MQCyberSec";
       function applyFiltersAndSearch() {
         const selectedCategory = categoryFilter.value;
         const selectedCTF = ctfFilter.value;
-        const searchTerm = searchInput.value.toLowerCase().trim();
+        const searchTerm = (document.getElementById('search-input')).value.toLowerCase().trim();
 
         let visibleCount = 0;
 
@@ -596,7 +617,7 @@ const title = "CTF Writeups | MQCyberSec";
 
       // Reset all filters
       function resetFilters() {
-        searchInput.value = "";
+        (document.getElementById('search-input')).value = "";
         categoryFilter.value = "";
         ctfFilter.value = "";
         selectedTags = [];
@@ -612,7 +633,7 @@ const title = "CTF Writeups | MQCyberSec";
       // Add event listeners
       categoryFilter?.addEventListener("change", applyFiltersAndSearch);
       ctfFilter?.addEventListener("change", applyFiltersAndSearch);
-      searchInput?.addEventListener(
+      (document.getElementById('search-input'))?.addEventListener(
         "input",
         debounce(applyFiltersAndSearch, 300),
       );
