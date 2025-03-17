@@ -12,7 +12,7 @@ image: "images/25-utctf/icon.png"
 > This challenge was solved by `thehackerscrew` and was not solved by me, I post-solved it on my own with some information from there channels during the CTF!
 
 This is a sourceless web, I start by visiting the application:
-![otphome.png](otphome.png)
+![otphome.png](images/25-utctf/otphome.png)
 
 I start by registering a user `sealldev` with the secret `test`:
 ```
