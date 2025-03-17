@@ -3,6 +3,18 @@
   "image": "/src/content/ctfs/_images/picoctf.png",
   "placements": [
     {
+      "teamName": "MQCyberSec Trojans",
+      "year": 2025,
+      "globalPlacement": 185,
+      "totalTeams": 10460
+    },
+    {
+      "teamName": "TotallyNotMQCyberSec",
+      "year": 2025,
+      "globalPlacement": 422,
+      "totalTeams": 10460
+    },
+    {
       "teamName": "MqCybersec Team 1",
       "year": 2023,
       "globalPlacement": 776,
