@@ -277,3 +277,17 @@ Channel 'mod-info':
 ```
 
 Flag: `utflag{32c6FLiaX5in9MhkPNDeYBUY}`
+
+### Better Code
+
+This was also shared in the Discord server after the CTF ended as a more efficient solve script:
+```js
+await websocket.send_str('/create newlog')
+await websocket.send_str('/join newlog')
+await websocket.send_str('/set channel.hidden true')
+await websocket.send_str('/set channel.admin-only true')
+await websocket.send_str('/set channel.mode log')
+await websocket.send_str('/set channel.admin-only false')
+```
+
+Much cleaner!
