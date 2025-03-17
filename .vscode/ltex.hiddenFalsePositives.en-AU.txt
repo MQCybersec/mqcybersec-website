@@ -1,1 +1,2 @@
 {"rule":"THERE_IS_A_LOT_OF","sentence":"^\\QOpening up the PCAP file there is only a couple packets and they are all part of the one stream.\\E$"}
+{"rule":"MANY_NN","sentence":"^\\QOut of the commands listed a few catch my eye:\n\\E(?:Dummy|Ina|Jimmy-|Dummy-|Maniquí-|Maniquíes-)[0-9]+\\Q could be used to trick the application into thinking I'm another user?\\E$"}

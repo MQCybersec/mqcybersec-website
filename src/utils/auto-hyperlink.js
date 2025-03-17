@@ -146,6 +146,12 @@ export function processAutoHyperlinks(content) {
 export function extractTagSuggestions(content, existingTags = []) {
   // Define term groups that should map to the same tag
   const tagMappings = {
+    //privsec
+    "privesc": "privilege-escalation",
+    "privilege escalation": "privilege-escalation",
+    "priv esc": "privilege-escalation",
+    //racecond
+    "race condition":"race-condition",
     //hashcrack
     hashcat: "hash-cracking",
     johntheripper: "hash-cracking",
