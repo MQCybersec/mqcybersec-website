@@ -72,6 +72,10 @@ export const autoHyperlinkTerms = {
   volatility: "https://github.com/volatilityfoundation/volatility3",
   volatility3: "https://github.com/volatilityfoundation/volatility3",
   oletools: "https://github.com/decalage2/oletools",
+  aperisolve: "https://aperisolve.com/",
+  zsteg: "https://github.com/zed-0xff/zsteg",
+  ericzimmerman: "https://ericzimmerman.github.io/#!index.md",
+  evtxecmd: "https://github.com/EricZimmerman/evtx",
 
   //crypto
   CyberChef: "https://gchq.github.io/CyberChef/",

@@ -11,3 +11,4 @@ netcat
 CodeBrowser
 SSTI
 CyberChef
+Bitlocker
