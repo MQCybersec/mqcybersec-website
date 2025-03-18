@@ -3,6 +3,11 @@
   "image": "/src/content/ctfs/_images/utctf.png",
   "placements": [
     {
+      "year": 2025,
+      "globalPlacement": 379,
+      "totalTeams": 859
+    },
+    {
       "year": 2022,
       "globalPlacement": 300,
       "totalTeams": 560
