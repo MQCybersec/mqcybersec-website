@@ -6,7 +6,7 @@ category: "web"
 author: "sealldev"
 section: "PicoCTF"
 tags: ["easy"]
-# image: "./images/picoctf/bitlocker2/icon.png"
+image: "./images/picoctf/cookiemonstersecretrecipe/icon.png"
 ---
 
 We start with a plain login page:
