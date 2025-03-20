@@ -3,7 +3,7 @@ title: "Trickster"
 description: "I found a web app that can help process images: PNG images only!"
 pubDate: 2025-03-20
 category: "web"
-author: "tulip  "
+author: "tulip"
 section: "PicoCTF"
 tags: ["medium"]
 # image: "./images/picoctf/trickster/icon.png"
@@ -15,7 +15,7 @@ When we first open the webapp, we are given the option to upload a file. And.. n
 
 ![start.png](images/picoctf/trickster/start.png)
 
-Playing around, we can uncover some of the inner workings of the app. The file must *contain* `.png`.
+Playing around, we can uncover some of the inner workings of the app. The file name must *contain* `.png`.
 ```
 Error: File name does not contain '.png'. 
 ```
