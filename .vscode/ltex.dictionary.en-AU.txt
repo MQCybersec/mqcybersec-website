@@ -12,3 +12,6 @@ CodeBrowser
 SSTI
 CyberChef
 Bitlocker
+interwebs
+PayloadAllTheThings
+Werkzeug
