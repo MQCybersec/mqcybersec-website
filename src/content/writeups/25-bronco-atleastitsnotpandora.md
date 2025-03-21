@@ -3,7 +3,7 @@ title: "At Least It's Not Pandora"
 description: "I really enjoy listening to music, but I hate that Spotify keeps shuffling my playlists. \nMy taste in music used to be so backwards. \nP.S. One of the songs is my favorite song."
 pubDate: 2025-03-19
 ctf: "Bronco CTF 2025"
-category: "OSINT"
+category: "osint"
 author: "Ch1maera"
 section: "CTFs"
 image: "images/25-bronco/icon.png"

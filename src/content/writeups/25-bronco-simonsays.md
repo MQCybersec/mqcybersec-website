@@ -3,7 +3,7 @@ title: "Simon Says"
 description: "Help me play this game of simon says - remember, the last 2 lights have been blue!"
 pubDate: 2025-03-19
 ctf: "Bronco CTF 2025"
-category: "Forensics"
+category: "forensics"
 author: "Ch1maera"
 section: "CTFs"
 image: "images/25-bronco/icon.png"

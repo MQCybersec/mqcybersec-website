@@ -3,7 +3,7 @@ title: "Too Many Emojis"
 description: "I like using emojis in my text messages, but my friend may have taken it too far. 💀 Can you figure out what she’s trying to tell me? 🤔"
 pubDate: 2025-03-19
 ctf: "Bronco CTF 2025"
-category: "Cryptography"
+category: "cryptography"
 author: "Ch1maera"
 section: "CTFs"
 image: "images/25-bronco/icon.png"
