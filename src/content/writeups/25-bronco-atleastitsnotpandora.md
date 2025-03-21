@@ -3,7 +3,7 @@ title: "At Least It's Not Pandora"
 description: "I really enjoy listening to music, but I hate that Spotify keeps shuffling my playlists. \nMy taste in music used to be so backwards. \nP.S. One of the songs is my favorite song."
 pubDate: 2025-03-19
 ctf: "Bronco CTF 2025"
-category: "Beginner"
+category: "osint"
 author: "Ch1maera"
 section: "CTFs"
 image: "images/25-bronco/icon.png"
@@ -23,7 +23,7 @@ Once we access this link, we can see that it's called `bronco{}`, so that's a pr
 
 If we look at the first letter of each song, we can see it doesn't really make anything ledgible. However, if we start at the last song and work our way back up (which matches the `My taste in music used to be so backwards` statement), we get something in leetspeak, which happens to be the flag!
 
-Flag: `bronco{MUS1Ct0MYE4RS}`
+Flag: `bronco{MUS1CT0MYE4RS}`
 
 
 
