@@ -2,7 +2,7 @@
 title: "dont-you-love-banners"
 description: "Can you abuse the banner?"
 pubDate: 2025-03-06
-category: "general skill"
+category: "general skills"
 author: "sclux7"
 section: "PicoCTF"
 tags: ["medium"]
