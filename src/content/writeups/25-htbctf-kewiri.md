@@ -170,7 +170,7 @@ Question 5 now asks about the order of the elliptic curve over the field extensi
 ```
 
 ### Background information
-- There is a relationship between the order over $\mathbb{F}_p$ and $\mathbb{F}_{p^3}$. 
+- There is a relationship between the order over the finite fields defined by $p$ and $p^3$. 
 - The order/cardinality over $\mathbb{F}_p$ is related to a special value known as the trace of Frobenius of the curve, via the equation:
 \\[ O_C = p + 1 - t \\]
 - where $t$ is the trace, and $O_C$ is the order/cardinality of the curve.
