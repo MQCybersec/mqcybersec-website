@@ -2,7 +2,7 @@
 title: "Kewiri"
 description: "Questionnaire about finite fields and elliptic curves."
 pubDate: 2025-03-27
-ctf: "HTB Cyber Apocalypse 2025"
+ctf: "HTB CTF 2025"
 category: "cryptography"
 author: "tulip"
 # image: "./sample/"
@@ -203,7 +203,7 @@ from sage.all import *
 def get_Y_affine(x):
     y_squared = (x**3 + a*x + b) % p
     R = Integers(p)
-    return R(y_squared).sqrt(all=True)
+    return R(y_squared).sqrt(all=True) # We have to take the modular square root
 
 testY = get_Y_affine(g_x)
 pos_g = []
