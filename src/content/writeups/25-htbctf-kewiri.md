@@ -10,7 +10,7 @@ hidden: false
 section: "CTFs"
 ---
 
-**This challenge was unexpectedly hard.**
+***This challenge was unexpectedly hard.***
 
 We are given a remote server to connect to. Let's see what it's got for us.
 
@@ -215,7 +215,7 @@ for i in testY:
 The given $g$ is always the same in this question. So we can precompute this no problem.
 
 ## Finding k and anomalous elliptic curves
-Remember that we saw the order of the curve over $\mathbb{F}_p$ was equal to $p$? That fact comes into play here. It turns out that this is a weakness in elliptic curves. I stumbled across [this paper](https://wstein.org/edu/2010/414/projects/novotney.pdf) that explains the attack. Along with it is the included sage code for implementing it. 
+Remember that we saw the order of the curve over $\mathbb{F}_p$ was equal to $p$? That fact comes into play here. It turns out that this is a weakness in elliptic curves, and these types of curves are known as **anomalous elliptic curves**. I stumbled across [this paper](https://wstein.org/edu/2010/414/projects/novotney.pdf) describing an attack called "Smart's Attack" that specifically targets anomalous elliptic curves. Along with it is the included sage code for implementing it. 
 
 ```py
 def HenselLift(P,p,prec):
@@ -269,10 +269,10 @@ $ sage ecdlp.sage
 # order of the EC
 21214334341047589034959795830530169972304000967355896041112297190770972306665257150126981587914335537556050020788061
 
-# ... k?!
+# ... our value of k?!
 10581123324646794895523392501394046260808875735968273340546838386704131024005640419746651345597313555539325773053867
 ```
-And this method, is actually very fast when you pass a small `prec` parameter (3, in this case). Fast enough to solve the challenge with the correct value of $k$. Sage converts all its code into python code, so we can very easily include this. We will want to prime the initialisation of the finite field and the elliptic curve as they can be slow to initialise in sage for large $p$, but after that, finding $k$ for this curve is easy.    
+And this method, is actually very fast when you pass a small `prec` parameter (3, in this case). Fast enough to solve the challenge with the correct value of $k$. Sage converts all its code into python code, so we can very easily include this. We will want to prime the initialisation of the finite field and the elliptic curve before the main part of the script starts as they can be slow to initialise in sage for large $p$, but after that, finding $k$ for this curve is easy.    
 
 ```py
 px = server.recvuntil(b'[6] What is the value of d? > ').strip().decode()
