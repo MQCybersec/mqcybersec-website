@@ -8,7 +8,9 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
-
+  # Add pull request trigger to check if build succeeds
+  pull_request:
+    branches: ["main"]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -76,6 +78,8 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ env.BUILD_PATH }}/dist
+        # Only run this step for pushes to main, not for pull requests
+        if: github.event_name != 'pull_request'
 
   deploy:
     environment:
@@ -84,6 +88,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     name: Deploy
+    # Only run deployment for pushes to main, not for pull requests
+    if: github.event_name != 'pull_request'
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
