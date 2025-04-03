@@ -8,7 +8,7 @@ section: "PicoCTF"
 tags: ["medium"]
 ---
 With the shark1.pcapng provided within the [picoCTF site](https://play.picoctf.org/practice/challenge/115?page=1&search=wireshar), the pcap is opened within wireshark. The packet list displays a large number of intercepted traffics, which can be seen below. 
-![WiresharkDoDoo_1](images/picoctf/wiresharkdoodooododoo/Wiresharkdodoo.png)
+![WiresharkDoDoo_1](images/picoctf/wiresharkdoodooododoo/wiresharkdodoo.png)
 The traffic contains a large number of HTTP packets. After applying a filter using HTTP, the number of packets is reduced by 70%.
 
 Reviewing the list of packets, packet 827 and packet 964 appear to be the only two responses received for the two prior GET requests. Examining the decoded hex of packet 827, the ASCII (human-readable) section contains the following text:
