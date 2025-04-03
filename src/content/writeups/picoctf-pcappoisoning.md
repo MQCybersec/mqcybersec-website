@@ -1,12 +1,11 @@
 ---
-title: PcapPoisoning
+title: "PcapPoisoning"
 description: "How about some hide and seek heh?\r Download this file and find the flag."
-pubDate: 2025-03-27
-ctf: PicoCTF
-category: forensics
-author: Tenzin
-section: CTFs
-image:
+pubDate: 2025-04-03
+category: "forensics"
+author: "Tenzin"
+section: "PicoCTF"
+tags: ["medium"]
 ---
 With the shark1.pcapng provided within the [picoCTF site](https://play.picoctf.org/practice/challenge/362?page=1&search=pcap), the pcap is opened within wireshark. The packet list displays a large number of intercepted traffics, which can be seen below. 
 ![Pcappoisoning_1](images/picoctf/pcappoisoning/pcappoisoningimage_1.png)
