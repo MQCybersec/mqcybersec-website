@@ -1,15 +1,4 @@
 ---
-title: Redaction gone wrong
-description: "Now you DON’T see me.
-This report has some critical data in it, some of which have been redacted correctly, while some were not. Can you find an important key that was not redacted properly?"
-pubDate: 2025-04-03
-ctf: PicoCTF
-category: forensics
-author: Tenzin
-section: CTFs
-image:
----
----
 title: "Redaction gone wrong"
 description: "Now you DON’T see me.
 This report has some critical data in it, some of which have been redacted correctly, while some were not. Can you find an important key that was not redacted properly?"
