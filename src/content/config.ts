@@ -107,6 +107,42 @@ const sections = defineCollection({
   }),
 });
 
+export const tools = defineCollection({
+  schema: ({ image }) => z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    url: z.string().url().optional(),
+    github: z.string().url().optional(),
+    documentation: z.string().url().optional(),
+    platforms: z.array(z.enum([
+      'windows', 
+      'macos', 
+      'linux', 
+      'android', 
+      'ios', 
+      'web', 
+      'cli', 
+      'multiplatform',
+      'docker'
+    ])).optional().default([]),
+    logo: image().optional(),
+    categories: z.array(z.string()).optional().default([]),
+    tags: z.array(z.string()).optional().default([]),
+    hidden: z.boolean().optional().default(false),
+  }),
+});
+
+export const categories = defineCollection({
+  type: 'data',
+  schema: ({ image }) => z.object({
+    name: z.string(),
+    icon: z.string().optional(),
+    iconImage: image().optional(),
+    description: z.string().optional(),
+    color: z.string().optional(),
+  }),
+});
+
 export const collections = {
   showcase,
   people,
@@ -115,4 +151,6 @@ export const collections = {
   gridImages,
   writeups,
   sections,
+  tools,
+  categories
 };

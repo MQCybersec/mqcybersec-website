@@ -1,0 +1,1146 @@
+---
+import { getCollection } from "astro:content";
+import Header from "~/components/header.astro";
+import Footer from "~/components/footer.astro";
+import ToolCard from "~/components/tools/ToolCard.astro";
+import ContentSection from "~/components/content-section.astro";
+import "~/styles/index.css";
+import LogoBlock from "~/components/logo-block.astro";
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import { extractTagSuggestions } from "~/utils/auto-hyperlink";
+const { generator, site } = Astro;
+
+// Get all tools and sort by date, filter out hidden ones
+const allTools = await getCollection("tools");
+const tools = allTools.filter((tool) => !tool.data.hidden);
+
+// First pass: Apply tags to tools without tags
+tools.forEach((tool) => {
+  // If the tool has no tags, extract and assign tags from content
+  if (!tool.data.tags || tool.data.tags.length === 0) {
+    const suggestedTags = extractTagSuggestions(tool.body, []);
+
+    // Use up to 5 suggested tags
+    if (suggestedTags.length > 0) {
+      tool.data.tags = suggestedTags.slice(0, 5);
+    } else {
+      // Initialize with empty array if no suggestions found
+      tool.data.tags = [];
+    }
+  }
+});
+
+// Simple alphabetical sort for tools
+const sortedTools = tools.sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+
+// Collect all tags and their frequencies
+const tagFrequencyMap = new Map();
+sortedTools.forEach((tool) => {
+  // Add regular tags
+  (tool.data.tags || []).forEach((tag) => {
+    tagFrequencyMap.set(tag, (tagFrequencyMap.get(tag) || 0) + 1);
+  });
+
+  // Extract and add suggested tags
+  if (!tool.data.tags || tool.data.tags.length < 3) {
+    const suggestedTags = extractTagSuggestions(
+      tool.body,
+      tool.data.tags || [],
+    ).slice(0, 3);
+    suggestedTags.forEach((tag) => {
+      // Suggested tags get a lower frequency weight (0.5) to rank them lower than regular tags
+      tagFrequencyMap.set(tag, (tagFrequencyMap.get(tag) || 0) + 0.5);
+    });
+  }
+});
+
+// Get tags sorted by frequency for UI
+const tags = [...tagFrequencyMap.entries()]
+  .sort((a, b) => b[1] - a[1])
+  .map((entry) => ({
+    name: entry[0],
+    frequency: Math.round(entry[1]),
+    isSuggested: entry[1] % 1 !== 0, // If frequency has a decimal part, it's a suggested tag
+  }));
+
+// Define main categories and subcategories mapping
+const mainCategories = [
+  {
+    name: "Web",
+    icon: "🌐",
+    color: "#3b82f6",
+    subcategories: ["Web"],
+  },
+  {
+    name: "Pwn",
+    icon: "💥",
+    color: "#ef4444",
+    subcategories: ["Pwn"],
+  },
+  {
+    name: "FullPwn",
+    icon: "🔓",
+    color: "#f97316",
+    subcategories: ["FullPwn"],
+  },
+  {
+    name: "Forensics",
+    icon: "🔬",
+    color: "#8b5cf6",
+    subcategories: [
+      "Forensics",
+      "Windows Forensics",
+      "Disk Forensics",
+      "Memory Forensics",
+      "Network Forensics",
+    ],
+  },
+  {
+    name: "Stego",
+    icon: "🖼️",
+    color: "#14b8a6",
+    subcategories: ["Stego"],
+  },
+  {
+    name: "Reverse Engineering",
+    icon: "⚙️",
+    color: "#10b981",
+    subcategories: ["Rev", "Firmware", "Wasm"],
+  },
+  {
+    name: "OSINT",
+    icon: "🔍",
+    color: "#f59e0b",
+    subcategories: ["OSINT"],
+  },
+  {
+    name: "Cryptography",
+    icon: "🔒",
+    color: "#06b6d4",
+    subcategories: ["Crypto"],
+  },
+  {
+    name: "Others",
+    icon: "🧩",
+    color: "#a855f7",
+    subcategories: [
+      "Misc",
+      // "AI",
+      "Mobile",
+      "Windows",
+      "Linux",
+      "Cloud",
+      "Blockchain",
+    ],
+  },
+];
+
+// Collect all categories from tools
+const allCategories = new Set();
+sortedTools.forEach((tool) => {
+  (tool.data.categories || []).forEach((category) => {
+    allCategories.add(category);
+  });
+});
+const categories = [...allCategories].sort();
+
+// Get all sections from the sections collection with their icons/images
+const categoriesCollection = await getCollection("categories");
+const categoryMap = new Map();
+
+// Process categories from the categories collection
+categoriesCollection.forEach((category) => {
+  categoryMap.set(category.data.name, {
+    icon: category.data.icon || null,
+    iconImage: category.data.iconImage || null,
+    color: category.data.color || null,
+  });
+});
+
+// Get category colors (will be assigned by index to ensure consistency)
+const categoryColors = [
+  "#ec4899", // Primary (pink)
+  "#8b5cf6", // Secondary (purple)
+  "#3b82f6", // Blue
+  "#10b981", // Green
+  "#f59e0b", // Amber
+  "#ef4444", // Red
+  "#6366f1", // Indigo
+  "#14b8a6", // Teal
+  "#f97316", // Orange
+  "#8b5cf6", // Purple
+  "#06b6d4", // Cyan
+];
+
+// Create a formatted categories array with icon information
+const formattedCategories = categories.map((name, index) => {
+  const categoryInfo = categoryMap.get(name) || {
+    icon: null,
+    iconImage: null,
+    color: categoryColors[index % categoryColors.length],
+  };
+
+  return {
+    name,
+    icon: categoryInfo.icon,
+    iconImage: categoryInfo.iconImage,
+    color: categoryInfo.color || categoryColors[index % categoryColors.length],
+  };
+});
+
+// Create a searchable index for client-side search
+const searchIndex = sortedTools.map((tool) => {
+  // Extract suggested tags for this tool
+  const suggestedTags =
+    !tool.data.tags || tool.data.tags.length < 3
+      ? extractTagSuggestions(tool.body, tool.data.tags || []).slice(0, 3)
+      : [];
+
+  const searchableText = [
+    tool.data.title,
+    tool.data.description || "",
+    (tool.data.categories || []).join(" "),
+    (tool.data.tags || []).join(" "),
+    tool.body, // This includes the content for searching
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  return {
+    slug: tool.slug,
+    searchableText,
+    categories: tool.data.categories || [],
+    tags: tool.data.tags || [],
+    suggestedTags,
+    platforms: tool.data.platforms || [],
+  };
+});
+
+const description = "MQCyberSec cybersecurity tools and resources collection.";
+const title = "Security Tools | MQCyberSec";
+---
+
+<!doctype html>
+<html lang="en" class="h-full motion-safe:scroll-smooth" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta content="#ec4899" data-react-helmet="true" name="theme-color" />
+    <meta name="generator" content={generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:title" content="Security Tools - MQCyberSec" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={site} />
+
+    <script is:inline>
+      const themeSaved = localStorage.getItem("theme");
+
+      if (themeSaved) {
+        document.documentElement.dataset.theme = themeSaved;
+      } else {
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        document.documentElement.dataset.theme = prefersDark ? "dark" : "light";
+      }
+    </script>
+
+    <script
+      is:inline
+      src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"
+    ></script>
+  </head>
+
+  <body
+    class="h-full overflow-x-hidden bg-default text-default text-base selection:bg-secondary selection:text-white"
+  >
+    <Header />
+
+    <main>
+      <br />
+      <ContentSection title="Security Tools" id="tools">
+        <Fragment slot="lead">
+          <div class="mx-auto max-w-2xl">
+            <p class="text-center font-bold leading-relaxed tracking-tight">
+              Explore our collection of <span class="text-primary"
+                >{tools.length} tools</span
+              > for
+              <span class="text-primary">cybersecurity professionals</span> and
+              <span class="text-primary">enthusiasts</span> curated by the members
+              and executives of MQCyberSec.
+            </p>
+          </div>
+        </Fragment>
+
+        <div class="mt-8 w-full">
+          <!-- Global Search field with tag integration -->
+          <div class="mb-8">
+            <div class="relative mx-auto w-full max-w-xl">
+              <div
+                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+              >
+                <Icon name="mdi:magnify" class="text-text-offset size-5" />
+              </div>
+              <div
+                id="search-tags-container"
+                class="border-border bg-background-offset text-text flex min-h-[42px] flex-wrap items-center rounded-lg border p-2 pl-10 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary"
+              >
+                <!-- Selected tags will be added here as bubbles -->
+                <input
+                  type="text"
+                  id="search-input"
+                  class="m-0.5 h-[28px] min-w-[120px] flex-grow border-none bg-transparent p-1 text-sm focus:ring-0"
+                  placeholder="Search tools content, titles, and tags..."
+                />
+              </div>
+              <div
+                id="search-status"
+                class="text-text-offset absolute right-0 top-0 flex hidden h-full items-center pr-4 text-sm"
+              >
+                Found <span id="result-count" class="mx-1 font-bold">0</span> results
+              </div>
+
+              <!-- Tag dropdown will appear here -->
+              <div
+                id="tag-dropdown"
+                class="border-border bg-background absolute z-[200] mt-1 hidden max-h-60 w-full overflow-y-auto rounded-lg border shadow-lg"
+                style="top: calc(100% + 2px); left: 0; background-color: var(--color-background-offset);"
+              >
+                <!-- Tag results will be added here -->
+              </div>
+            </div>
+          </div>
+          <script is:inline define:vars={{ searchIndex, tools }}>
+            // Format the number with commas for readability
+            const formattedToolCount = tools.length.toLocaleString();
+
+            // Update the placeholder text immediately
+            console.log(1);
+            if (document.getElementById("search-input")) {
+              document.getElementById("search-input").placeholder =
+                `Searching ${formattedToolCount} tools...`;
+            }
+          </script>
+
+          <!-- Main Category Tabs -->
+          <div class="mb-6">
+            <div class="border-border border-b">
+              <ul
+                id="main-category-tabs"
+                class="-mb-px flex flex-wrap text-center font-medium text-sm"
+              >
+                <li class="mr-2">
+                  <button
+                    class="main-category-tab active inline-block rounded-t-lg border-b-2 border-primary p-4"
+                    data-main-category="all"
+                  >
+                    <span class="mr-1">🔍</span> All Tools
+                  </button>
+                </li>
+                {
+                  mainCategories.map((category) => (
+                    <li class="mr-2">
+                      <button
+                        class="main-category-tab inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300"
+                        data-main-category={category.name}
+                        style={`--tab-color: ${category.color};`}
+                      >
+                        <span class="mr-1">{category.icon}</span>{" "}
+                        {category.name}
+                      </button>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+
+          <!-- Subcategory Filter Section (changes based on main category) -->
+          <div id="subcategory-filters" class="mb-6">
+            <div class="flex justify-between">
+              <h3 class="text-text-offset mb-3 font-medium text-sm">
+                Filter by Subcategory
+              </h3>
+              <button
+                id="clear-subcategories"
+                class="hover:text-primary/80 hidden text-primary text-xs"
+              >
+                Clear filters
+              </button>
+            </div>
+            <div id="subcategory-buttons" class="flex flex-wrap gap-2">
+              <!-- Subcategory buttons will be inserted here dynamically -->
+            </div>
+          </div>
+
+          <!-- Tools Grid Container -->
+          <div
+            id="tools-container"
+            class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          >
+            {sortedTools.map((tool) => <ToolCard tool={tool} />)}
+          </div>
+
+          <!-- No results message -->
+          <div id="no-results" class="hidden py-10 text-center">
+            <p class="text-text-offset font-bold text-xl">
+              No tools found matching your filters.
+            </p>
+            <p class="text-text-offset mt-2">
+              Try adjusting your search terms, tags, or filters.
+            </p>
+            <button
+              id="reset-filters"
+              class="hover:bg-primary/80 mt-4 rounded-lg bg-primary px-4 py-2 text-white transition-colors"
+            >
+              Reset all filters
+            </button>
+          </div>
+        </div>
+      </ContentSection>
+    </main>
+
+    <Footer />
+
+    <script
+      define:vars={{ searchIndex, formattedCategories, tags, mainCategories }}
+    >
+      // Client-side filtering and searching
+      const searchInput = document.getElementById("search-input");
+      const searchTagsContainer = document.getElementById(
+        "search-tags-container",
+      );
+      const tagDropdown = document.getElementById("tag-dropdown");
+      const toolCards = document.querySelectorAll("[data-tool-card]");
+      const toolContainer = document.getElementById("tools-container");
+      const noResultsMessage = document.getElementById("no-results");
+      const searchStatus = document.getElementById("search-status");
+      const resetFiltersBtn = document.getElementById("reset-filters");
+      const clearSubCategoriesBtn = document.getElementById(
+        "clear-subcategories",
+      );
+      const mainCategoryTabs = document.querySelectorAll(".main-category-tab");
+      const subcategoryContainer = document.getElementById(
+        "subcategory-buttons",
+      );
+
+      let debounceTimeout;
+      let selectedTags = [];
+      let selectedSubcategories = [];
+      let currentMainCategory = "all";
+
+      function debounce(func, wait) {
+        return function executedFunction(...args) {
+          const later = () => {
+            clearTimeout(debounceTimeout);
+            func(...args);
+          };
+
+          clearTimeout(debounceTimeout);
+          debounceTimeout = setTimeout(later, wait);
+        };
+      }
+
+      // Update UI when main category selection changes
+      function updateMainCategoryUI() {
+        mainCategoryTabs.forEach((tab) => {
+          const mainCat = tab.getAttribute("data-main-category");
+
+          if (mainCat === currentMainCategory) {
+            tab.classList.add("active", "border-primary", "text-primary");
+            tab.classList.remove("border-transparent", "hover:border-gray-300");
+          } else {
+            tab.classList.remove("active", "border-primary", "text-primary");
+            tab.classList.add("border-transparent", "hover:border-gray-300");
+          }
+        });
+
+        // Update subcategories based on selected main category
+        updateSubcategoryFilters();
+      }
+
+      // Update subcategory filters based on selected main category
+      function updateSubcategoryFilters() {
+        // Clear current subcategories
+        subcategoryContainer.innerHTML = "";
+        selectedSubcategories = [];
+
+        if (currentMainCategory === "all") {
+          // Show all categories when "All Tools" is selected
+          formattedCategories.forEach((category) => {
+            createSubcategoryButton(
+              category.name,
+              category.color,
+              category.icon,
+            );
+          });
+        } else {
+          // Find the main category and show its subcategories
+          const mainCat = mainCategories.find(
+            (c) => c.name === currentMainCategory,
+          );
+          if (mainCat) {
+            mainCat.subcategories.forEach((subcat) => {
+              // Find the formatted category to get its color and icon
+              const formattedCat = formattedCategories.find(
+                (c) => c.name === subcat,
+              );
+              if (formattedCat) {
+                createSubcategoryButton(
+                  subcat,
+                  formattedCat.color,
+                  formattedCat.icon,
+                );
+              } else {
+                createSubcategoryButton(subcat, mainCat.color, null);
+              }
+            });
+          }
+        }
+
+        // Hide the clear button initially
+        clearSubCategoriesBtn.classList.add("hidden");
+
+        // Apply filters after updating subcategories
+        applyFiltersAndSearch();
+      }
+
+      // Create a subcategory button
+      function createSubcategoryButton(name, color, icon) {
+        const button = document.createElement("button");
+        button.className =
+          "subcategory-btn text-white rounded-full px-4 py-2 font-medium transition-colors text-sm flex items-center opacity-70 hover:opacity-100";
+        button.setAttribute("data-subcategory", name);
+        button.style.backgroundColor = color;
+
+        // Add icon if available
+        if (icon) {
+          const iconSpan = document.createElement("span");
+          iconSpan.className = "mr-1.5";
+          iconSpan.textContent = icon;
+          button.appendChild(iconSpan);
+        }
+
+        button.appendChild(document.createTextNode(name));
+        subcategoryContainer.appendChild(button);
+
+        // Add click event
+        button.addEventListener("click", () => {
+          toggleSubcategory(name);
+        });
+      }
+
+      // Toggle subcategory selection
+      function toggleSubcategory(subcategory) {
+        if (selectedSubcategories.includes(subcategory)) {
+          // Remove subcategory if already selected
+          selectedSubcategories = selectedSubcategories.filter(
+            (c) => c !== subcategory,
+          );
+        } else {
+          // Add subcategory if not already selected
+          selectedSubcategories.push(subcategory);
+        }
+
+        updateSubcategoryUI();
+        applyFiltersAndSearch();
+      }
+
+      // Update UI when subcategory selection changes
+      function updateSubcategoryUI() {
+        const subcategoryBtns = document.querySelectorAll(".subcategory-btn");
+
+        subcategoryBtns.forEach((btn) => {
+          const subcat = btn.getAttribute("data-subcategory");
+
+          if (selectedSubcategories.includes(subcat)) {
+            btn.classList.add("selected");
+            btn.style.opacity = "1";
+          } else {
+            btn.classList.remove("selected");
+            btn.style.opacity = "0.7";
+          }
+        });
+
+        if (selectedSubcategories.length > 0) {
+          clearSubCategoriesBtn.classList.remove("hidden");
+        } else {
+          clearSubCategoriesBtn.classList.add("hidden");
+        }
+      }
+
+      // Create tag bubble element with improved layout
+      function createTagBubble(tag) {
+        const bubble = document.createElement("div");
+        bubble.className =
+          "bg-primary text-white rounded-full px-2 py-1 text-sm flex items-center h-[28px] m-0.5";
+        bubble.innerHTML = `
+          <span class="mr-1">#${tag}</span>
+          <button class="tag-remove-btn flex-shrink-0" data-tag="${tag}" aria-label="Remove tag">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        `;
+
+        const removeBtn = bubble.querySelector(".tag-remove-btn");
+        removeBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          removeTag(tag);
+        });
+
+        return bubble;
+      }
+
+      // Add a tag to the search with improved positioning
+      function addTag(tag) {
+        if (!tag || selectedTags.includes(tag)) return;
+
+        selectedTags.push(tag);
+
+        // Add the tag bubble before the input
+        const bubble = createTagBubble(tag);
+        searchTagsContainer.insertBefore(bubble, searchInput);
+
+        // Clear input and hide dropdown
+        searchInput.value = "";
+        tagDropdown.classList.add("hidden");
+
+        // Force input to maintain minimum width
+        setTimeout(() => {
+          searchInput.style.width = "auto";
+          searchInput.focus();
+        }, 10);
+
+        applyFiltersAndSearch();
+      }
+
+      // Remove a tag
+      function removeTag(tag) {
+        selectedTags = selectedTags.filter((t) => t !== tag);
+
+        // Remove the tag bubble
+        const bubbles = searchTagsContainer.querySelectorAll(".tag-remove-btn");
+        bubbles.forEach((btn) => {
+          if (btn.getAttribute("data-tag") === tag) {
+            btn.closest("div").remove();
+          }
+        });
+
+        applyFiltersAndSearch();
+      }
+
+      // Show tag suggestions in dropdown with improved positioning
+      function showTagSuggestions(searchText) {
+        // Get tag suggestions based on input
+        const query = searchText.substring(1).toLowerCase(); // Remove # and lowercase
+        if (query.length === 0) {
+          tagDropdown.classList.add("hidden");
+          return;
+        }
+
+        // Find matching tags (up to 5)
+        const matchingTags = tags
+          .filter(
+            (tag) =>
+              tag.name.toLowerCase().includes(query) &&
+              !selectedTags.includes(tag.name),
+          )
+          .slice(0, 5)
+          .map((tag) => tag.name);
+
+        if (matchingTags.length === 0) {
+          tagDropdown.classList.add("hidden");
+          return;
+        }
+
+        // Position the dropdown correctly
+        const inputRect = searchTagsContainer.getBoundingClientRect();
+        tagDropdown.style.width = `${inputRect.width}px`;
+
+        // Create dropdown content
+        tagDropdown.innerHTML = "";
+        matchingTags.forEach((tag) => {
+          const item = document.createElement("div");
+          item.className = "px-4 py-2 hover:bg-background-alt cursor-pointer";
+          item.textContent = `#${tag}`;
+
+          item.addEventListener("click", () => {
+            addTag(tag);
+          });
+
+          tagDropdown.appendChild(item);
+        });
+
+        tagDropdown.classList.remove("hidden");
+      }
+
+      // Apply all filters and search
+      // Apply all filters and search with highlighting
+      function applyFiltersAndSearch() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+
+        let visibleCount = 0;
+
+        // First, make sure tool container is visible
+        toolContainer.classList.remove("hidden");
+
+        // Remove any previous highlighting first
+        document.querySelectorAll(".search-highlight").forEach((el) => {
+          const parent = el.parentNode;
+          parent.replaceChild(document.createTextNode(el.textContent), el);
+          // Normalize the parent to merge adjacent text nodes
+          parent.normalize();
+        });
+
+        toolCards.forEach((card) => {
+          const categoriesAttr = card.getAttribute("data-categories") || "[]";
+          const tagsAttr = card.getAttribute("data-tags") || "[]";
+          const suggestedTagsAttr =
+            card.getAttribute("data-suggested-tags") || "[]";
+
+          // Parse JSON strings into arrays
+          const categories = categoriesAttr ? JSON.parse(categoriesAttr) : [];
+          const tags = tagsAttr ? JSON.parse(tagsAttr) : [];
+          const suggestedTags = suggestedTagsAttr
+            ? JSON.parse(suggestedTagsAttr)
+            : [];
+
+          // Combine both tag types for matching
+          const allTags = [...tags, ...suggestedTags];
+
+          const slug = card.getAttribute("data-tool-card") || "";
+
+          // Main category matching
+          let mainCategoryMatch = true;
+          if (currentMainCategory !== "all") {
+            // Check if the tool has at least one category that belongs to the current main category
+            const mainCat = mainCategories.find(
+              (c) => c.name === currentMainCategory,
+            );
+            if (mainCat) {
+              mainCategoryMatch = categories.some((cat) =>
+                mainCat.subcategories.includes(cat),
+              );
+            }
+          }
+
+          // Subcategory matching (AND logic) - must match ALL selected subcategories
+          const subcategoryMatch =
+            selectedSubcategories.length === 0 ||
+            selectedSubcategories.every((cat) => categories.includes(cat));
+
+          // Tags matching - must match ALL selected tags
+          const tagMatch =
+            selectedTags.length === 0 ||
+            selectedTags.every((tag) => allTags.includes(tag));
+
+          // Search match - include title, description, and all content
+          let searchMatch = true;
+
+          // Only perform search if there's a search term and it's not a tag search
+          if (searchTerm && !searchTerm.startsWith("#")) {
+            // Find the index entry for this tool
+            const indexEntry = searchIndex.find(
+              (entry) => entry.slug === slug.split("/").pop(),
+            );
+
+            // Get title and description elements
+            const titleElement = card.querySelector("h3");
+            const descElement = card.querySelector("p");
+
+            // Get their text content
+            const toolTitle = titleElement?.textContent?.toLowerCase() || "";
+            const toolDesc = descElement?.textContent?.toLowerCase() || "";
+
+            // Check if search term is in title, description, or searchable text
+            const titleMatch = toolTitle.includes(searchTerm);
+            const descMatch = toolDesc.includes(searchTerm);
+            const indexMatch = indexEntry
+              ? indexEntry.searchableText.includes(searchTerm)
+              : false;
+
+            searchMatch = titleMatch || descMatch || indexMatch;
+
+            // If we have a match and a search term, highlight the matching text
+            if (searchMatch && searchTerm.length > 0) {
+              // Highlight in title
+              if (titleMatch && titleElement) {
+                highlightText(titleElement, searchTerm);
+              }
+
+              // Highlight in description
+              if (descMatch && descElement) {
+                highlightText(descElement, searchTerm);
+              }
+            }
+          }
+
+          if (
+            mainCategoryMatch &&
+            subcategoryMatch &&
+            tagMatch &&
+            searchMatch
+          ) {
+            card.classList.remove("hidden");
+            visibleCount++;
+          } else {
+            card.classList.add("hidden");
+          }
+        });
+
+        // Show/hide no results message
+        if (visibleCount === 0) {
+          toolContainer.classList.add("hidden");
+          noResultsMessage.classList.remove("hidden");
+        } else {
+          toolContainer.classList.remove("hidden");
+          noResultsMessage.classList.add("hidden");
+
+          // Show search status
+          const isSearching =
+            searchTerm !== "" ||
+            selectedTags.length > 0 ||
+            selectedSubcategories.length > 0;
+          if (isSearching) {
+            searchStatus.innerHTML = `Found <span id="result-count" class="font-bold mx-1">${visibleCount}</span> results`;
+            searchStatus.classList.remove("hidden");
+          } else {
+            searchStatus.classList.add("hidden");
+          }
+        }
+      }
+
+      // Helper function to highlight search term in an element
+      // Modify the highlightText function to use more direct styling:
+      function highlightText(element, searchTerm) {
+        if (!element || !searchTerm || searchTerm === "") return;
+
+        const originalText = element.textContent;
+        const lowerOriginal = originalText.toLowerCase();
+        const lowerSearch = searchTerm.toLowerCase();
+
+        if (!lowerOriginal.includes(lowerSearch)) return;
+
+        // Clear element content
+        while (element.firstChild) {
+          element.removeChild(element.firstChild);
+        }
+
+        let lastIndex = 0;
+        let index = lowerOriginal.indexOf(lowerSearch);
+
+        while (index !== -1) {
+          // Add text before the match
+          if (index > lastIndex) {
+            element.appendChild(
+              document.createTextNode(originalText.substring(lastIndex, index)),
+            );
+          }
+
+          // Add highlighted match with inline styles instead of relying on CSS class
+          const highlightSpan = document.createElement("span");
+          highlightSpan.className = "search-highlight";
+          highlightSpan.style.backgroundColor = "rgba(236, 72, 153, 0.3)";
+          highlightSpan.style.color = "var(--color-primary, #ec4899)";
+          highlightSpan.style.fontWeight = "bold";
+          highlightSpan.style.padding = "0 2px";
+          highlightSpan.style.borderRadius = "3px";
+          highlightSpan.style.boxShadow = "0 0 0 1px rgba(236, 72, 153, 0.5)";
+          highlightSpan.textContent = originalText.substring(
+            index,
+            index + searchTerm.length,
+          );
+          element.appendChild(highlightSpan);
+
+          // Update last index
+          lastIndex = index + searchTerm.length;
+
+          // Find next match
+          index = lowerOriginal.indexOf(lowerSearch, lastIndex);
+        }
+
+        // Add any remaining text
+        if (lastIndex < originalText.length) {
+          element.appendChild(
+            document.createTextNode(originalText.substring(lastIndex)),
+          );
+        }
+      }
+
+      // Reset all filters
+      function resetFilters() {
+        searchInput.value = "";
+        selectedTags = [];
+        selectedSubcategories = [];
+        currentMainCategory = "all";
+
+        // Remove all tag bubbles
+        const tagBubbles = searchTagsContainer
+          .querySelectorAll(".tag-remove-btn")
+          .forEach((btn) => {
+            btn.closest("div").remove();
+          });
+
+        updateMainCategoryUI();
+        updateSubcategoryUI();
+        applyFiltersAndSearch();
+      }
+
+      // Add event listeners
+      searchInput?.addEventListener(
+        "input",
+        debounce(function () {
+          const value = searchInput.value.trim();
+
+          // Handle tag suggestions
+          if (value.startsWith("#")) {
+            showTagSuggestions(value);
+          } else {
+            tagDropdown.classList.add("hidden");
+            applyFiltersAndSearch();
+          }
+
+          // Adjust input width based on content
+          setTimeout(() => {
+            searchInput.style.width = "auto";
+          }, 10);
+        }, 300),
+      );
+
+      // Handle Enter key on search input
+      searchInput?.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          const value = searchInput.value.trim();
+
+          // If input starts with # and has content after it, add as tag
+          if (value.startsWith("#") && value.length > 1) {
+            e.preventDefault();
+            const tagName = value.substring(1); // Remove the #
+            addTag(tagName);
+          } else {
+            // Otherwise just search
+            applyFiltersAndSearch();
+          }
+        }
+      });
+
+      resetFiltersBtn?.addEventListener("click", resetFilters);
+
+      // Clear subcategories button
+      clearSubCategoriesBtn?.addEventListener("click", () => {
+        selectedSubcategories = [];
+        updateSubcategoryUI();
+        applyFiltersAndSearch();
+      });
+
+      // Set up main category tab clicks
+      mainCategoryTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const mainCat = tab.getAttribute("data-main-category");
+          currentMainCategory = mainCat;
+          selectedSubcategories = []; // Clear subcategory selection when changing main category
+          updateMainCategoryUI();
+        });
+      });
+
+      // Close tag dropdown when clicking outside
+      document.addEventListener("click", (e) => {
+        if (
+          !searchTagsContainer.contains(e.target) &&
+          !tagDropdown.contains(e.target)
+        ) {
+          tagDropdown.classList.add("hidden");
+        }
+      });
+
+      // Add this to handle resizing
+      window.addEventListener("resize", function () {
+        if (!tagDropdown.classList.contains("hidden")) {
+          const inputRect = searchTagsContainer.getBoundingClientRect();
+          tagDropdown.style.width = `${inputRect.width}px`;
+        }
+      });
+
+      // Ensure the header always has the fixed-header class
+      const header = document.getElementById("page-header");
+      if (header) {
+        header.classList.add("fixed-header");
+      }
+
+      // Initialize the UI
+      updateMainCategoryUI();
+    </script>
+
+    <style>
+      /* Transitions for buttons */
+      .main-category-tab,
+      .subcategory-btn {
+        transition: all 0.2s ease-in-out;
+      }
+
+      /* Main category tab styles */
+      /* Main category tab styles */
+      .main-category-tab.active {
+        color: var(--color-primary);
+        border-color: var(--color-primary);
+      }
+
+      /* Selected states for subcategory buttons */
+      .subcategory-btn.selected {
+        font-weight: 600;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+      }
+
+      .subcategory-btn:hover {
+        transform: translateY(-1px);
+      }
+
+      /* Style for tag bubbles */
+      #search-tags-container .tag-remove-btn {
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+      }
+
+      #search-tags-container .tag-remove-btn:hover {
+        opacity: 1;
+      }
+
+      /* Main category tab hover effect */
+      .main-category-tab:not(.active):hover {
+        color: var(--tab-color, var(--color-primary));
+        border-color: var(--tab-color, var(--color-gray-300));
+      }
+
+      /* FIXES FOR SEARCH INPUT AND TAG CONTAINER */
+      #search-tags-container {
+        min-height: 42px;
+        padding-top: 0.375rem;
+        padding-bottom: 0.375rem;
+      }
+
+      #search-tags-container input {
+        height: 28px;
+        padding: 0.25rem 0;
+        margin: 0.125rem 0;
+        width: 100%;
+        min-width: 80px;
+      }
+
+      /* Ensure tag bubbles are aligned correctly */
+      #search-tags-container > div {
+        display: inline-flex;
+        align-items: center;
+        margin: 0.125rem 0.25rem 0.125rem 0;
+        height: 28px;
+      }
+
+      /* Fix tag dropdown positioning and z-index */
+      #tag-dropdown {
+        top: calc(100% + 2px);
+        left: 0;
+        z-index: 100;
+        width: 100%;
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      /* Dropdown item styles */
+      #tag-dropdown > div {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+      }
+
+      #tag-dropdown > div:hover {
+        background-color: var(
+          --color-background-alt,
+          rgba(255, 255, 255, 0.05)
+        );
+      }
+
+      /* Responsive adjustments for main category tabs */
+      @media (max-width: 768px) {
+        #main-category-tabs {
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none; /* IE and Edge */
+          padding-bottom: 5px;
+        }
+
+        #main-category-tabs::-webkit-scrollbar {
+          display: none; /* Chrome, Safari, Opera */
+        }
+
+        .main-category-tab {
+          white-space: nowrap;
+          padding: 0.75rem 1rem;
+        }
+      }
+      /* Add these styles to your existing CSS */
+      .search-highlight {
+        background-color: rgba(
+          236,
+          72,
+          153,
+          0.25
+        ); /* Primary color with transparency */
+        color: var(--color-primary);
+        font-weight: 700; /* Bold text */
+        border-radius: 0.125rem;
+        padding: 0 0.125rem;
+        box-shadow: 0 0 0 1px rgba(236, 72, 153, 0.5); /* Outline effect */
+        position: relative;
+        text-shadow: 0 0 2px rgba(255, 255, 255, 0.5); /* Text glow for better contrast */
+        transition: all 0.2s ease;
+      }
+
+      /* Dark mode specific adjustments */
+      [data-theme="dark"] .search-highlight {
+        background-color: rgba(241, 126, 184, 0.3); /* Brighter in dark mode */
+        box-shadow: 0 0 0 1px rgba(241, 126, 184, 0.6); /* Stronger outline in dark mode */
+        text-shadow: 0 0 3px rgba(0, 0, 0, 0.7); /* Dark text shadow for better contrast */
+      }
+
+      /* Animation effect for highlights */
+      @keyframes highlight-pulse {
+        0% {
+          background-color: rgba(236, 72, 153, 0.2);
+        }
+        50% {
+          background-color: rgba(236, 72, 153, 0.4);
+        }
+        100% {
+          background-color: rgba(236, 72, 153, 0.2);
+        }
+      }
+
+      .search-highlight {
+        animation: highlight-pulse 2s ease-in-out infinite;
+      }
+
+      /* Ensure the highlight doesn't affect layout */
+      .search-highlight {
+        display: inline;
+        white-space: pre-wrap;
+      }
+    </style>
+  </body>
+</html>
