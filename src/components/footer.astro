@@ -1,67 +1,61 @@
 ---
 import { Icon } from "astro-icon/components";
-import HeroImage from "~/components/hero-image.astro";
 import LogoBlock from "~/components/logo-block.astro";
 import type { FooterLink, NavItem } from "~/types";
-
 const links: Array<FooterLink> = [
-  {
-    url: "https://linktr.ee/mqcybersec",
-    description: "MQCyberSec's Linktree",
-    icon: "mdi:link",
-  },
-  {
-    url: "https://github.com/MQCyberSec",
-    description: "View MQCyberSec on GitHub",
-    icon: "fa-brands:github-alt",
-  },
-  {
-    url: "https://discord.gg/8uvnhG8EED",
-    description: "MQCyberSec on Discord",
-    icon: "fa-brands:discord",
-  },
-  {
-    url: "https://www.linkedin.com/company/mqcybersec",
-    description: "MQCyberSec on LinkedIn",
-    icon: "fa-brands:linkedin",
-  },
-  {
-    url: "https://instagram.com/mqcybersec",
-    description: "MQCyberSec on Instagram",
-    icon: "fa-brands:instagram",
-  },
-  {
-    url: "mailto:mqcybersec@gmail.com",
-    description: "MQCyberSec's Email",
-    icon: "mdi:email",
-  },
+ {
+url: "https://linktr.ee/mqcybersec",
+description: "MQCyberSec's Linktree",
+icon: "mdi:link",
+ },
+ {
+url: "https://github.com/MQCyberSec",
+description: "View MQCyberSec on GitHub",
+icon: "fa-brands:github-alt",
+ },
+ {
+url: "https://discord.gg/8uvnhG8EED",
+description: "MQCyberSec on Discord",
+icon: "fa-brands:discord",
+ },
+ {
+url: "https://www.linkedin.com/company/mqcybersec",
+description: "MQCyberSec on LinkedIn",
+icon: "fa-brands:linkedin",
+ },
+ {
+url: "https://instagram.com/mqcybersec",
+description: "MQCyberSec on Instagram",
+icon: "fa-brands:instagram",
+ },
+ {
+url: "mailto:mqcybersec@gmail.com",
+description: "MQCyberSec's Email",
+icon: "mdi:email",
+ },
 ];
-
 const navItems: Array<NavItem> = [
-  { title: "About Us", url: "/#aboutus" },
-  { title: "Hack Hub", url: "/#hackhub" },
-  { title: "CTF Achievements", url: "/#ctf-achievements" },
-  { title: "Writeups", url: "/writeups" },
-  { title: "Security Tools", url: "/tools" },
-  { title: "Team", url: "/#teams" },
-  { title: "Contact", url: "/#contact" },
+ { title: "About Us", url: "/#aboutus" },
+ { title: "Hack Hub", url: "/#hackhub" },
+ { title: "CTF Achievements", url: "/#ctf-achievements" },
+ { title: "Writeups", url: "/writeups" },
+ { title: "Security Tools", url: "/tools" },
+ { title: "Team", url: "/#teams" },
+ { title: "Contact", url: "/#contact" },
 ];
-
 const currentYear = new Date().getFullYear();
 ---
-
 <footer class="relative flex h-auto flex-col items-center justify-center py-8">
-  <div class="absolute inset-0 overflow-hidden opacity-40">
-    <HeroImage />
+  <div class="footer-bg absolute inset-0 overflow-hidden">
+    <canvas id="footer-triangle-canvas"></canvas>
   </div>
   <div class="relative w-full max-w-4xl px-4">
     <div class="mb-6 flex flex-col items-center justify-between md:flex-row">
       <LogoBlock slot="eyebrow" inClass="size-48" />
       <p class="block py-4 text-center text-sm md:text-left md:text-base">
-        📍 4 Research Park Dr, Macquarie Park, NSW, 2113
+       📍 4 Research Park Dr, Macquarie Park, NSW, 2113
       </p>
     </div>
-
     <ul class="mb-6 flex flex-wrap justify-center gap-4 md:justify-end">
       {
         links.map((link) => (
@@ -91,24 +85,343 @@ const currentYear = new Date().getFullYear();
         }
       </ul>
     </nav>
-    <small class="flex justify-end gap-4 px-4 text-gray-300"
-      >© Copyright MQCyberSec {currentYear}</small
-    >
+    <div class="mt-6 flex flex-col items-center justify-between gap-4 px-4 text-gray-300 md:flex-row">
+      <small>© Copyright MQCyberSec {currentYear}</small>
+      <div class="text-center text-xs md:text-right">
+        <a href="https://mqcybersec.org" class="hover:text-purple-400 transition-colors">MQCyberSec Website</a> | 
+        <a href="https://github.com/MQCybersec/mqcybersec-website" class="hover:text-purple-400 transition-colors">Source Code</a>
+      </div>
+    </div>
   </div>
 </footer>
 
-<style>
-  footer {
-    position: relative;
-    z-index: 1;
+<script>
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.vy = 0.6 + Math.random() * 0.6; // Much faster downward movement
+    this.vx = (Math.random() - 0.5) * 0.3; // More horizontal drift
+    this.originalX = x;
+    this.originalY = y;
+    this.alpha = 0.9 + Math.random() * 0.1; // High brightness
+    this.size = 2 + Math.random() * 1.5; // Visible points similar to original
   }
 
-  footer > div:first-child {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
+  update(width, height) {
+    // Simple downward movement
+    this.y += this.vy;
+    this.x += this.vx;
+    
+    // If a point goes off the bottom, reset it to the top
+    if (this.y > height) {
+      this.y = -10; // Start further above the top edge
+      this.x = Math.random() * width;
+      // Randomize velocity slightly when recycling
+      this.vy = 0.3 + Math.random() * 0.4;
+      this.vx = (Math.random() - 0.5) * 0.2;
+    }
+
+    // If a point goes off the sides, keep it within bounds
+    if (this.x < 0) this.x = width;
+    if (this.x > width) this.x = 0;
   }
+}
+
+class Triangle {
+  constructor(p1, p2, p3) {
+    this.p1 = p1;
+    this.p2 = p2;
+    this.p3 = p3;
+    this.opacity = 0.8; // Much higher opacity
+    // Add a random slight color variation for visual interest
+    this.colorVariation = Math.random() * 30;
+  }
+
+  draw(ctx) {
+    // Calculate average alpha from the three points
+    const avgAlpha = (this.p1.alpha + this.p2.alpha + this.p3.alpha) / 3;
+    
+    // Style more closely matching the original splash triangles but brighter
+    
+    // Fill with semi-transparent purple like original
+    ctx.beginPath();
+    ctx.moveTo(this.p1.x, this.p1.y);
+    ctx.lineTo(this.p2.x, this.p2.y);
+    ctx.lineTo(this.p3.x, this.p3.y);
+    ctx.closePath();
+    ctx.fillStyle = `rgba(128, 0, 128, ${0.75 * this.opacity * avgAlpha})`;
+    ctx.fill();
+
+    // Stroke with nearly solid opacity like original
+    ctx.beginPath();
+    ctx.moveTo(this.p1.x, this.p1.y);
+    ctx.lineTo(this.p2.x, this.p2.y);
+    ctx.lineTo(this.p3.x, this.p3.y);
+    ctx.closePath();
+    ctx.strokeStyle = `rgba(128, 0, 128, ${0.95 * this.opacity * avgAlpha})`;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+}
+
+class FooterAnimation {
+  constructor() {
+    this.canvas = document.getElementById('footer-triangle-canvas');
+    
+    // If no canvas found, don't continue
+    if (!this.canvas) return;
+    
+    this.container = this.canvas.parentElement;
+    this.ctx = this.canvas.getContext("2d", { willReadFrequently: false });
+    this.points = [];
+    this.triangles = [];
+    this.rafId = null;
+    this.lastDrawTime = 0;
+    this.isMobile = window.innerWidth < 768;
+    
+    // Match connection distances more like the original
+    this.baseDistanceThreshold = 100;
+    this.baseMaxLineDistance = 150;
+    
+    // Calculate scaled distance thresholds based on screen area
+    const { clientWidth: width, clientHeight: height } = this.container;
+    const referenceArea = 1033 * 500; // For footer
+    const currentArea = width * height;
+    const scaleFactor = Math.sqrt(currentArea / referenceArea);
+    
+    this.distanceThreshold = this.baseDistanceThreshold * scaleFactor;
+    this.maxLineDistance = this.baseMaxLineDistance * scaleFactor;
+    
+    this.setupCanvas();
+    this.createPoints();
+    this.setupResizeObserver();
+    
+    // Start animation
+    this.animate();
+  }
+
+  setupCanvas() {
+    const { clientWidth: width, clientHeight: height } = this.container;
+    const dpr = window.devicePixelRatio || 1;
+    this.canvas.width = width * dpr;
+    this.canvas.height = height * dpr;
+    this.canvas.style.width = `${width}px`;
+    this.canvas.style.height = `${height}px`;
+    this.ctx.scale(dpr, dpr);
+  }
+
+  createPoints() {
+    const { clientWidth: width, clientHeight: height } = this.container;
+    // Increase point count for better visibility
+    const pointCount = this.isMobile ? 35 : 50;
+    
+    this.points = [];
+    for (let i = 0; i < pointCount; i++) {
+      // Distribute points across the width but start them at varying heights
+      const x = Math.random() * width;
+      
+      // Distribute initial y positions throughout the animation area
+      // Most starting above viewport, some in view already
+      const y = Math.random() * height * 2 - height;
+      
+      this.points.push(new Point(x, y));
+    }
+    
+    // Ensure we have at least a few points already in view
+    for (let i = 0; i < 5; i++) {
+      const x = Math.random() * width;
+      const y = Math.random() * height * 0.7; // Place in top 70% of visible area
+      this.points.push(new Point(x, y));
+    }
+  }
+
+  setupResizeObserver() {
+    this.resizeObserver = new ResizeObserver(() => {
+      this.isMobile = window.innerWidth < 768;
+      this.setupCanvas();
+      this.createPoints();
+    });
+    this.resizeObserver.observe(this.container);
+  }
+
+  animate(timestamp) {
+    // Limit frame rate for better performance
+    const elapsed = timestamp - this.lastDrawTime;
+    if (elapsed < 1000 / 60) { // 60 FPS like original splash for smooth falling
+      this.rafId = requestAnimationFrame(this.animate.bind(this));
+      return;
+    }
+
+    const { clientWidth: width, clientHeight: height } = this.container;
+
+    // Clear canvas with black background like original splash
+    this.ctx.fillStyle = "black";
+    this.ctx.fillRect(0, 0, width, height);
+
+    // Update and draw points
+    for (const point of this.points) {
+      point.update(width, height);
+      
+      // Draw the point with purple like original splash
+      this.ctx.fillStyle = "purple";
+      this.ctx.beginPath();
+      this.ctx.arc(point.x, point.y, point.size, 0, Math.PI * 2);
+      this.ctx.fill();
+    }
+
+    // Draw lines between points
+    this.drawLines();
+
+    // Form triangles between nearby points
+    this.updateTriangles();
+
+    this.lastDrawTime = timestamp;
+    this.rafId = requestAnimationFrame(this.animate.bind(this));
+  }
+  
+  updateTriangles() {
+    // Clear existing triangles
+    this.triangles = [];
+    
+    // Find triangles between nearby points - use method similar to original splash
+    const maxTriangles = this.isMobile ? 12 : 20; // Slightly more triangles
+    
+    // Using sampling method like the original splash
+    const sampleSize = Math.min(30, this.points.length);
+    const sampledPoints = this.getRandomSample(this.points, sampleSize);
+    
+    let added = 0;
+    for (let i = 0; i < sampledPoints.length - 2 && added < maxTriangles; i++) {
+      for (let j = i + 1; j < sampledPoints.length - 1 && added < maxTriangles; j++) {
+        for (let k = j + 1; k < sampledPoints.length && added < maxTriangles; k++) {
+          const p1 = sampledPoints[i];
+          const p2 = sampledPoints[j];
+          const p3 = sampledPoints[k];
+
+          if (this.isValidTriangle(p1, p2, p3)) {
+            this.triangles.push(new Triangle(p1, p2, p3));
+            added++;
+            if (added >= maxTriangles) break;
+          }
+        }
+      }
+    }
+    
+    // Draw all triangles
+    for (const triangle of this.triangles) {
+      triangle.draw(this.ctx);
+    }
+  }
+  
+  getRandomSample(array, size) {
+    // Same sampling method as original
+    const shuffled = [...array].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, size);
+  }
+  
+  isValidTriangle(p1, p2, p3) {
+    // Same validation method as original
+    const d1 = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+    const d2 = Math.hypot(p2.x - p3.x, p2.y - p3.y);
+    const d3 = Math.hypot(p3.x - p1.x, p3.y - p1.y);
+    return (
+      d1 < this.distanceThreshold &&
+      d2 < this.distanceThreshold &&
+      d3 < this.distanceThreshold
+    );
+  }
+
+  drawLines() {
+    // Similar line style to the original splash
+    const screenSize = this.container.clientWidth * this.container.clientHeight;
+    const referenceSize = 1033 * 500; // Reference for footer size
+    const sizeFactor = Math.min(1, screenSize / referenceSize);
+    const lineDensity = 0.3 + (sizeFactor * 0.3); // Similar to original splash
+    
+    for (let i = 0; i < this.points.length; i++) {
+      // Filter points similar to original splash
+      const nearbyPoints = this.points
+        .slice(i + 1)
+        .filter(() => Math.random() < lineDensity);
+      
+      for (const p2 of nearbyPoints) {
+        const p1 = this.points[i];
+        const distance = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+
+        if (distance <= this.maxLineDistance) {
+          // Calculate opacity similarly to original splash
+          const opacity = Math.max(
+            0.05,
+            Math.min(0.95, 1 - distance / this.maxLineDistance)
+          );
+
+          this.ctx.strokeStyle = `rgba(128, 0, 128, ${opacity * 1.5})`; // More like original but brighter
+          this.ctx.lineWidth = 1;
+          this.ctx.beginPath();
+          this.ctx.moveTo(p1.x, p1.y);
+          this.ctx.lineTo(p2.x, p2.y);
+          this.ctx.stroke();
+        }
+      }
+    }
+  }
+
+  cleanup() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+    
+    // Clear references to help garbage collection
+    this.points = [];
+    this.triangles = [];
+    this.ctx = null;
+    this.canvas = null;
+    this.container = null;
+  }
+}
+
+// Initialize footer animation when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  // Create new animation
+  const footerAnim = new FooterAnimation();
+  
+  // Cleanup on page navigation
+  document.addEventListener("astro:before-preparation", () => {
+    if (footerAnim && typeof footerAnim.cleanup === 'function') {
+      footerAnim.cleanup();
+    }
+  });
+});
+</script>
+
+<style>
+footer {
+  position: relative;
+  z-index: 1;
+  background-color: black; /* Match the original splash background */
+}
+
+.footer-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  pointer-events: none; /* Ensure it doesn't interfere with clicks */
+  opacity: 1; /* Full opacity like original */
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
 </style>
