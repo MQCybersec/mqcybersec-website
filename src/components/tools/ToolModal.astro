@@ -1,16 +1,25 @@
 ---
-// ToolModal.astro - Updated to match ToolCard icon implementation
 import { Icon } from "astro-icon/components";
 import { getCollection } from "astro:content";
 
-// Fetch all tools at build time
+// Fetch all tools and categories at build time
 const allTools = await getCollection("tools");
+const allCategories = await getCollection("categories");
 
-// Convert the collection to a JSON string that can be embedded in the page
+// Convert the collections to JSON strings that can be embedded in the page
 const toolsJSON = JSON.stringify(
   allTools.map(tool => ({
     slug: tool.slug,
     ...tool.data
+  }))
+);
+
+const categoriesJSON = JSON.stringify(
+  allCategories.map(category => ({
+    name: category.data.name,
+    icon: category.data.icon,
+    color: category.data.color,
+    description: category.data.description
   }))
 );
 
@@ -106,15 +115,19 @@ const iconList = [
   ))}
 </div>
 
-<style>
-  /* Keep your existing styles */
-</style>
-
-<script define:vars={{ toolsJSON }}>
-// Initialize the tools data from the statically generated JSON
+<script define:vars={{ toolsJSON, categoriesJSON }}>
+// Initialize the tools and categories data from the statically generated JSON
 window.toolsData = JSON.parse(toolsJSON);
+window.categoriesData = JSON.parse(categoriesJSON);
 
-// Create a lookup map for faster access
+// Create a lookup map for faster access to categories
+window.categoriesMap = {};
+window.categoriesData.forEach(category => {
+  const normalizedName = category.name.toLowerCase().replace(/\s+/g, '-');
+  window.categoriesMap[normalizedName] = category;
+});
+
+// Create a lookup map for tools
 window.toolsMap = {};
 window.toolsData.forEach(tool => {
   // Store by slug (converted to lowercase for case-insensitive lookup)
@@ -128,6 +141,7 @@ window.toolsData.forEach(tool => {
 });
 
 console.log(`Loaded ${window.toolsData.length} tools from collection`);
+console.log(`Loaded ${window.categoriesData.length} categories from collection`);
 
 document.addEventListener("DOMContentLoaded", function() {
   // Get all tool cards with the modal trigger attribute
@@ -211,50 +225,62 @@ document.addEventListener("DOMContentLoaded", function() {
     return platforms[platform?.toLowerCase()] || { name: platform, icon: "mdi:laptop" };
   }
   
-  // Function to get category color based on name
-  function getCategoryColor(category) {
-    const categoryColorMap = {
-      "Web": "#3b82f6",
-      "Pwn": "#ef4444",
-      "FullPwn": "#f97316",
-      "Rev": "#6366f1",
-      "Misc": "#a855f7",
-      "OSINT": "#06b6d4",
-      "AI": "#0ea5e9",
-      "Network Forensics": "#ec4899",
-      "Windows Forensics": "#8b5cf6",
-      "Disk Forensics": "#10b981",
-      "Memory Forensics": "#f59e0b",
-      "Forensics": "#8b5cf6",
-      "Network": "#16a34a",
-      "Credential": "#7c3aed",
-      "Stego": "#0d9488"
+  // Function to get category details
+  function getCategoryDetails(categoryName) {
+    // Normalize category name
+    const normalizedName = categoryName.toLowerCase().replace(/\s+/g, '-');
+    
+    // Check categories from the collection first
+    const category = window.categoriesMap[normalizedName];
+    
+    if (category) {
+      return {
+        color: category.color || "#a1a1aa",
+        icon: category.icon || null
+      };
+    }
+    
+    // Fallback if not found in categories collection
+    const fallbackColorMap = {
+      "web": "#3b82f6",
+      "pwn": "#ef4444",
+      "fullpwn": "#f97316",
+      "rev": "#6366f1",
+      "misc": "#a855f7",
+      "osint": "#06b6d4",
+      "ai": "#0ea5e9",
+      "network forensics": "#ec4899",
+      "windows forensics": "#8b5cf6",
+      "disk forensics": "#10b981",
+      "memory forensics": "#f59e0b",
+      "forensics": "#8b5cf6",
+      "network": "#16a34a",
+      "credential": "#7c3aed",
+      "stego": "#0d9488"
     };
     
-    return categoryColorMap[category] || "#a1a1aa"; // Default gray
-  }
-  
-  // Function to get category icon based on name
-  function getCategoryIcon(category) {
-    const categoryIconMap = {
-      "Web": "🌐",
-      "Pwn": "💥",
-      "FullPwn": "🔓",
-      "Rev": "⚙️",
-      "Misc": "🧩",
-      "OSINT": "🔍",
-      "AI": "🤖",
-      "Network Forensics": "📡",
-      "Windows Forensics": "🪟",
-      "Disk Forensics": "💽",
-      "Memory Forensics": "🧠",
-      "Forensics": "🔬",
-      "Network": "🌐",
-      "Credential": "🔐",
-      "Stego": "🔍"
+    const fallbackIconMap = {
+      "web": "🌐",
+      "pwn": "💥",
+      "fullpwn": "🔓",
+      "rev": "⚙️",
+      "misc": "🧩",
+      "osint": "🔍",
+      "ai": "🤖",
+      "network forensics": "📡",
+      "windows forensics": "🪟",
+      "disk forensics": "💽", 
+      "memory forensics": "🧠",
+      "forensics": "🔬",
+      "network": "🌐",
+      "credential": "🔐",
+      "stego": "🔍"
     };
     
-    return categoryIconMap[category] || null;
+    return {
+      color: fallbackColorMap[normalizedName] || "#a1a1aa",
+      icon: fallbackIconMap[normalizedName] || null
+    };
   }
   
   // Function to populate modal with tool data
@@ -295,17 +321,16 @@ document.addEventListener("DOMContentLoaded", function() {
     
     if (toolData.categories && toolData.categories.length > 0) {
       toolData.categories.forEach(category => {
-        const catColor = getCategoryColor(category);
-        const catIcon = getCategoryIcon(category);
+        const categoryDetails = getCategoryDetails(category);
         
         const span = document.createElement("span");
         span.className = "rounded-full px-3 py-1 text-sm font-medium text-white flex items-center";
-        span.style.backgroundColor = catColor;
+        span.style.backgroundColor = categoryDetails.color;
         
-        if (catIcon) {
+        if (categoryDetails.icon) {
           const iconSpan = document.createElement("span");
           iconSpan.className = "mr-1";
-          iconSpan.textContent = catIcon;
+          iconSpan.textContent = categoryDetails.icon;
           span.appendChild(iconSpan);
         }
         
