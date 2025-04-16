@@ -269,7 +269,12 @@ document.addEventListener("DOMContentLoaded", function() {
     if (toolData.logo) {
       // Create image element for logo
       const img = document.createElement("img");
-      img.src = toolData.logo;
+      if (toolData.logo.src){
+        img.src = toolData.logo.src;
+      } else {
+        img.src = toolData.logo;
+      }
+      
       img.alt = `${toolData.title} logo`;
       img.className = "h-full w-full object-contain";
       logoContainer.appendChild(img);

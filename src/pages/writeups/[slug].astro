@@ -486,32 +486,11 @@ const difficultyInfo = getDifficultyInfo(difficultyTag);
           return toolDataCache[toolSlug];
         }
     
-        try {
-          // Try to fetch from API first (change this URL to match your API)
-          const response = await fetch(`/api/tools/${toolSlug}`);
-          
-          if (response.ok) {
-            const data = await response.json();
-            toolDataCache[toolSlug] = data;
-            return data;
-          }
-          
-          // If no API or API fails, try loading from a global tools data object
+        try {          
           // This assumes you have a global window.toolsData object with all tool data
           if (window.toolsData && window.toolsData[toolSlug]) {
             toolDataCache[toolSlug] = window.toolsData[toolSlug];
             return window.toolsData[toolSlug];
-          }
-          
-          // Fall back to fetching from a static JSON file
-          const staticResponse = await fetch(`/data/tools.json`);
-          if (staticResponse.ok) {
-            const allToolsData = await staticResponse.json();
-            const tool = allToolsData.find(t => t.slug === toolSlug);
-            if (tool) {
-              toolDataCache[toolSlug] = tool;
-              return tool;
-            }
           }
           
           // Still no data, create a placeholder
