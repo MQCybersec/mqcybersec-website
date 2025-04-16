@@ -249,11 +249,38 @@ function doublePoints(positions) {
 // Double the points
 const DOUBLED_POSITIONS = doublePoints(PREDEFINED_POSITIONS);
 
+class ThemeDetector {
+  static detectTheme() {
+    // First, check for data-theme attribute
+    const dataTheme = document.documentElement.dataset.theme;
+    if (dataTheme) {
+      return dataTheme;
+    }
+
+    // Fallback to explicit Astro theme classes
+    if (document.documentElement.classList.contains('dark')) {
+      return 'dark';
+    }
+    
+    if (document.documentElement.classList.contains('light')) {
+      return 'light';
+    }
+
+    // Next, check system preference
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDarkMode ? 'dark' : 'light';
+  }
+
+  static getBackgroundColor(theme) {
+    return theme === 'dark' ? 'black' : '#f4f4f4';
+  }
+}
+
 class TriangleFieldAnimation {
   constructor(canvas, container) {
     this.canvas = canvas;
     this.container = container;
-    this.ctx = canvas.getContext("2d");
+    this.ctx = canvas.getContext("2d", { willReadFrequently: false });
     this.points = [];
     this.triangles = [];
     this.rafId = null;
@@ -265,6 +292,10 @@ class TriangleFieldAnimation {
     this.maxTriangles = 100; // Increased limit for doubled points
     this.startTime = Date.now();
     this.initialFormationDuration = 5000; // Keep initial formation for 5 seconds
+    
+    // Track current theme
+    this.currentTheme = ThemeDetector.detectTheme();
+    this.backgroundColor = ThemeDetector.getBackgroundColor(this.currentTheme);
     
     // Calculate base distance threshold for reference resolution
     const referenceWidth = 1033;
@@ -367,12 +398,20 @@ class TriangleFieldAnimation {
       return;
     }
 
+    // Check and update theme every frame
+    const detectedTheme = ThemeDetector.detectTheme();
+    if (detectedTheme !== this.currentTheme) {
+      this.currentTheme = detectedTheme;
+      this.backgroundColor = ThemeDetector.getBackgroundColor(detectedTheme);
+    }
+
     const { clientWidth: width, clientHeight: height } = this.container;
 
-    // Clear canvas with black background
-    this.ctx.fillStyle = "black";
+    // Clear canvas with dynamic background
+    this.ctx.fillStyle = this.backgroundColor;
     this.ctx.fillRect(0, 0, width, height);
 
+    // Rest of the existing animate method remains the same...
     // Different handling for mobile and desktop
     if (this.isMobile) {
       // Simplified mobile rendering - redraw every frame but keep points static

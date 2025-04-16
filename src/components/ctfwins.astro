@@ -142,7 +142,7 @@ const recentWriteups = await getCollection("writeups", ({ data }) => !data.hidde
 <ContentSection title="CTF Time Rankings" id="ctf-rankings" altBackground={true}>
   <Fragment slot="lead">
     Our team's <span class="text-primary">global</span> and <span class="text-primary">regional</span> 
-    standings on <a href="https://ctftime.org/" target="_blank" rel="noopener" class="text-primary hover:underline">CTF Time</a>.
+    standings on <a href="https://ctftime.org/" target="_blank" rel="noopener" class="text-primary hover:underline">CTFTime</a>.
   </Fragment>
 
   <div class="max-w-6xl mx-auto mb-16">
@@ -636,7 +636,7 @@ const recentWriteups = await getCollection("writeups", ({ data }) => !data.hidde
 
       <a 
         href="/writeups" 
-        class="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-white font-medium hover:bg-primary-dark transition-colors"
+        class="ctf-writeups-btn group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-white font-medium hover:bg-primary-dark transition-colors"
       >
         Browse All Writeups
         <Icon name="mdi:arrow-right" class="size-5 transition-transform group-hover:translate-x-1" />
@@ -648,5 +648,29 @@ const recentWriteups = await getCollection("writeups", ({ data }) => !data.hidde
 <style>
   .bg-primary-dark {
     background-color: var(--color-primary-dark, hsl(var(--color-primary-hue, 240), var(--color-primary-saturation, 100%), calc(var(--color-primary-lightness, 50%) - 10%)));
+  }
+
+  .ctf-writeups-btn {
+    padding: 8px 16px;
+    border: 2px solid var(--color-primary);
+    border-radius: 20px;
+    background-color: transparent;
+    color: var(--color-text);
+    font-weight: bold;
+    cursor: pointer;
+    transition:
+      background-color 0.3s,
+      color 0.3s,
+      transform 0.2s ease;
+  }
+
+  .ctf-writeups-btn:hover {
+    background-color: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .ctf-writeups-btn:hover .icon {
+    transform: translateX(0.25rem);
   }
 </style>

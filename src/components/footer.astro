@@ -96,6 +96,34 @@ const currentYear = new Date().getFullYear();
 </footer>
 
 <script>
+class ThemeDetector {
+  static detectTheme() {
+    // First, check for data-theme attribute
+    const dataTheme = document.documentElement.dataset.theme;
+    if (dataTheme) {
+      return dataTheme;
+    }
+
+    // Fallback to explicit Astro theme classes
+    if (document.documentElement.classList.contains('dark')) {
+      return 'dark';
+    }
+    
+    if (document.documentElement.classList.contains('light')) {
+      return 'light';
+    }
+
+    // Next, check system preference
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDarkMode ? 'dark' : 'light';
+  }
+
+  static getBackgroundColor(theme) {
+    return theme === 'dark' ? 'black' : '#f4f4f4';
+  }
+}
+
+
 class Point {
   constructor(x, y) {
     this.x = x;
@@ -180,6 +208,10 @@ class FooterAnimation {
     this.lastDrawTime = 0;
     this.isMobile = window.innerWidth < 768;
     
+    // Track current theme
+    this.currentTheme = ThemeDetector.detectTheme();
+    this.backgroundColor = ThemeDetector.getBackgroundColor(this.currentTheme);
+    
     // Match connection distances more like the original
     this.baseDistanceThreshold = 100;
     this.baseMaxLineDistance = 150;
@@ -253,10 +285,17 @@ class FooterAnimation {
       return;
     }
 
+    // Check and update theme every frame
+    const detectedTheme = ThemeDetector.detectTheme();
+    if (detectedTheme !== this.currentTheme) {
+      this.currentTheme = detectedTheme;
+      this.backgroundColor = ThemeDetector.getBackgroundColor(detectedTheme);
+    }
+
     const { clientWidth: width, clientHeight: height } = this.container;
 
-    // Clear canvas with black background like original splash
-    this.ctx.fillStyle = "black";
+    // Clear canvas with dynamic background
+    this.ctx.fillStyle = this.backgroundColor;
     this.ctx.fillRect(0, 0, width, height);
 
     // Update and draw points

@@ -11,76 +11,65 @@ import ContactUs from "~/components/contact-us.astro";
 import logoImage from "~/assets/logo.png";
 import "~/styles/index.css";
 import TeamTimeline from "../components/team.astro";
-
 const { generator, site } = Astro;
 const image = new URL(logoImage.src, site);
 const description =
-  "The MQCyberSec club is the place to be for all Macquarie University students who are interested in cybersecurity and Capture the Flag competitions. ";
+"The MQCyberSec club is the place to be for all Macquarie University students who are interested in cybersecurity and Capture the Flag competitions. ";
 ---
-
 <!doctype html>
 <html lang="en" class="h-full motion-safe:scroll-smooth" data-theme="dark">
-  <head>
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta content="#ec4899" data-react-helmet="true" name="theme-color" />
     <meta name="generator" content={generator} />
-
     <title>MQCyberSec Club</title>
     <meta name="description" content={description} />
-
     <!-- social media -->
     <meta property="og:title" content="MQCyberSec" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
     <meta property="og:url" content={site} />
-
+    
     <!-- initialize theme -->
     <script is:inline>
-      const themeSaved = localStorage.getItem("theme");
-
-      if (themeSaved) {
-        document.documentElement.dataset.theme = themeSaved;
-      } else {
-        const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)",
-        ).matches;
-        document.documentElement.dataset.theme = prefersDark ? "dark" : "light";
-      }
-
-      window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", (event) => {
-          if (!localStorage.getItem("theme")) {
-            document.documentElement.dataset.theme = event.matches
-              ? "dark"
-              : "light";
-          }
-        });
+        const themeSaved = localStorage.getItem("theme");
+        if (themeSaved) {
+            document.documentElement.dataset.theme = themeSaved;
+        } else {
+            const prefersDark = window.matchMedia(
+                "(prefers-color-scheme: dark)",
+            ).matches;
+            document.documentElement.dataset.theme = prefersDark ? "dark" : "light";
+        }
+        window
+            .matchMedia("(prefers-color-scheme: dark)")
+            .addEventListener("change", (event) => {
+                if (!localStorage.getItem("theme")) {
+                    document.documentElement.dataset.theme = event.matches
+                        ? "dark"
+                        : "light";
+                }
+            });
     </script>
     <!-- Initialise Flowbite -->
     <script
-      is:inline
-      src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"
+        is:inline
+        src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"
     ></script>
-  </head>
-  <body
+</head>
+<body
     class="h-full overflow-x-hidden bg-default text-default text-base selection:bg-secondary selection:text-white"
-  >
+>
     <Header />
     <Splash />
-    <!-- <div class="space-y-24 px-8 py-32"> -->
     <AboutUs />
     <HackHub />
     <TeamTimeline />
     <CTFWins />
-
     <ContactUs />
-    <!-- <Compatibility /> -->
-    <!-- Maybe have CTF scores or some display of what we do. -->
-    <!-- <Showcase /> -->
-  </body>
-  <Footer />
+    <Footer />
+</body>
 </html>
