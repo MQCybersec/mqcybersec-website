@@ -1,6 +1,6 @@
 ---
 title: "mitmproxy"
-description: "An HTTP inspector for Android & OkHTTP (like Charles but on device)"
+description: "mitmproxy is a free and open source interactive HTTPS proxy."
 platforms: ["linux", "windows", "macos"]
 categories: ["Network"]
 tags: ["networking", "reverse-engineering"]
