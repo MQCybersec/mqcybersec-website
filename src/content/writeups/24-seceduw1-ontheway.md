@@ -13,7 +13,7 @@ image: "images/24-secedu/icon.png"
 
 We are supplied a `photo.jpg`.
 
-We can run `exiftool` on this picture to extract out any EXIF data.
+We can run exiftool on this picture to extract out any EXIF data.
 
 ```
 $ exiftool photo.jpg

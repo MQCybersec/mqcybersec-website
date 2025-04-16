@@ -15,7 +15,7 @@ We are given a `unknown.zip`, once extracted it contains a `ukn_reality.jpg`.
 
 The image has a nice photo as contents, but no flag visible.
 
-We can use `exiftool` to print metadata about the image.
+We can use exiftool to print metadata about the image.
 ```
 $ exiftool ukn_reality.jpg                                                                                                                                                                                     130 ↵
 ExifTool Version Number         : 13.10

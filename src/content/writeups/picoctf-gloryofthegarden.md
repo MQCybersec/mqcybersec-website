@@ -13,7 +13,7 @@ We start with a `garden.jpg`, viewing the contents having a picture of a garden 
 
 ![garden.jpg](images/picoctf/gloryofthegarden/garden.jpg)
 
-I try using `exiftool` to view for any headers of interest, there are a few results but none that catch my eye as of interest.
+I try using exiftool to view for any headers of interest, there are a few results but none that catch my eye as of interest.
 
 I then view the contents of the image using `xxd`, sometimes CTF challenges (especially easier forensics ones) like to hide written data in the image at the end, I check with `tail` and `xxd` and find the flag:
 ```

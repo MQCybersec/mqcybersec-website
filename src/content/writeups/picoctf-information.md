@@ -13,7 +13,7 @@ We are given a `cat.jpg`, opening the file it has no flag visually (but a very n
 
 ![cat.png](images/picoctf/information/cat.png)
 
-I start by using `exiftool` to extract the metadata of the file:
+I start by using exiftool to extract the metadata of the file:
 ```bash
 ExifTool Version Number         : 13.10
 File Name                       : cat.jpg

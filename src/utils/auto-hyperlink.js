@@ -71,6 +71,8 @@ export const autoHyperlinkTerms = {
   exiftool: "TOOL:exiftool",
   tshark: "TOOL:tshark",
   MemProcFS: "TOOL:memprocfs",
+  "volatility 2": "TOOL:volatility2",
+  "vol2": "TOOL:volatility2",
   vol3: "TOOL:volatility3",
   volatility: "TOOL:volatility3",
   volatility3: "TOOL:volatility3",

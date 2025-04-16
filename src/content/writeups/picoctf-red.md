@@ -12,7 +12,7 @@ image: "./images/picoctf/red/red.png"
 We start with a `red.png`, viewing the contents is just the colour red...
 ![red.png](images/picoctf/red/red.png)
 
-I check the image with `exiftool` and there is a Poem:
+I check the image with exiftool and there is a Poem:
 ```bash
 $ exiftool red.png
 ExifTool Version Number         : 13.10

@@ -42,13 +42,13 @@ There is further 'encrypted' data somewhere else on the drive.
 
 I found `/home/robot/Documents/.decrypt.txt.gpg` and we need to decrypt this file with a password.
 
-I use `john`'s `gpg2john` to get the hash of the file:
+I use johntheripper's `gpg2john` to get the hash of the file:
 
 ```
 $gpg$*0*80*6afecb2a567f672ad132c349496469bf2c56a32647b304cac6e6a2bcc74c8aa5b1dc6200efa4a954311d31b06671790857645e7f400be04a9f0a2720656fa833c2ca0723e9c50bc121b25268493316c7*3*18*8*9*58720256*c12797ac5d46785f
 ```
 
-We can then crack it with `john` and it cracks to `letmein`.
+We can then crack it with johntheripper and it cracks to `letmein`.
 
 I decrypt the file with `gpg`:
 

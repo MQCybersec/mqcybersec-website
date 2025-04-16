@@ -50,7 +50,7 @@ Dumping ./chunk_be.enc:
 
 Seems to be lots of... encrypted chunks! Pulling them down they seem to be encrypted with a key of some kind... Where have we seen that before...?
 
-We have an SSH key from [last weeks challenge `Vaulting`](24-seceduweek2-vaulting), but it's protected by a password, after a lot of searching we found that neither `john` nor `hashcat` can crack this, it's just not supported (yet).
+We have an SSH key from [last weeks challenge `Vaulting`](24-seceduweek2-vaulting), but it's protected by a password, after a lot of searching we found that neither johntheripper nor hashcat can crack this, it's just not supported (yet).
 
 My teammate (the goat) found a tool to try to crack the PEM, [crackpkcs8](https://github.com/chipx0r/crackpkcs8).
 

@@ -29,7 +29,7 @@ Second:
             if (local_c8[3] == 0x53) {
 ```
 
-Third is a hash, we can crack this with `hashcat`/`john` as its just 2 characters. I crack it and it is `Tf`. But this proves to be useless due to something we see later.
+Third is a hash, we can crack this with hashcat/johntheripper as its just 2 characters. I crack it and it is `Tf`. But this proves to be useless due to something we see later.
 
 Fourth:
 

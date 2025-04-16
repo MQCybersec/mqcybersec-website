@@ -15,7 +15,7 @@ We are given a `offtheramp.jpeg`.
 
 ![offtheramp.jpeg](images/24-downunder/offtheramp.jpeg)
 
-When we use `exiftool` with this image, we are given some coordinate headers:
+When we use exiftool with this image, we are given some coordinate headers:
 ```yml
 GPS Altitude                    : 35 m Above Sea Level
 GPS Latitude                    : 38 deg 9' 15.95" S
