@@ -707,6 +707,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       });
     </script>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", async () => {
+
+        const { default: renderMathInElement } = await import("katex/contrib/auto-render/auto-render.js");
+        renderMathInElement(document.body, {
+ 
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "\\[", right: "\\]", display: true },
+            { left: "$", right: "$", display: false },
+            { left: "\\(", right: "\\)", display: false }
+          ]
+        });
+      });
+
+    </script>
     
     <style is:global>
       /* Improved code block styling */
