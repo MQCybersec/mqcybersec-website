@@ -825,8 +825,67 @@ const title = "CTF Writeups | MQCyberSec";
       }
     </script>
 
-    <style>
-      /* Styles remain the same as in the previous version */
-    </style>
+<style>
+  /* Transitions for buttons */
+  .section-btn,
+  .tag-btn,
+  .difficulty-btn {
+    transition: all 0.2s ease-in-out;
+  }
+
+  /* Active states */
+  .section-btn.active,
+  .difficulty-btn.active {
+    font-weight: 600;
+  }
+
+  .tag-btn:hover,
+  .difficulty-btn:hover {
+    transform: translateY(-1px);
+  }
+  /* Search highlighting styles */
+  .search-highlight {
+    background-color: rgba(
+      236,
+      72,
+      153,
+      0.25
+    ); /* Primary color with transparency */
+    color: var(--color-primary, #ec4899);
+    font-weight: 700; /* Bold text */
+    border-radius: 0.125rem;
+    padding: 0 0.125rem;
+    box-shadow: 0 0 0 1px rgba(236, 72, 153, 0.5); /* Outline effect */
+    position: relative;
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.5); /* Text glow for better contrast */
+    transition: all 0.2s ease;
+    display: inline;
+    white-space: pre-wrap;
+  }
+
+  /* Dark mode specific adjustments */
+  [data-theme="dark"] .search-highlight {
+    background-color: rgba(241, 126, 184, 0.3); /* Brighter in dark mode */
+    box-shadow: 0 0 0 1px rgba(241, 126, 184, 0.6); /* Stronger outline in dark mode */
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.7); /* Dark text shadow for better contrast */
+  }
+
+  /* Animation effect for highlights */
+  @keyframes highlight-pulse {
+    0% {
+      background-color: rgba(236, 72, 153, 0.2);
+    }
+    50% {
+      background-color: rgba(236, 72, 153, 0.4);
+    }
+    100% {
+      background-color: rgba(236, 72, 153, 0.2);
+    }
+  }
+
+  .search-highlight {
+    animation: highlight-pulse 2s ease-in-out infinite;
+  }
+</style>
   </body>
 </html>
