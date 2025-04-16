@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import Header from "~/components/header.astro";
 import Footer from "~/components/footer.astro";
 import ToolCard from "~/components/tools/ToolCard.astro";
+import ToolModal from "~/components/tools/ToolModal.astro";
 import ContentSection from "~/components/content-section.astro";
 import "~/styles/index.css";
 import LogoBlock from "~/components/logo-block.astro";
@@ -422,6 +423,8 @@ const title = "Security Tools | MQCyberSec";
     </main>
 
     <Footer />
+
+    <ToolModal />
 
     <script
       define:vars={{ searchIndex, formattedCategories, tags, mainCategories }}

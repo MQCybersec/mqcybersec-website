@@ -1,6 +1,7 @@
 /**
- * auto-hyperlink.js
- * Utility for automatically hyperlinking technical terms in writeup content
+ * auto-hyperlink.js - Fixed version
+ * Utility for automatically hyperlinking technical terms in writeup content 
+ * and showing tool modals for specific tools
  */
 
 // Dictionary of cybersecurity terms and their corresponding URLs
@@ -36,7 +37,7 @@ export const autoHyperlinkTerms = {
   Radare2: "https://rada.re/n/",
 
   // Networking
-  Wireshark: "https://www.wireshark.org/",
+  Wireshark: "TOOL:wireshark",
   Nmap: "https://nmap.org/",
   DNS: "https://en.wikipedia.org/wiki/Domain_Name_System",
 
@@ -61,61 +62,63 @@ export const autoHyperlinkTerms = {
 
   //Windows
   DPAPI: "https://en.wikipedia.org/wiki/Data_Protection_API",
-   /* TOOLS */
+  
+  /* TOOLS - These will use the modal instead of external links */
+  /* These are marked with a special prefix 'TOOL:' */
   // forens
-  Autopsy: "https://www.autopsy.com/download/",
-  Wireshark: "https://www.wireshark.org/download.html",
-  exiftool: "https://github.com/exiftool/exiftool",
-  tshark: "https://tshark.dev/setup/install/",
-  MemProcFS: "https://github.com/ufrisk/MemProcFS",
-  vol3: "https://github.com/volatilityfoundation/volatility3",
-  volatility: "https://github.com/volatilityfoundation/volatility3",
-  volatility3: "https://github.com/volatilityfoundation/volatility3",
-  oletools: "https://github.com/decalage2/oletools",
-  aperisolve: "https://aperisolve.com/",
-  zsteg: "https://github.com/zed-0xff/zsteg",
+  Autopsy: "TOOL:autopsy",
+  Wireshark: "TOOL:wireshark",
+  exiftool: "TOOL:exiftool",
+  tshark: "TOOL:tshark",
+  MemProcFS: "TOOL:memprocfs",
+  vol3: "TOOL:volatility3",
+  volatility: "TOOL:volatility3",
+  volatility3: "TOOL:volatility3",
+  oletools: "TOOL:oletools",
+  aperisolve: "TOOL:aperisolve",
+  zsteg: "TOOL:zsteg",
   ericzimmerman: "https://ericzimmerman.github.io/#!index.md",
-  evtxecmd: "https://github.com/EricZimmerman/evtx",
+  evtxecmd: "TOOL:evtxecmd",
 
   //crypto
-  CyberChef: "https://gchq.github.io/CyberChef/",
-  "Dcode.fr": "https://www.dcode.fr/cipher-identifier",
-  Dcode: "https://www.dcode.fr/cipher-identifier",
+  CyberChef: "TOOL:cyberchef",
+  "Dcode.fr": "TOOL:dcode",
+  Dcode: "TOOL:dcode",
 
   //general
-  PayloadAllTheThings: "https://github.com/swisskyrepo/PayloadsAllTheThings",
-  SecLists: "https://github.com/danielmiessler/SecLists",
-  "webhook.site": "https://webhook.site",
-  netcat: "https://en.wikipedia.org/wiki/Netcat",
-  nc: "https://en.wikipedia.org/wiki/Netcat",
+  PayloadAllTheThings: "TOOL:payloadallthethings",
+  SecLists: "TOOL:seclists",
+  "webhook.site": "TOOL:webhooksite",
+  netcat: "TOOL:netcat",
+  nc: "TOOL:netcat",
 
   //hachcrack
-  hashcat: "https://hashcat.net/hashcat/",
-  johntheripper: "https://github.com/openwall/john",
+  hashcat: "TOOL:hashcat",
+  johntheripper: "TOOL:johntheripper",
   
   //pwn
-  DetectItEasy: "https://github.com/horsicq/Detect-It-Easy",
-  gdb: "https://en.wikipedia.org/wiki/GNU_Debugger",
+  DetectItEasy: "TOOL:detectiteasy",
+  gdb: "TOOL:gdb",
   
   //rev
-  dogbolt: "https://dogbolt.org/",
+  dogbolt: "TOOL:dogbolt",
 
   //fullpwn/windows/stuff
   SQLCipher: "https://github.com/sqlcipher/sqlcipher",
-  mimikatz: "https://github.com/ParrotSec/mimikatz",
+  mimikatz: "TOOL:mimikatz",
 
   //web
-  wappalyzer: "https://www.wappalyzer.com/",
-  pwnfox: "https://github.com/yeswehack/PwnFox",
-  "burp suite": "https://portswigger.net/burp",
-  burpsuite: "https://portswigger.net/burp",
-  "jwt.io": "https://jwt.io/",
-  editthiscookie2: "https://addons.mozilla.org/en-US/firefox/addon/etc2/",
-  jwt_tool: "https://github.com/ticarpi/jwt_tool",
+  wappalyzer: "TOOL:wappalyzer",
+  pwnfox: "TOOL:pwnfox",
+  "burp suite": "TOOL:burpsuite",
+  burpsuite: "TOOL:burpsuite",
+  "jwt.io": "TOOL:jwtio",
+  editthiscookie2: "TOOL:editthiscookie2",
+  jwt_tool: "TOOL:jwt_tool",
 
   //osint
-  gitfive: "https://github.com/mxrch/gitfive",
-  ghunt: "https://github.com/mxrch/ghunt",
+  gitfive: "TOOL:gitfive",
+  ghunt: "TOOL:ghunt",
 
   // People
   sealldev: "https://seall.dev/",
@@ -123,8 +126,45 @@ export const autoHyperlinkTerms = {
   // Add more terms as needed
 };
 
+// Mapping for tool slugs to make sure we use the correct IDs
+export const toolSlugMap = {
+  autopsy: "autopsy",
+  wireshark: "wireshark",
+  exiftool: "exiftool",
+  tshark: "tshark",
+  memprocfs: "memprocfs",
+  volatility3: "volatility3",
+  oletools: "oletools",
+  aperisolve: "aperisolve",
+  zsteg: "zsteg",
+  ericzimmerman: "ericzimmerman",
+  evtxecmd: "evtxecmd",
+  cyberchef: "cyberchef",
+  dcode: "dcode",
+  payloadallthethings: "payloadallthethings",
+  seclists: "seclists",
+  webhooksite: "webhooksite",
+  netcat: "netcat",
+  hashcat: "hashcat",
+  johntheripper: "johntheripper",
+  detectiteasy: "detectiteasy",
+  gdb: "gdb",
+  dogbolt: "dogbolt",
+  sqlcipher: "sqlcipher",
+  mimikatz: "mimikatz",
+  wappalyzer: "wappalyzer",
+  pwnfox: "pwnfox",
+  burpsuite: "burpsuite",
+  jwtio: "jwtio",
+  editthiscookie2: "editthiscookie2",
+  jwt_tool: "jwt_tool",
+  gitfive: "gitfive",
+  ghunt: "ghunt",
+  // Add mappings for all your tools
+};
+
 /**
- * Process the content to add auto-hyperlinks
+ * Process the content to add auto-hyperlinks and tool modals
  * This function is used in JavaScript to process content dynamically
  */
 export function processAutoHyperlinks(content) {
@@ -134,10 +174,21 @@ export function processAutoHyperlinks(content) {
   for (const [term, url] of Object.entries(autoHyperlinkTerms)) {
     // Case insensitive replace with a word boundary check
     const regex = new RegExp(`\\b(${term})\\b`, "gi");
-    processedContent = processedContent.replace(
-      regex,
-      `<a href="${url}" class="auto-hyperlink" title="${term}">$1</a>`,
-    );
+    
+    // Check if this is a tool that should open a modal
+    if (url.startsWith("TOOL:")) {
+      const toolSlug = url.replace("TOOL:", "");
+      processedContent = processedContent.replace(
+        regex,
+        `<span class="tool-modal-trigger cursor-pointer text-primary underline" data-tool-slug="${toolSlug}">$1</span>`
+      );
+    } else {
+      // Regular hyperlink
+      processedContent = processedContent.replace(
+        regex,
+        `<a href="${url}" class="auto-hyperlink" title="${term}">$1</a>`
+      );
+    }
   }
 
   return processedContent;
@@ -150,7 +201,7 @@ export function processAutoHyperlinks(content) {
 export function extractTagSuggestions(content, existingTags = []) {
   // Define term groups that should map to the same tag
   const tagMappings = {
-    //privsec
+    // privsec
     "privesc": "privilege-escalation",
     "privilege escalation": "privilege-escalation",
     "priv esc": "privilege-escalation",
@@ -298,3 +349,11 @@ export function extractTagSuggestions(content, existingTags = []) {
   // Convert set to array
   return Array.from(resolvedTags);
 }
+
+// Export all functions directly to ensure they're available
+export default {
+  autoHyperlinkTerms,
+  toolSlugMap,
+  processAutoHyperlinks,
+  extractTagSuggestions
+};

@@ -1,4 +1,5 @@
 ---
+// ToolCard.astro - Update to add click event and implement modal
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 import { extractTagSuggestions } from "~/utils/auto-hyperlink";
@@ -24,6 +25,19 @@ const tagsJson = JSON.stringify(tags);
 const categoriesJson = JSON.stringify(categories);
 const suggestedTagsJson = JSON.stringify(suggestedTags);
 const platformsJson = JSON.stringify(tool.data.platforms || []);
+const toolDataJson = JSON.stringify({
+  title: tool.data.title,
+  description: tool.data.description,
+  url: tool.data.url,
+  github: tool.data.github,
+  documentation: tool.data.documentation,
+  logo: tool.data.logo?.src || null,
+  body: tool.body,
+  platforms: tool.data.platforms || [],
+  categories: tool.data.categories || [],
+  tags: tool.data.tags || [],
+  suggestedTags: suggestedTags
+});
 
 // Get platform icons
 const getPlatformIcon = (platform) => {
@@ -132,12 +146,15 @@ const truncatedDescription = description.length > 120
 ---
 
 <div
-  class="group relative flex flex-col overflow-hidden rounded-lg border border-border bg-background-alt p-4 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+  class="group relative flex flex-col overflow-hidden rounded-lg border border-border bg-background-alt p-4 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg cursor-pointer"
   data-tool-card
   data-platforms={platformsJson}
   data-categories={categoriesJson}
   data-tags={tagsJson}
   data-suggested-tags={suggestedTagsJson}
+  data-tool-data={toolDataJson}
+  data-tool-id={tool.slug}
+  data-tool-modal-trigger
 >
   <div class="flex items-center">
     {tool.data.logo ? (
@@ -189,6 +206,7 @@ const truncatedDescription = description.length > 120
         target="_blank" 
         rel="noopener noreferrer"
         class="hover:bg-primary/90 flex items-center gap-1.5 rounded-lg bg-primary px-2 py-1 text-xs text-white transition-colors"
+        onclick="event.stopPropagation();"
       >
         <Icon name="mdi:web" class="size-3.5" />
         Website
@@ -201,6 +219,7 @@ const truncatedDescription = description.length > 120
         target="_blank" 
         rel="noopener noreferrer"
         class="hover:bg-background flex items-center gap-1.5 rounded-lg border border-border bg-background-offset px-2 py-1 text-xs transition-colors"
+        onclick="event.stopPropagation();"
       >
         <Icon name="mdi:github" class="size-3.5" />
         GitHub
@@ -213,6 +232,7 @@ const truncatedDescription = description.length > 120
         target="_blank" 
         rel="noopener noreferrer"
         class="hover:bg-background flex items-center gap-1.5 rounded-lg border border-border bg-background-offset px-2 py-1 text-xs transition-colors"
+        onclick="event.stopPropagation();"
       >
         <Icon name="mdi:file-document" class="size-3.5" />
         Docs
