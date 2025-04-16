@@ -32,13 +32,13 @@ export const autoHyperlinkTerms = {
   CBC: "https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Cipher_block_chaining_(CBC)",
 
   // Reverse Engineering
-  Ghidra: "https://ghidra-sre.org/",
-  IDA: "https://hex-rays.com/ida-pro/",
-  Radare2: "https://rada.re/n/",
+  Ghidra: "TOOL:ghidra",
+  IDA: "TOOL:idapro",
+  Radare2: "TOOL:radare2",
 
   // Networking
   Wireshark: "TOOL:wireshark",
-  Nmap: "https://nmap.org/",
+  Nmap: "TOOL:bmap",
   DNS: "https://en.wikipedia.org/wiki/Domain_Name_System",
 
   // CTF Categories
