@@ -16,7 +16,7 @@ To start this challenge off, we are provided with the following image.
 
 ![image of Simon Says Challenge](images/25-bronco/simonsays.png)
 
-Personally, I love stego challenges, so the instant I saw the image, and the the fact that the challenge description referenced blue, I thought of the different colour channels used to make images. I then uploaded the challenge `.png` file to [AperiSolve](https://www.aperisolve.com/). After extracting the image found in the third blue channel, I found this: 
+Personally, I love stego challenges, so the instant I saw the image, and the the fact that the challenge description referenced blue, I thought of the different colour channels used to make images. I then uploaded the challenge `.png` file to AperiSolve. After extracting the image found in the third blue channel, I found this: 
 
 ![image of Simon Says Challenge in Aperisolve](images/25-bronco/simonsayssteg.png)
 

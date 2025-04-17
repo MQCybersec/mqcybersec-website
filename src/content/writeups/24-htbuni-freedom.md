@@ -44,7 +44,7 @@ Checking out the webserver first, not much of interest.
 
 ![freedomblog.png](images/24-htbuni/freedomblog.png)
 
-I run a `ffuf` scan to find any directories of interest.
+I run a ffuf scan to find any directories of interest.
 
 I find a `/admin` endpoint and find the CMS that's running, MasaCMS.
 
@@ -128,9 +128,9 @@ I grab the First and Last names of the users instead, which is this:
 | Justin    | Bret  |
 ```
 
-I was introduced to a new tool, [username-anarchy](https://github.com/urbanadventurer/username-anarchy) for creating a list of usernames from First+Last name.
+I was introduced to a new tool, username-anarchy for creating a list of usernames from First+Last name.
 
-I attempted to enumerate the usernames with `ldapsearch` but required auth, so we can use `kerbrute` instead on the Kerberos port.
+I attempted to enumerate the usernames with ldapsearch but required auth, so we can use kerbrute instead on the Kerberos port.
 
 I setup my `users.txt`:
 ```bash
@@ -158,7 +158,7 @@ Version: v1.0.3 (9dad6e1) - 12/18/24 - Ronnie Flathers @ropnop
 2024/12/18 01:15:09 >  Done! Tested 88 usernames (2 valid) in 0.128 seconds
 ```
 
-Cool! So, what can we do with these users, Kerbrute looks for pre-auth so we could try those usernames with `impacket`'s `getNPUsers.py`.
+Cool! So, what can we do with these users, Kerbrute looks for pre-auth so we could try those usernames with impacket's `getNPUsers.py`.
 
 ```bash
 $ ./GetNPUsers.py freedom.htb/ -dc-ip freedom.htb -usersfile ../../../../users.txt -format hashcat -outputfile hashes.txt
@@ -181,7 +181,7 @@ Hash! Let's crack it...
 
 We got stuck here for a long time until after, lots of research, I discovered [Kerberoasting w/o a domain account via AS-REQ](https://www.thehacker.recipes/ad/movement/kerberos/kerberoast#kerberoast-w-o-pre-authentication) while sitting on the toilet for a bathroom break...
 
-Using the latest `impacket` we can get a TGS instead for other users.
+Using the latest impacket we can get a TGS instead for other users.
 
 ```bash
 $ ./GetUserSPNs.py -no-preauth "e.tylar" -usersfile ../../../../users.txt -dc-host freedom.htb freedom.htb/
@@ -192,7 +192,7 @@ $krb5tgs$23$*j.bret$FREEDOM.HTB$j.bret*$b76817fe33f15f5563d2ddc9f3257013$fcbbea9
 ...
 ```
 
-Cracking the TGS we get a password: `swordsoffreedom`, we can use this with `evil-winrm` to get user.
+Cracking the TGS we get a password: `swordsoffreedom`, we can use this with evil-winrm to get user.
 
 ```bash
 $ evil-winrm -i freedom.htb -u j.bret -p swordsoffreedom
@@ -218,6 +218,6 @@ Investigate the service running "health" (there was a HealthCheck.exe in the Des
 
 It starts creating a new handle process with full access, then it's creating a lower privileged process (but inheriting all the open handles of the main process).
 
-You can exploit [LeakedHandles](https://github.com/lab52io/LeakedHandlesFinder/) using this, but it's easy to make your own exploit.
+You can exploit Leaked Handles using LeakedHandlesFinder, but it's easy to make your own exploit.
 
 There was also an unintended to abuse the SQLi to get the reset token of the admin and upload a malicious plugin to MasaCMS.

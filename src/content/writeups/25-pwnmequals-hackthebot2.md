@@ -82,7 +82,7 @@ This is a websocket connection used with a path and port specified in `DevToolsA
 
 `Target` has some interesting capabilites such as:
 - [`createTarget`](https://chromedevtools.github.io/devtools-protocol/tot/Target/#method-createTarget) - Creates a new page.
-- [`attachToTarget](https://chromedevtools.github.io/devtools-protocol/tot/Target/#method-attachToTarget) - Attaches to the target with given id.
+- [`attachToTarget`](https://chromedevtools.github.io/devtools-protocol/tot/Target/#method-attachToTarget) - Attaches to the target with given id.
 
 Once attached we can use `Runtime` features which seem very useful:
 - [`enable`](https://chromedevtools.github.io/devtools-protocol/tot/Runtime/#method-enable) - Enables reporting of execution contexts creation by means of `executionContextCreated` event. When the reporting gets enabled the event will be sent immediately for each existing execution context.

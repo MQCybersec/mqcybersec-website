@@ -177,7 +177,7 @@ I immediately think of IIS shorthand vulnerabilities, and I decided to check Wap
 
 Bang! I won't go into to too much detail over the functionality of the exploit ([you can read more here](https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/iis-internet-information-services#microsoft-iis-tilde-character-vulnerability-feature-short-file-folder-name-disclosure)) but it essentially allows enumeration of files in folders on a IIS webserver, it leaks the first **6** characters of the filename and first **3** of the extension.
 
-I use [shortscan](https://github.com/bitquark/shortscan) to get the job done:
+I use shortscan to get the job done:
 ```bash
 $ shortscan "http://win.secedu.site"                                                                                                                  127 ↵
 🌀 Shortscan v0.9.0 · an IIS short filename enumeration tool by bitquark

@@ -13,7 +13,7 @@ image: "images/24-htbuni/icon.png"
 
 Given a memory dump and a password locked `backup.7z`, I dived into the memory dump.
 
-It was a Windows memory dump, I started by using `vol3`, eventually found that the desktop app for the SMS app Signal was installed and a suspicious `backuper.exe` was running.
+It was a Windows memory dump, I started by using vol3, eventually found that the desktop app for the SMS app Signal was installed and a suspicious `backuper.exe` was running.
 
 Using MemProcFS we grab the executable file and open it in Ghidra.
 
@@ -34,7 +34,7 @@ Looking into Signal's encryption system they changed to a new one using the `Loc
 
 Dumping the memory of Signal.exe's parent process, you can then search for "SQLite 3 database" header, and find encryption key in hex!
 
-> You can also still do it with MemProcFS but it removes the `lsass.exe`, so you need to patch it out in `vmm.dll` so it dumps it. then you can utilise `mimikatz` and do the rest.
+> You can also still do it with MemProcFS but it removes the `lsass.exe`, so you need to patch it out in `vmm.dll` so it dumps it. then you can utilise mimikatz and do the rest.
 
 Note: You could also do this properly by extracting DPAPI keys from memory and using to decrypt masterkey in `%APPDATA%\Microsoft\Protect` and using that decrypt the key from `config.json`.
 

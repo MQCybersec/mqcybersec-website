@@ -13,7 +13,7 @@ image: "images/24-secedu/icon.png"
 
 The challenge is back on the same site, this time the mentions of `confusing`, `upgrading` and `secrets` are all pointing us to investigate the JWT token.
 
-The JWT token, once analysed with [JWT.io](https://jwt.io) shows it's a `RSASHA256` which takes a public and private key.
+The JWT token, once analysed with jwt.io shows it's a `RSASHA256` which takes a public and private key.
 
 ![jwttypetest.png](images/24-secedu/jwttypetest.png)
 
@@ -21,7 +21,7 @@ I remember an attack on JWT's from HackTricks, the [asymmetric to symmetric algo
 
 Essentially, via changing the JWT algorithm from a pub/priv key based auth to a password auth, the public key is used as the secret, therefore validating the signature from public information.
 
-We have to start with getting the public key, let's recover it with [this tool](https://github.com/FlorianPicca/JWT-Key-Recovery).
+We have to start with getting the public key, let's recover it with JWT-Key-Recovery.
 
 ```bash
 $ python3.9 recover.py <jwt-1> <jwt-2>
@@ -41,7 +41,7 @@ tUwCha073oC7dnbx9np8BVVfAjfuzqaIlI4hDLfCxHod6WtvVArvDpA0bvMpRE13
 -----END PUBLIC KEY-----
 ```
 
-Cool! Let's try use [`jwt_tool`](https://github.com/ticarpi/jwt_tool) to attack it!
+Cool! Let's try use jwt_tool to attack it!
 
 ```bash
 $ python3 jwt_tool.py <jwt> -X k -pk secedu.pk -I -pc role -pv admin
@@ -51,7 +51,7 @@ This modifies the existing JWT with a key confusion attack, using the public key
 
 This, **does not work**, and we got stuck for a long time... Until!
 
-Our goated teammate figured out that the **newline** at the end of the public key (which should be filtered by `jwt_tool` imo), was being picked up. Here was the attack chain.
+Our goated teammate figured out that the **newline** at the end of the public key (which should be filtered by jwt_tool imo), was being picked up. Here was the attack chain.
 
 ![ihatenewlineswithapassion.png](images/24-secedu/ihatenewlineswithapassion.png)
 

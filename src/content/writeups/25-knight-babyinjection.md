@@ -24,7 +24,7 @@ This seems to be some sort of YAML injection, so let's look at what the server i
 
 The webserver is running with **Python** according to the headers in the response (no screenshot sorry, it was very clear I promise).
 
-Looking at [PayloadAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Insecure%20Deserialization/Python.md#pyyaml) there is a section for a library called `PyYAML`.
+Looking at PayloadAllTheThings there is a section on [PyYAML](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Insecure%20Deserialization/Python.md#pyyaml).
 
 I try a basic payload: `!!python/object/apply:builtins.range [1, 10, 1]`.
 

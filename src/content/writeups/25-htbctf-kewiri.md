@@ -23,7 +23,7 @@ You are given the sacred prime: p = 21214334341047589034959795830530169972304000
 [1] How many bits is the prime p? > 
 ```
 
-Okay, so the first part is just asking us the bit length of this prime. This part is easy, we can construct a simple `pwntools` script to solve this.
+Okay, so the first part is just asking us the bit length of this prime. This part is easy, we can construct a simple pwntools script to solve this.
 
 ```py
 from pwn import *

@@ -21,7 +21,7 @@ All of these challenges were done with Wireshark.
 
 We need to find the tool that was being used for network enumeration.
 
-Considering there is `http` traffic, we can automate this task with `tshark` to pull all the User Agents.
+Considering there is `http` traffic, we can automate this task with tshark to pull all the User Agents.
 
 ```
 $ tshark -r ~/Downloads/capture1.pcapng -Y "http.user_agent" -T fields -e http.user_agent | sort | uniq
@@ -35,7 +35,7 @@ Mozilla/5.0 (X11; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0
 Pamac/11.6.4_manjaro
 ```
 
-There is a CVE header, looking it up on Google is a link to [`nikto` on GitHub](https://github.com/sullo/nikto/blob/master/program/plugins/nikto_shellshock.plugin) for ShellShock.
+There is a CVE header, looking it up on Google is a link to nikto on [GitHub](https://github.com/sullo/nikto/blob/master/program/plugins/nikto_shellshock.plugin) for ShellShock.
 
 Flag: `KCTF{nikto}`
 

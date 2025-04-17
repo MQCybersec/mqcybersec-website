@@ -15,7 +15,7 @@ We are given a `logins.json`, `key4.db` and `cert9.db`.
 
 These are hallmark Firefox files, the `key4.db` is a dead giveaway. The challenge description hints towards a master password being set, '`I can find it if I know my master key`'.
 
-I try using [`firefox_decrypt`](https://github.com/unode/firefox_decrypt) and see the following:
+I try using firefox_decrypt and see the following:
 ```bash
 $ python3 firefox_decrypt/firefox_decrypt.py 7glfqj3r.default-release                                                                                                                                        
 2024-12-23 20:41:41,805 - WARNING - profile.ini not found in 7glfqj3r.default-release
@@ -24,7 +24,7 @@ $ python3 firefox_decrypt/firefox_decrypt.py 7glfqj3r.default-release
 Master Password for profile 7glfqj3r.default-release: 
 ```
 
-I look into password recovery tools for Firefox's master password and found [FireMaster](https://securityxploded.com/firemaster.php). 
+I look into password recovery tools for Firefox's master password and found FireMaster. 
 
 I originally try using the tool with `rockyou.txt` but the execution is *way* too slow, so I tried minimising the wordlist with some arbitrary words from the challenges description/title.
 

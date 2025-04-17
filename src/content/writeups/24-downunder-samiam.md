@@ -11,7 +11,7 @@ image: "images/24-downunder/icon.png"
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/downunderctf2024#samiam)
 
-We are given a `sam.bak` and a `system.bak` which are backups of the registry hives, we can use Impackets `secretsdump.py` to extract the passwords.
+We are given a `sam.bak` and a `system.bak` which are backups of the registry hives, we can use impacket's `secretsdump.py` to extract the passwords.
 
 ```bash
 $ python3 /usr/bin/secretsdump.py -sam sam.bak -system system.bak LOCAL

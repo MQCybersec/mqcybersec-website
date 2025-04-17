@@ -45,7 +45,7 @@ Fifth:
                       if (local_c8[9] == 0x69) {
 ```
 
-But this was incorrect and Ghidra was not being helpful, its decompilation was quite unclear and after calculating the values it was wrong. My teammate (Solopie) puts the binary into [dogbolt](https://dogbolt.org/) and the HexRays decompile was a lot more helpful.
+But this was incorrect and Ghidra was not being helpful, its decompilation was quite unclear and after calculating the values it was wrong. My teammate (Solopie) puts the binary into dogbolt and the HexRays decompile was a lot more helpful.
 
 First:
 

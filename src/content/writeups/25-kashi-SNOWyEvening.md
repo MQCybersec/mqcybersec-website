@@ -11,7 +11,7 @@ image: "images/25-kashi/icon.png"
 
 [poemm.txt](https://kashictf.iitbhucybersec.in/files/8f213d7d435a3de32e585e3e76c6700e/poemm.txt?token=eyJ1c2VyX2lkIjoxMDMwLCJ0ZWFtX2lkIjoxNjAsImZpbGVfaWQiOjI2fQ.Z70Ozg.WfGWcQba_tgyRWeMOQdGN84Uvgw "poemm.txt")
 
-Starting the challenge off, the title stating "SNOW" rang a bell for whitespace steganography, which can be attempted with the use of `stegsnow` command. 
+Starting the challenge off, the title stating "SNOW" rang a bell for whitespace steganography, which can be attempted with the use of the stegsnow utility. 
 As the description pointed out `Weirdly he had a habit of keeping his name as the password.`, the name 'Aakash' was used as a password for the uncompress process. Running stegsnow with following parameter provided the link as seen below.
 ```
 $ stegsnow -p Aakash -C poemm.txt

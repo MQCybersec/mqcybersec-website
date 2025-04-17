@@ -18,6 +18,8 @@ export const autoHyperlinkTerms = {
   CRLF: "https://www.invicti.com/learn/crlf-injection/",
   "DOM clobbering": "https://portswigger.net/web-security/dom-based/dom-clobbering",
   "Prototype pollution": "https://portswigger.net/web-security/prototype-pollution",
+  "Open redirect": "https://learn.snyk.io/lesson/open-redirect/",
+  "web cache poisoning": "https://portswigger.net/web-security/web-cache-poisoning",
 
   // Binary Exploitation
   "Buffer Overflow":
@@ -54,6 +56,7 @@ export const autoHyperlinkTerms = {
   Forens: "https://ctf101.org/forensics/overview/",
   OSINT: "https://en.wikipedia.org/wiki/Open-source_intelligence",
   Steganography: "https://en.wikipedia.org/wiki/Steganography",
+  pyjail: "https://lbarman.ch/blog/pyjail/",
 
   // Ciphers
   "Caeser Cipher": "https://www.dcode.fr/caesar-cipher",
@@ -62,6 +65,12 @@ export const autoHyperlinkTerms = {
 
   //Windows
   DPAPI: "https://en.wikipedia.org/wiki/Data_Protection_API",
+  "leakedhandlesfinder": "TOOL:leakedhandlesfinder",
+  "evil-winrm": "TOOL:evil-winrm",
+  "impacket": "TOOL:impacket",
+  "kerbrute": "TOOL:kerbrute",
+  "ldapsearch": "TOOL:ldapsearch",
+  "username-anarchy": "TOOL:username-anarchy",
   
   /* TOOLS - These will use the modal instead of external links */
   /* These are marked with a special prefix 'TOOL:' */
@@ -77,10 +86,14 @@ export const autoHyperlinkTerms = {
   volatility: "TOOL:volatility3",
   volatility3: "TOOL:volatility3",
   oletools: "TOOL:oletools",
-  aperisolve: "TOOL:aperisolve",
-  zsteg: "TOOL:zsteg",
   ericzimmerman: "https://ericzimmerman.github.io/#!index.md",
+  firemaster: "TOOL:firemaster",
+  firefox_decrypt: "TOOL:firefoxdecrypt",
+  firefoxdecrypt: "TOOL:firefoxdecrypt",
   evtxecmd: "TOOL:evtxecmd",
+  "bittorrent-traffic-analyzer": "TOOL:bittorrent-traffic-analyzer",
+  memprocfs: "TOOL:memprocfs",
+
 
   //crypto
   CyberChef: "TOOL:cyberchef",
@@ -93,6 +106,17 @@ export const autoHyperlinkTerms = {
   "webhook.site": "TOOL:webhooksite",
   netcat: "TOOL:netcat",
   nc: "TOOL:netcat",
+  hacktricks: "TOOL:hacktricks",
+
+  //stego
+  stegsnow: "TOOL:stegsnow",
+  stegseek: "TOOL:stegseek",
+  steghide: "TOOL:steghide",
+  zsteg: "TOOL:zsteg",
+  silenteye: "TOOL:silenteye",
+  deepsound: "TOOL:deepsound",
+  aperisolve: "TOOL:aperisolve",
+
 
   //hachcrack
   hashcat: "TOOL:hashcat",
@@ -101,6 +125,7 @@ export const autoHyperlinkTerms = {
   //pwn
   DetectItEasy: "TOOL:detectiteasy",
   gdb: "TOOL:gdb",
+  pwntools: "TOOL:pwntools",
   
   //rev
   dogbolt: "TOOL:dogbolt",
@@ -117,6 +142,10 @@ export const autoHyperlinkTerms = {
   "jwt.io": "TOOL:jwtio",
   editthiscookie2: "TOOL:editthiscookie2",
   jwt_tool: "TOOL:jwt_tool",
+  nikto: "TOOL:nikto",
+  ffuf: "TOOL:ffuf",
+  shortscan: "TOOL:shortscan",
+  "jwt-key-recovery": "TOOL:jwt-key-recovery",
 
   //osint
   gitfive: "TOOL:gitfive",
@@ -125,45 +154,16 @@ export const autoHyperlinkTerms = {
   // People
   sealldev: "https://seall.dev/",
 
+  //mobile
+  "jadx-gui": "TOOL:jadx",
+  "jadxgui": "TOOL:jadx",
+  "jadx": "TOOL:jadx"
+
   // Add more terms as needed
 };
 
 // Mapping for tool slugs to make sure we use the correct IDs
-export const toolSlugMap = {
-  autopsy: "autopsy",
-  wireshark: "wireshark",
-  exiftool: "exiftool",
-  tshark: "tshark",
-  memprocfs: "memprocfs",
-  volatility3: "volatility3",
-  oletools: "oletools",
-  aperisolve: "aperisolve",
-  zsteg: "zsteg",
-  ericzimmerman: "ericzimmerman",
-  evtxecmd: "evtxecmd",
-  cyberchef: "cyberchef",
-  dcode: "dcode",
-  payloadallthethings: "payloadallthethings",
-  seclists: "seclists",
-  webhooksite: "webhooksite",
-  netcat: "netcat",
-  hashcat: "hashcat",
-  johntheripper: "johntheripper",
-  detectiteasy: "detectiteasy",
-  gdb: "gdb",
-  dogbolt: "dogbolt",
-  sqlcipher: "sqlcipher",
-  mimikatz: "mimikatz",
-  wappalyzer: "wappalyzer",
-  pwnfox: "pwnfox",
-  burpsuite: "burpsuite",
-  jwtio: "jwtio",
-  editthiscookie2: "editthiscookie2",
-  jwt_tool: "jwt_tool",
-  gitfive: "gitfive",
-  ghunt: "ghunt",
-  // Add mappings for all your tools
-};
+export const toolSlugMap = {};
 
 /**
  * Process the content to add auto-hyperlinks and tool modals

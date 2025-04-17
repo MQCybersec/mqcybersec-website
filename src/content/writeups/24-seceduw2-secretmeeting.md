@@ -11,7 +11,7 @@ image: "images/24-secedu/icon.png"
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/seceduweek22024#secret-meeting)
 
-I use the [GitFive](https://github.com/mxrch/gitfive) tool to extract an email address from their GitHub profile.
+I use the GitFive tool to extract an email address from their GitHub profile.
 
 ```bash
 $ gitfive user Br0kenC1ph3r23                             

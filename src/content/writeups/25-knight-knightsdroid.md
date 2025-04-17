@@ -11,7 +11,7 @@ image: "images/25-knight/icon.png"
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/knightctf2025#knight-s-droid)
 
-We are given an APK so I open it was `jadx-gui` to begin investigating its functionality.
+We are given an APK so I open it was jadx-gui to begin investigating its functionality.
 
 Looking in `Source Code > com > knightctf.knights_droid` there are a few functions but `SecretKeyVerifier` catches my eye:
 

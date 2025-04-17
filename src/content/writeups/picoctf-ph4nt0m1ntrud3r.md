@@ -16,7 +16,7 @@ We start with a `myNetworkTraffic.pcap` which can be opened with Wireshark, so l
 There are a total of 22 TCP packets. Selecting a packet we can see what looks to be Base64 data in the `tcp.segment_data`:
 ![dataexample.png](images/picoctf/ph4nt0m1ntrud3r/dataexample.png)
 
-Let's use `tshark` to extract the data:
+Let's use tshark to extract the data:
 ```bash
 $ tshark -r myNetworkTraffic.pcap -T fields -e tcp.segment_data
 54636c672f33733d

@@ -11,7 +11,7 @@ image: "images/24-downunder/icon.png"
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/downunderctf2024#macro-magic)
 
-We are given a `Monke.xlsm` and `Capture.pcapng`. The hint of 'Macro' guides me to look into any Macros in the `Monke.xlsm`. I utilise the `oletools` tool, `olevba` to extract the macro:
+We are given a `Monke.xlsm` and `Capture.pcapng`. The hint of 'Macro' guides me to look into any Macros in the `Monke.xlsm`. I utilise the oletools tool, `olevba` to extract the macro:
 ```bash
 $ olevba Monke.xlsm      
 olevba 0.60.2 on Python 3.12.4 - http://decalage.info/python/oletools

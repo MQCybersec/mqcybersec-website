@@ -61,7 +61,7 @@ Disallow: /87e4a94bf95f00a36b3efd99aa336ac1.txt
 
 I copied the full list of URLs, excluding the `User-agent` line, and filtered it down to a wordlist.
 
-I then use `ffuf` to find any valid endpoints:
+I then use ffuf to find any valid endpoints:
 ```
 $ ffuf -w robots-wordlist.txt -u 'http://chals.secedu.site:4999/FUZZ'
 

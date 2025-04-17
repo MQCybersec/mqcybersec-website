@@ -15,7 +15,7 @@ Starting with a `torrent.pcap`, I investigate with Wireshark.
 
 ![wiresharkbittorrent.png](images/24-backdoor/wiresharkbittorrent.png)
 
-This is Bittorrent traffic, I start by analysing with [bittorrent-traffic-analyzer](https://github.com/mfindra/bittorent-traffic-analyzer).
+This is Bittorrent traffic, I start by analysing with bittorrent-traffic-analyzer.
 
 The only part of interest is the `-download`:
 ```bash
@@ -104,7 +104,7 @@ You can then ROT13 (DCode.fr's Cipher Identifier spots this) decode it:
 the_p@ssw0rd_is_4s_eazy_as_ABC
 ```
 
-Looking at the file with `stegseek --seed`, there is definetly some kind of steganography.
+Looking at the file with stegseek using the `--seed` switch, there is definitely some kind of steganography.
 ```bash
 $ stegseek --seed secret.wav
 StegSeek 0.6 - https://github.com/RickdeJager/StegSeek
@@ -115,7 +115,7 @@ StegSeek 0.6 - https://github.com/RickdeJager/StegSeek
 	Encryption Mode:      ctr
 ```
 
-Eventually I try [DeepSound](https://github.com/Jpinsoft/DeepSound) which is a Windows program for steganographically disguising files in .wav's but is not decodable with stegseek/steghide/etc
+Eventually I try DeepSound which is a Windows program for steganographically disguising files in .wav's but is not decodable with stegseek/steghide/etc
 
 This grants us the flag!
 

@@ -11,7 +11,7 @@ image: "images/24-secedu/icon.png"
 
 > Original Writeup on [seall.dev](https://seall.dev/posts/seceduweek12024#overflowing-with-files)
 
-From the challenge description we know the program was written in C, and we can analyse the program in `gdb`.
+From the challenge description we know the program was written in C, and we can analyse the program in gdb.
 
 Running the program we see the top-secret document is at the memory address `0x4011f6`.
 ```bash
