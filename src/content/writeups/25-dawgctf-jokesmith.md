@@ -23,7 +23,7 @@ def run():
     print("You think you're funny? I got a few jokes of my own, tell me a joke and I'll tell you mine")
     transcript = []
     for i in range(3):
-        # joke = input("Tell me a joke: ")
+        joke = input("Tell me a joke: ")
         joke = chr(1)
         funny = bytes_to_long(joke.encode()) % 2
         if (not funny):
@@ -138,6 +138,7 @@ Actually computing the unique solution would take eons by hand. Thankfully we ca
 ```py
 from Crypto.Util.number import long_to_bytes
 from sympy.ntheory.modular import crt
+from gmpy2 import iroot
 
 C = [
     7832469328406627034673192693026902005159742029515121067314652855181413851198506287164483026511056985980859118250470464037568842876402749675405325062483720736344451843065991128112443546969000996201889576500628624898756650874736320570202967346402799860264846024361447970990860912175748377836647334303985398545,
