@@ -8,6 +8,7 @@ author: "tulip"
 # image: "./sample/"
 hidden: false
 section: "CTFs"
+image: "images/25-htbctf/icon.jpg"
 ---
 
 ***This challenge was unexpectedly hard.***

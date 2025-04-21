@@ -6,6 +6,7 @@ ctf: "DawgCTF 2025"
 category: "cryptography"
 author: "tulip"
 section: "CTFs"
+image: "images/25-dawgctf/icon.png"
 ---
 
 We are given an output and a script. Let's check out the script.
