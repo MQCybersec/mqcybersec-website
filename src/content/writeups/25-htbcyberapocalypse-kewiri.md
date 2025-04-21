@@ -2,13 +2,13 @@
 title: "Kewiri"
 description: "Questionnaire about finite fields and elliptic curves."
 pubDate: 2025-03-27
-ctf: "HTB CTF 2025"
+ctf: "HTB Cyber Apocalypse 2025"
 category: "cryptography"
 author: "tulip"
 # image: "./sample/"
 hidden: false
 section: "CTFs"
-image: "images/25-htbctf/icon.jpg"
+image: "images/25-htbcyberapocalypse/icon.jpg"
 ---
 
 ***This challenge was unexpectedly hard.***
