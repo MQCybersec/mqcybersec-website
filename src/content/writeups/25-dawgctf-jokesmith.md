@@ -112,10 +112,10 @@ So we need to find a way to reconstruct the message **cubed** (since the server 
 - No padding scheme
 
 This attack utilises the **Chinese Remainder Theorem** (CRT), which states that if you have a series of congruences:
-\\[r \equiv s_1 \pmod n_1\\]
-\\[r \equiv s_2 \pmod n_2\\]
+\\[r \equiv s_1 \pmod {n_1}\\]
+\\[r \equiv s_2 \pmod {n_2}\\]
 \\[ \vdots \\]
-\\[r \equiv s_k \pmod n_k\\]
+\\[r \equiv s_k \pmod {n_k}\\]
 
 ...and the set $\[ n_1, n_2, \ldots , n_k \]$ are all **pairwise coprime** (every number is coprime to each other), then there exists a unique solution $X \pmod{\mathcal N}$ where $\mathcal N$ is the product of all $n$ (or you can say $\mathcal N = \displaystyle\prod_{i=1}^kn_i$) that satifies all the congruences. 
 \\[ m^e \equiv X \pmod {\mathcal N} \\]
