@@ -210,14 +210,14 @@ However, for subsequent blocks:
 So all that matters is that the first plaintext block of our manipulated data matches the original, as long as the rest is unchanged. Now, remember that the XOR operation reverses itself. That is, 
 \\[ A \oplus B \oplus B = A \\]
 And this is always true. So, we could potentially manipulate our plaintext and IV such that: 
-\\[ P'_1 \oplus \mathrm{IV}' = P_1 \oplus \mathrm{IV} \\]
-...where $P', \mathrm{IV}'$ represents our manipulated data.
+\\[ P^\prime_1 \oplus \mathrm{IV}^\prime = P_1 \oplus \mathrm{IV} \\]
+...where $P^\prime, \mathrm{IV}^\prime$ represents our manipulated data.
 Now, if we set:
-\\[ P'=P \oplus B \\]
-\\[ \mathrm{IV}' = \mathrm{IV} \oplus B \\]
-The output becomes:
-\\[ P' \oplus \mathrm{IV}' = P \oplus B \oplus \mathrm{IV} \oplus B = P \oplus \mathrm{IV} \\]
-And $P' \neq P$! So $B$ can really be anything: but we can only change the first plaintext block. Remember that AES operates in 16 byte blocks. I chose $B$ as the bytestream `b"\x10" + b"\x00"*15`. If we XOR this with the first 16 bytes of the plaintext, and the IV, the forged message we get is:
+\\[ P^\prime=P \oplus B \\]
+\\[ \mathrm{IV}^\prime = \mathrm{IV} \oplus B \\]
+...where $B$ is some set bytestream, the output becomes:
+\\[ P^\prime \oplus \mathrm{IV}^\prime = P \oplus B \oplus \mathrm{IV} \oplus B = P \oplus \mathrm{IV} \\]
+And $P^\prime \neq P$! So $B$ can really be anything: but we can only change the first plaintext block. Remember that AES operates in 16 byte blocks. I chose $B$ as the bytestream `b"\x10" + b"\x00"*15`. If we XOR this with the first 16 bytes of the plaintext, and the IV, the forged message we get is:
 
 ```py
 forged =  b"Qt MAC FAC, my MAC is my password. Please verify me"
