@@ -119,7 +119,7 @@ Now, what if we try to compute $(\Delta s_3)^2$? Again, this isn't the full thin
 
 \\[ (\Delta s_3)^2 = A^6s_1^2 + A^5Bs_1 - A^5s_1^2 + \ldots \\]
 
-And it turns out, these two are the **exact same**! So when we take the difference of these two results, this will be congruent to $0$ modulo $m$, or in gemeral math notation:
+And it turns out, these two are the **exact same**! So when we take the difference of these two results, this will be congruent to $0$ modulo $m$, or in general math notation:
 
 \\[ (\Delta s_{n-1}\cdot \Delta s_{n+1}) - (\Delta s_n)^2 \equiv 0 \pmod{m} \\]
 
