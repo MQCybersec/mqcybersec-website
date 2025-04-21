@@ -183,7 +183,7 @@ We can factor an $A$ out of this however.
 And rearranging for $A$,
 \\[ A = \frac{\Delta s_n}{\Delta s_{n-1}} \\]
 However remember we are working mod $m$, and division is generally not allowed in modular arithmetic. So instead, we have to compute:
-\\[ A = (\Delta s_{n-1})^{-1}(\Delta s_n) \pmod m \\]
+\\[ A \equiv (\Delta s_{n-1})^{-1}(\Delta s_n) \pmod m \\]
 ...where $(\Delta s_{n-1})^{-1}$ denotes the modular inverse of $\Delta s_{n-1}$ mod $m$. In python, this can be done with `pow(s, -1, m)`
 And this is easy to compute given 3 outputs of the LCG. It can even be done in one line.
 
