@@ -95,7 +95,7 @@ The mandelbrot set is defined as the recursive equation:
 However, some numbers may diverge, but after a certain number of iterations in the recursive equation. Remember the colours on the outside of the set in the picture above? These refer to numbers that are not part of the set, but are coloured according to how fast they diverge. This is measured by the amount of iterations it takes for $|z| > 2$ to happen. For example: how long does it take for the number $c = 1.5$ to diverge?
 \\[ z_1 = 0 + 1.5 \\]
 \\[ z_2 = z_1^2 + 1.5 = 2.25 + 1.5 \\]
-\\[ z_2 = 2.25 \\]
+\\[ z_2 = 3.75 \\]
 Thus at iteration 2 we have found $|z| > 2$. So the amount of iterations for $c=1.5$ to diverge is 2. Now, what if we try that with our complex numbers?
 ```py
 def mandelbrot_escape_time(c):
