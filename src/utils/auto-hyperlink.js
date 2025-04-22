@@ -126,6 +126,7 @@ export const autoHyperlinkTerms = {
   DetectItEasy: "TOOL:detectiteasy",
   gdb: "TOOL:gdb",
   pwntools: "TOOL:pwntools",
+  ROPgadget: "TOOL:ROPgadget",
   
   //rev
   dogbolt: "TOOL:dogbolt",

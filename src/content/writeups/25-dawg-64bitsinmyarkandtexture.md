@@ -57,7 +57,7 @@ Then `msf-pattern_offset -q 0x4132664131664130` can be used to identify the offs
 
 This level asks us to jump to the address `0x401401`. We can do this by sending a payload starting with 152 bytes of arbitrary data and then this address. When the function is completed, the execution flow is resumed at the address of our choice.
 Well, not so fast. If we do this, we break the stack alignment and our payload causes a crash (Because 152 % 16 != 0). We must add an additional byte to our payload to keep the stack aligned.
-Hence, we can use a simple `ret` gadget to maintain the stack alignment. We can identify the address of this gadget using the `ROPgadget` tool.
+Hence, we can use a simple `ret` gadget to maintain the stack alignment. We can identify the address of this gadget using the ROPgadget tool.
 `ROPgadget --binary ./chall --opcode c3`
 
 Since we are dealing with binary data, we can no longer copy and paste input. So, the rest of the implementation will be done using Python.
