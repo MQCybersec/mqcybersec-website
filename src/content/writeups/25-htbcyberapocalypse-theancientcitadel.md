@@ -2,18 +2,18 @@
 title: "The Ancient Citadel"
 description: "Deep in her sanctum beneath Eldoria's streets, Nyla arranges seven crystalline orbs in a perfect circle. Each contains a different vision of stone battlements and weathered walls—possible matches for the mysterious fortress the Queen seeks in the southern kingdoms of Chile. The image in her central crystal pulses with ancient power, showing a majestic citadel hidden among the distant Chilean mountains. Her fingers dance across each comparison crystal, her enchanted sight noting subtle architectural differences between the visions. The runes along her sleeves glow more intensely with each elimination until only one crystal remains illuminated. As she focuses her magical threads on this final vision, precise location runes appear in glowing script around the orb. Nyla smiles in satisfaction as the fortress reveals not just its position, but its true name and history. A more challenging mystery solved by Eldoria's premier information seeker, who knows that even the most distant fortifications cannot hide their secrets from one who compares the patterns of stone and shadow. \nFlag Format: `HTB{street number,postal code city, region}`"
 pubDate: 2025-03-27
-ctf: "HTB CTF 2025"
+ctf: "HTB Cyber Apocalypse 2025"
 category: "osint"
 author: "Ch1maera"
 section: "CTFs"
-image: "images/25-htbctf/icon.jpg"
+image: "images/25-htbcyberapocalypse/icon.jpg"
 ---
 
 ## The Ancient Citadel
 
 Along with the flavourtext, we are given the following image: 
 
-![image of The Ancient Citadel](images/25-htbctf/theancientcitadel.png)
+![image of The Ancient Citadel](images/25-htbcyberapocalypse/theancientcitadel.png)
 
 As the image of this castle is pretty unique, I know its going to work well on [Google Images](https://images.google.com/). Nonetheless, I go through the flavourtext (and the image) and pick out a few key details: 
 
@@ -27,7 +27,7 @@ Once again, I pop the image into [Google Images](https://images.google.com/) for
 Ok, so we are given a place called Brunet Castle, lets give that a search on [Google Maps](https://www.google.com/maps). Google maps returns the following [location](https://www.google.com/maps/place/Castillo+Brunet/@-33.0217628,-71.5645149,768m/data=!3m2!1e3!4b1!4m6!3m5!1s0x9689ddffec4ef26b:0xa3e4dba05fa76032!8m2!3d-33.0217628!4d-71.56194!16s%2Fg%2F120t47_3?entry=ttu&g_ep=EgoyMDI1MDMyNC4wIKXMDSoASAFQAw%3D%3D)
 
 
-![Image of Google Images returning Brunet Castle](images/25-htbctf/theancientcitadelgooglemaps.png)
+![Image of Google Images returning Brunet Castle](images/25-htbcyberapocalypse/theancientcitadelgooglemaps.png)
 
 
 In the Google Maps data, we are given the following address: `Iberia 104, 2571409 Viña del Mar, Valparaíso, Chile`. Hold on, this matches our flag format! Lets format our address properly to get the flag. 
