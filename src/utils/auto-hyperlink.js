@@ -48,7 +48,6 @@ export const autoHyperlinkTerms = {
   "Binary Exploitation": "https://ctf101.org/binary-exploitation/overview/",
   Crypto: "https://ctf101.org/cryptography/overview/",
   Cryptography: "https://ctf101.org/cryptography/overview/",
-  Reversing: "https://ctf101.org/reverse-engineering/overview/",
   Rev: "https://ctf101.org/reverse-engineering/overview/",
   "Reverse Engineering": "https://ctf101.org/reverse-engineering/overview/",
   Web: "https://ctf101.org/web-exploitation/overview/",
@@ -204,7 +203,7 @@ export function processAutoHyperlinks(content) {
 export function extractTagSuggestions(content, existingTags = []) {
   // Define term groups that should map to the same tag
   const tagMappings = {
-    // privsec
+    // privesc
     "privesc": "privilege-escalation",
     "privilege escalation": "privilege-escalation",
     "priv esc": "privilege-escalation",
@@ -222,6 +221,8 @@ export function extractTagSuggestions(content, existingTags = []) {
     //cache poisoning
     "cache poisoning": "cache-poisoning",
     "poison cache": "cache-poisoning",
+    "web cache deception": "cache-deception",
+    "cache deception": "cache-poisoning",
     //auth bypass
     "authentication bypass": "authentication-bypass",
     //ssti

@@ -11,7 +11,7 @@ section: "CTFs"
 
 ## Background
 
-Similar to the *Baby RSA 1* challenge, this challenge is also based on RSA encryption. However, to make things difficult a direct relation to the values `p` and `q` are not given.
+Similar to the [Baby RSA 1](/writeups/25-dawg-babyrsa1) challenge, this challenge is also based on RSA encryption. However, to make things difficult a direct relation to the values `p` and `q` are not given.
 
 ## Solution
 
