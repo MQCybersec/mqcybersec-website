@@ -15,8 +15,8 @@ Similar to the *Baby RSA 1* challenge, this challenge is also based on RSA encry
 
 ## Solution
 
-We are given the python source file, which was used to encrypt the flag and an output file containing four values. 
-The code generates two large primes `p`, `q` and calculates `N`
+We are given the Python source file, which was used to encrypt the flag, and an output file containing four values. 
+The code generates two large primes `p` and `q` and calculates `N`
 
 $N = p * q$
 
@@ -26,19 +26,19 @@ $ct = flag^65537 \bmod N$
 
 The values of `N` and `ct` are given in the output file. However, just based on this, we cannot decrypt the flag as we know nothing about `p` and `q`.  
 
-We are however, given a separate `e` and `d` pairs 
+We are, however, given a separate `e` and `d` pair.
 
 $e = 58271$
 
 $d = e^{-1} \bmod \varphi$, where $\varphi = (p - 1) * (q - 1)$
 
-Since the given `d` is modular inverse of `e`
+Since the given `d` is the modular inverse of `e`
 
 $e*d \equiv 1 \bmod \varphi$
 
 Hence, $e * d -1$ is divisible by $\varphi$
 
-$e * d - 1 = k * \varphi$. There will be mulitple combinations of $k$ and $\varphi$, but only one of them is the right solution. 
+$e * d - 1 = k * \varphi$. Multiple combinations of $k$ and $\varphi$ will exist, but only one is the right solution. 
 
 We can work with this information to retrieve the values of `p` and `q`.
 
@@ -54,11 +54,11 @@ $x^{2} - (p + q)*x + pq = 0$
 
 $x = \frac{(p + q) + \sqrt{(p + q)^2 - 4pq}}{2}$ and $x = \frac{(p + q) - \sqrt{(p + q)^2 - 4pq}}{2}$
 
-Let's implement a python code to solve this
+Let's implement a Python code to solve this
 
 ```py
 from Crypto.Util.number import *
-from math import isqrt, gcd
+from math import isqrt
 
 e = 58271
 d = 16314065939355844497428646964774413938010062495984944007868244761330321449198604198404787327825341236658059256072790190934480082681534717838850610633320375625893501985237981407305284860652632590435055933317638416556532857376955427517397962124909869006289022084571993305966362498048396739334756594170449299859
