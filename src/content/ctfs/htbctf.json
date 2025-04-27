@@ -3,6 +3,11 @@
   "image": "/src/content/ctfs/_images/hackthebox.jpeg",
   "placements": [
     {
+      "year": 2025,
+      "globalPlacement": 319,
+      "totalTeams": 4038
+    },
+    {
       "year": 2022,
       "globalPlacement": 295,
       "totalTeams": 3697

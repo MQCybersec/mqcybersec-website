@@ -3,6 +3,11 @@
   "image": "/src/content/ctfs/_images/b01lers.png",
   "placements": [
     {
+      "year": 2025,
+      "globalPlacement": 149,
+      "totalTeams": 419
+    },
+    {
       "year": 2022,
       "globalPlacement": 370,
       "totalTeams": 653

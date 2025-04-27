@@ -1,0 +1,11 @@
+{
+  "name": "UMassCTF",
+  "image": "/src/content/ctfs/_images/umassctf.png",
+  "placements": [
+    {
+      "year": 2025,
+      "globalPlacement": 97,
+      "totalTeams": 558
+    }
+  ]
+}

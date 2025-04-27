@@ -3,6 +3,11 @@
   "image": "/src/content/ctfs/_images/plaidctf.png",
   "placements": [
     {
+      "year": 2025,
+      "globalPlacement": 633,
+      "totalTeams": 903
+    },
+    {
       "year": 2021,
       "globalPlacement": 515,
       "totalTeams": 541

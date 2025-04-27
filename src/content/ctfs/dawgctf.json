@@ -1,0 +1,11 @@
+{
+  "name": "DawgCTF",
+  "image": "/src/content/ctfs/_images/dawgctf.png",
+  "placements": [
+    {
+      "year": 2025,
+      "globalPlacement": 40,
+      "totalTeams": 760
+    }
+  ]
+}

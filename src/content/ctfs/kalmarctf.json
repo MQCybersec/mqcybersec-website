@@ -1,0 +1,11 @@
+{
+  "name": "KalmarCTF",
+  "image": "/src/content/ctfs/_images/kalmarctf.png",
+  "placements": [
+    {
+      "year": 2025,
+      "globalPlacement": 105,
+      "totalTeams": 287
+    }
+  ]
+}

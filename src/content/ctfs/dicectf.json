@@ -3,6 +3,11 @@
   "image": "/src/content/ctfs/_images/dicectf.png",
   "placements": [
     {
+      "year": 2025,
+      "globalPlacement": 277,
+      "totalTeams": 643
+    },
+    {
       "year": 2023,
       "globalPlacement": 288,
       "totalTeams": 1041
