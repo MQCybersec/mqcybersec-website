@@ -2,7 +2,7 @@
 title: "RFoIP"
 description: "\"I found this radio station on the Internet.\"\n\"Like they continuously stream songs on YouTube or something?\"\n\"No, it's like... a radio station, and they play... Well, it's hard to explain.\"\n`nc rfoip-620ac7b1.radio.2025.irisc.tf 6531`"
 pubDate: 2025-03-25
-ctf: "IrisCTF"
+ctf: "IrisCTF 2025"
 category: "radio"
 author: "tulip"
 # image: "./sample/"

@@ -2,7 +2,7 @@
 title: "dotdotdot"
 description: "I picked up this transmission, but it's way too noisy to make any sense of it. Can you give it a shot?\nFlag format: `irisctf{th3_m3ss4ge}` in all lowercase. Replace spaces with underscores. Add curly braces."
 pubDate: 2025-03-25
-ctf: "IrisCTF"
+ctf: "IrisCTF 2025"
 category: "radio"
 author: "tulip"
 # image: "./sample/"

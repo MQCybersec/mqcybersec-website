@@ -2,7 +2,7 @@
 title: "SineFM"
 description: "While browsing the radio spectrum, I found this interesting radio channel on 434.677 MHz with some intermittent activity. I'm having some trouble making sense of it, but I'm fairly certain that this is being used as some sort of communications channel. Can you find out what's being transmitted?\n`nc sinefm-f94347f3.radio.2025.irisc.tf 6531`"
 pubDate: 2025-03-25
-ctf: "IrisCTF"
+ctf: "IrisCTF 2025"
 category: "radio"
 author: "tulip"
 # image: "./sample/"
