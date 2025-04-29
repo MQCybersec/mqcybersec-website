@@ -2,7 +2,7 @@ matrix:
 - name: Markdown
   aspell:
     lang: en
-    d: en_US
+    d: en_AU
   sources:
   - 'src/content/writeups/**/*.md'
   - 'src/content/tools/**/*.md'
@@ -14,6 +14,11 @@ matrix:
   - pyspelling.filters.markdown:
       markdown_extensions:
       - pymdownx.superfences
+      - pymdownx.inlinehilite
+      options:
+        code_blocks: true
+        code_spans: true
+        enable_post_process_spacing: false
   - pyspelling.filters.html:
       comments: false
       ignores:
