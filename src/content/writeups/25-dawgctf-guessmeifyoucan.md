@@ -113,7 +113,7 @@ Or in general, we can say:
 Remember, since we are trying to find terms that give us a multiple of $m$, we are looking for such an expression $E(s)$ that $E(s)\equiv 0 \pmod{m}$. This is the same as finding two expressions such that $E_1(s) \equiv E_2(s)$, since we can subtract them to get $0$.
 
 Let's try and play around a bit. What if we compute $\Delta s_2 \cdot \Delta s_4$? (I have not included the full expansion as it's quite lengthy with 9 terms).
-\\[ \Delta s_2 \cdot \Delta s_4 = A^6s_1 + A^5Bs_1 - A^5s_1^2 + \ldots \\]
+\\[ \Delta s_2 \cdot \Delta s_4 = A^6s_1^2 + A^5Bs_1 - A^5s_1^2 + \ldots \\]
 
 Now, what if we try to compute $(\Delta s_3)^2$? Again, this isn't the full thing.
 
