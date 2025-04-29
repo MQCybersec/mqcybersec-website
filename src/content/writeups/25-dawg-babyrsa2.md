@@ -3,7 +3,7 @@ title: "Baby RSA 2"
 description: "If all I have to do is keep my factors p and q secret, then I can save computation time by sharing the same modulus between all my friends. I'll give them unique e and d pairs to encrypt and decrypt messages. Sounds secure to me!"
 pubDate: 2025-04-22
 ctf: "DawgCTF"
-category: "Cryptography"
+category: "cryptography"
 author: "HulkOperator"
 image: "./images/25-dawg/icon.png"
 section: "CTFs"

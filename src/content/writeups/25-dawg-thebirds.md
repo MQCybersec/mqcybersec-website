@@ -3,7 +3,7 @@ title: "The Birds"
 description: "You think you're being watched, and you see a suspicious flock of birds on the powerlines outside of your house each morning. You think the feds are trying to tell you something. Separate words with underscores and encase in DawgCTF{}. All lowercase."
 pubDate: 2025-04-22
 ctf: "DawgCTF"
-category: "Cryptography"
+category: "cryptography"
 author: "HulkOperator"
 image: "./images/25-dawg/icon.png"
 section: "CTFs"

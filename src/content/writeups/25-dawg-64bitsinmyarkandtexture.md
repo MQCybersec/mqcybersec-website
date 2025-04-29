@@ -3,7 +3,7 @@ title: "64 bits in my Ark and Texture"
 description: "Can you pwn it? No libc or system needed. Just good ol, 64 bit binary exploitation."
 pubDate: 2025-04-22
 ctf: "DawgCTF"
-category: "Pwn"
+category: "pwn"
 author: "HulkOperator"
 image: "./images/25-dawg/icon.png"
 section: "CTFs"

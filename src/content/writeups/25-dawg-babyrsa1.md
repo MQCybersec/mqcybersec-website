@@ -3,7 +3,7 @@ title: "Baby RSA 1"
 description: "You think your Algebra skills are pretty good huh? Well let's test it out."
 pubDate: 2025-04-22
 ctf: "DawgCTF"
-category: "Cryptography"
+category: "cryptography"
 author: "HulkOperator"
 image: "./images/25-dawg/icon.png"
 section: "CTFs"

@@ -5,7 +5,7 @@ description: "Zeroes, ones, dots and dashes
  `111 0000 10 111 1000 00 10 01 010 1011 11 111 010 000 0"
 pubDate: 2025-03-27
 ctf: "KashiCTF 2025"
-category: "crypto"
+category: "cryptography"
 author: "Tenzin"
 section: "CTFs"
 image: "images/25-kashi/icon.png"
