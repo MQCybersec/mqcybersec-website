@@ -26,7 +26,7 @@ The frontmatter is the content above this wrapped in `---`'s, please make sure t
 You can write pretty much however you want, but we have a few main (loose) rules:
 - **Accuracy**: Information you portray, and the solution and explanation for your solutions should be accurate information (atleast at the time of writing). You are demonstrating your understanding to the reader and it should be expressed clearly and well. Don't make things up you don't know, check.
 - **Quality**: Make it good lol, very simple, if the writeup clearly has no effort or work put into it we won't care. Make it good!
-- **
+- **Unique**: 
 
 hello there this is my aweosme writeup
 ```
