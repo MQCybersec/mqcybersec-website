@@ -311,7 +311,7 @@ We now have a new capture, `capture2.pcapng`.
 
 We are tasked to find the authentication bruteforce and to what endpoint it was on.
 
-Filtering by just `http` we can see alot of Authentication Failed to `/cockpit` and other web traffic to `/cockpit/*`.
+Filtering by just `http` we can see a lot of Authentication Failed to `/cockpit` and other web traffic to `/cockpit/*`.
 
 ![overseer.png](images/25-knight/overseer.png)
 
@@ -404,7 +404,7 @@ We need to find how the user tried to escalate their privileges (and failed to)
 Generally when investigating command execution attackers **immediately** run `whoami` to check their user, so we can filter for frames containing that with `frame contains "whoami"`:
 ![escalationtrick.png](images/25-knight/escalationtrick.png)
 
-The first 2 packets are nothing of interest while the next one (following the TCP stream) has alot more data!
+The first 2 packets are nothing of interest while the next one (following the TCP stream) has a lot more data!
 
 ![tcpstreamnetworks.png](images/25-knight/tcpstreamnetworks.png)
 

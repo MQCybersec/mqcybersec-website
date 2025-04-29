@@ -19,7 +19,7 @@ Now we can browse the application and see the requests, let's view the 'About' a
 The 'About' page has nothing interesting:
 ![about.png](images/picoctf/secrets/about.png)
 
-The 'Contact' page has alot of example text:
+The 'Contact' page has a lot of example text:
 ![contact.png](images/picoctf/secrets/contact.png)
 
 Visually there is, not much...

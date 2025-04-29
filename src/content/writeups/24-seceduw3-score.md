@@ -91,7 +91,7 @@ Great! Let's try making that WPM and RAW values 100!
 "⏝⎄⏑⏖⏋⎄⎜⎗⎖⎖⎖⎈⎖⎊⎄⏔⏇⏑⎄⎜⎗⎖⎖⎖⎈⎖⏛"
 ```
 
-Sending that in the POST request we just get first on the leaderboard but no flag... What if we overload it with alot of `9`'s?
+Sending that in the POST request we just get first on the leaderboard but no flag... What if we overload it with a lot of `9`'s?
 
 ```js
 > encodeInput('{"wpm":99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.99,"raw":99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.99}')

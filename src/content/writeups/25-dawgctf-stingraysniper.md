@@ -53,7 +53,7 @@ The same packets also contain the MCC and MNC:
 
 Now on CellMapper, set your provider to the correct MCC and MNC (I did this by picking any provider then changing the URL to the correct MCC and MNC values)
 
-There are a lot of blocks here that don't resolve to a match so you had to try alot... This one just ended up working!
+There are a lot of blocks here that don't resolve to a match so you had to try a lot... This one just ended up working!
 
 We can then use the [CellID converter](https://www.cellmapper.net/enbid) to convert it to an eNB.
 ![converter.png](images/25-dawgctf/stingraysniper/converter.png)

@@ -15,7 +15,7 @@ The website is very empty, with nothing but a Twitter link to `https://twitter.c
 
 ![githubpages.png](images/24-secedu/githubpages.png)
 
-This website is a GitHub Pages site, the format is `<username>.github.io` for a GitHub account so lets investiage: `https://github.com/tobiasredfield`.
+This website is a GitHub Pages site, the format is `<username>.github.io` for a GitHub account so lets investigate: `https://github.com/tobiasredfield`.
 
 ![tobiasgithub.png](images/24-secedu/tobiasgithub.png)
 

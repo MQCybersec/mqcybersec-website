@@ -3,7 +3,7 @@ title: "Cursed GateKeeper"
 description: "Once a benevolent guardian spirit at the Gates of Loria, it could sense each traveler’s purity. Those with righteous hearts earned the entry chant to open the gates of Loria’s hidden library, while the unworthy were misled to other places. Since falling under Malakar’s dark influence, the Gatekeeper’s gift has been corrupted. Pure-hearted seekers now receive a false incantation that triggers the library’s defenses, while Malakar’s followers are given the genuine chant, passing into Loria unharmed. Eloween has sensed the curse in it, and asked for your prompt injection skills to outwit this curse to reveal the genuine chant reserved for the followers of Malakar. \nOnce you have the chant, submit it as flag with the format `HTB{Chant}`"
 pubDate: 2025-03-27
 ctf: "HTB Cyber Apocalypse 2025"
-category: "AI"
+category: "ai"
 author: "Ch1maera"
 section: "CTFs"
 image: "images/25-htbcyberapocalypse/icon.jpg"

@@ -76,7 +76,7 @@ After a decent amount of poking around, I am shown Chrome DevTools Protocol!
 
 ## Chrome DevTools Protocol
 
-This is a websocket connection used with a path and port specified in `DevToolsActivePort` (which we can access with the nginx misconfiguration). It allows for alot of functionality which can be read up more on [here](https://chromedevtools.github.io/devtools-protocol/) but a few features caught my eye:
+This is a websocket connection used with a path and port specified in `DevToolsActivePort` (which we can access with the nginx misconfiguration). It allows for a lot of functionality which can be read up more on [here](https://chromedevtools.github.io/devtools-protocol/) but a few features caught my eye:
 
 > Note: I couldn't get `Page` features working but I think that's because I was not on an active page yet with my commands, I'll outline further why later.
 

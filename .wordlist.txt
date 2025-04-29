@@ -298,3 +298,7 @@ websocket
 websockets
 whitebox
 wordlist
+SilentEye
+dev
+seall
+ctf

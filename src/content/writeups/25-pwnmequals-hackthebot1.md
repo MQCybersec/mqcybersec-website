@@ -202,7 +202,7 @@ We now get a confirm alert box:
 
 ## XSS: Exfiltration efforts
 
-We now need to just do a `fetch()` to send a web request with the cookies. This turned out to be alot more of a pain due to how it selects its words.
+We now need to just do a `fetch()` to send a web request with the cookies. This turned out to be a lot more of a pain due to how it selects its words.
 
 ```js
 function searchArticles(searchInput = document.getElementById('search-input').value.toLowerCase().trim()) {

@@ -3,8 +3,16 @@ matrix:
   aspell:
     lang: en
     d: en_AU
+    # Set a higher threshold for what counts as a misspelling
+    sug-mode: fast
+    ignore-case: true
+    # Only flag words that are very likely to be misspellings
+    guess: true
+    ignore-accents: true
+    camel-case: true
   sources:
   - 'src/content/writeups/**/*.md'
+  - 'src/content/tools/**/*.md'
   dictionary:
     wordlists:
     - .wordlist.txt
