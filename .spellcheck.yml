@@ -3,13 +3,18 @@ matrix:
   aspell:
     lang: en
     d: en_AU
-    # Set a higher threshold for what counts as a misspelling
-    sug-mode: fast
-    ignore-case: true
-    # Only flag words that are very likely to be misspellings
-    guess: true
+    # Maximum relaxation settings
+    ignore-case: false
+    run-together: true
+    run-together-limit: 50
     ignore-accents: true
     camel-case: true
+    # Only flag words with high edit distance from known words
+    sug-mode: ultra
+    # Set a very high relaxation threshold
+    relaxed: true
+    # Ignore all-caps words (acronyms)
+    ignore-all-caps: true
   sources:
   - 'src/content/writeups/**/*.md'
   - 'src/content/tools/**/*.md'
