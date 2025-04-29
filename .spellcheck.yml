@@ -15,10 +15,9 @@ matrix:
       markdown_extensions:
       - pymdownx.superfences
       - pymdownx.inlinehilite
-      options:
-        code_blocks: true
-        code_spans: true
-        enable_post_process_spacing: false
+      code_blocks: true
+      code_spans: true
+      enable_post_process_spacing: false
   - pyspelling.filters.html:
       comments: false
       ignores:
