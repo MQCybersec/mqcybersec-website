@@ -92,6 +92,7 @@ export const autoHyperlinkTerms = {
   evtxecmd: "TOOL:evtxecmd",
   "bittorrent-traffic-analyzer": "TOOL:bittorrent-traffic-analyzer",
   memprocfs: "TOOL:memprocfs",
+  regcool: "TOOL:regcool",
 
 
   //crypto
@@ -106,6 +107,12 @@ export const autoHyperlinkTerms = {
   netcat: "TOOL:netcat",
   nc: "TOOL:netcat",
   hacktricks: "TOOL:hacktricks",
+  "awesome-unicode": "TOOL:awesomeunicode",
+  awesomeunicode: "TOOL:awesomeunicode",
+  cellmapper: "TOOL:cellmapper",
+  revshells: "TOOL:revshells",
+  "unicode confusables": "TOOL:unicodeconfusables",
+  unicodeconfusables: "TOOL:unicodeconfusables",
 
   //stego
   stegsnow: "TOOL:stegsnow",
@@ -203,6 +210,12 @@ export function processAutoHyperlinks(content) {
 export function extractTagSuggestions(content, existingTags = []) {
   // Define term groups that should map to the same tag
   const tagMappings = {
+    // crypto
+    xor: "xor",
+    aes: "aes",
+    vigenere: "vigenere-cipher",
+
+
     // privesc
     "privesc": "privilege-escalation",
     "privilege escalation": "privilege-escalation",
@@ -288,6 +301,10 @@ export function extractTagSuggestions(content, existingTags = []) {
     jwt: "jwt",
     "json web token": "jwt",
 
+    // csp
+    "csp bypass": "csp-bypass",
+    "csp-bypass": "csp-bypass",
+
     // Format string
     "format string": "format-string",
 
@@ -307,6 +324,13 @@ export function extractTagSuggestions(content, existingTags = []) {
     // Metadata
     exiftool: "exif",
     exif: "exif",
+
+    // windows forens
+    "registry hive": "windows-forensics", 
+
+    //diskforens
+    autopsy: "disk-forensics", 
+    "ftk imager": "disk-forensics", 
 
     // Memory analysis
     "memory dump": "memory-forensics",
