@@ -11,8 +11,6 @@ matrix:
     camel-case: true
     # Only flag words with high edit distance from known words
     sug-mode: ultra
-    # Set a very high relaxation threshold
-    relaxed: true
     # Ignore all-caps words (acronyms)
     ignore-all-caps: true
   sources:
