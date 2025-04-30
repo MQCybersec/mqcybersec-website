@@ -9,7 +9,7 @@ author: "tulip"
 section: "CTFs"
 ---
 
-**Note: This writeup uses software and terms from the [RFoIP writeup](25-irisctf-rfoip), recommended you read that first if you are new to radio.**
+**Note: This writeup uses software and terms from the [RFoIP writeup](/writeups/25-irisctf-rfoip), recommended you read that first if you are new to radio.**
 
 Following from the same principle as before, we connect to the TCP source and listen in, analysing the incoming signal. The signal here is compressing and rarefacting very rapidly, which is a telltale sign of an FM encoded signal. FM stands for frequency modulation and is a common technique used to transmit data over radio. 
 

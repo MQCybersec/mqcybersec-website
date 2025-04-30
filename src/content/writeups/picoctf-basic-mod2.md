@@ -8,7 +8,7 @@ section: "PicoCTF"
 tags: ["medium"]
 ---
 
-**Note**: If you have never encountered modular arithmetic, [the first challenge writeup](picoctf-basic-mod1) is recommended. 
+**Note**: If you have never encountered modular arithmetic, [the first challenge writeup](/writeups/picoctf-basic-mod1) is recommended. 
 
 A bit of a step up! This one is asking us to calculate the modular inverse of each number mod 41. A modular inverse (often denoted $s^{-1}$) in maths is a number such that:
 \\[ s\cdot s^{-1} \equiv 1 \pmod {n} \\]
