@@ -1,6 +1,6 @@
 ---
 title: "rsa-oracle"
-description: "An attacker was able to intercept communications between a bank and a fintech company. They managed to get the message (ciphertext) and the password that was used to encrypt the message."
+description: "An attacker was able to intercept communications between a bank and a fintech company. They managed to get the message (ciphertext) and the password that was used to encrypt the message. After some intensive reconassainance they found out that the bank has an oracle that was used to encrypt the password and can be found here `nc titan.picoctf.net 50466`. Decrypt the password and use it to decrypt the message. The oracle can decrypt anything except the password."
 pubDate: 2025-04-29
 category: "cryptography"
 author: "tulip"
@@ -25,7 +25,7 @@ Lol, good try, can't decrypt that for you. Be creative and good luck
 
 Okay, so we have an encryption-decryption oracle. And judging by how the "ciphertext" is an integer, it's very likely to be RSA. Just to clear up our task, we have an AES encrypted message in `secret.enc`, and the encrypted password is given to us. 
 
-So really, all we're given is just $c$, the ciphertext. So we have to take some guesses.
+So really, all we're given is just $c$, the ciphertext, which the oracle will refuse to decrypt. So we have to take some guesses.
 
 The most common public exponent used in RSA is $e = 65537$. Let's assume they are using this as well. We also don't have $n$, so let's get to work on recovering that.
 
