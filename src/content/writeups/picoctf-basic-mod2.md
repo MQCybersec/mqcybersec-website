@@ -26,7 +26,7 @@ For example:
 \\[ \gcd(3, 2): 3 = 2\times1 + 1\\]
 \\[ \gcd(2, 1): 2 = 1\times2 + 0\\]
 
-...and when $s \mod n = 0$, stop. The last value of $n$ is the GCD. So in this case, $\gcd(11,3) = 1$. But now, we want to find the integer $s^{-1}$ such that $s \cdot r^{-1} \equiv 1 \pmod{11}$. Now, note that, this is the same as finding an integer such that:
+...and when $s \mod n = 0$, stop. The last value of $n$ is the GCD. So in this case, $\gcd(11,3) = 1$. But now, we want to find the integer $s^{-1}$ such that $s \cdot s^{-1} \equiv 1 \pmod{11}$. Now, note that, this is the same as finding an integer such that:
 \\[ s \cdot s^{-1} = 1 + kn \\]
 ...where $k$ is some integer. This is the true meaning of "modulo", you are saying that the number can be written as a remainder plus a multiple of $n$. 
 
@@ -60,7 +60,7 @@ for s in modulos:
 
 CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
 
-for i in b:
+for i in inverses:
     # This character set started at 1
     print(CHARSET[i-1], end="")
 ```
