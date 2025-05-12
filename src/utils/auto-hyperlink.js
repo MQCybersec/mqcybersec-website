@@ -153,6 +153,7 @@ export const autoHyperlinkTerms = {
   ffuf: "TOOL:ffuf",
   shortscan: "TOOL:shortscan",
   "jwt-key-recovery": "TOOL:jwt-key-recovery",
+  "SAML Raider": "TOOL:saml-raider",
 
   //osint
   gitfive: "TOOL:gitfive",
