@@ -9,7 +9,7 @@ section: "CTFs"
 image: "images/25-damctf/icon.png"
 ---
 
-> This is a follow-up to [l33t-dangerous](./25-damctf-l33t-dangerous) go read that first :>
+> This is a follow-up to [l33t-dangerous](/writeups/25-damctf-l33t-dangerous) go read that first :>
 
 ## What are we working with?
 

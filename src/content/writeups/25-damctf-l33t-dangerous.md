@@ -191,7 +191,7 @@ Flag: `dam{we_wer3_the_skids_all_al0ng}`
 
 ## Further Reading & Memes
 
-I incline you to read the part 2 to this challenge [l33t-benign](./25-damctf-l33t-benign) as it ties directly into this and is a great web challenge.
+I incline you to read the part 2 to this challenge [l33t-benign](/writeups/25-damctf-l33t-benign) as it ties directly into this and is a great web challenge.
 
 After the CTF there were some shenanigans on the TeamSpeak server...
 
