@@ -40,7 +40,7 @@ export const autoHyperlinkTerms = {
 
   // Networking
   Wireshark: "TOOL:wireshark",
-  Nmap: "TOOL:bmap",
+  Nmap: "TOOL:nmap",
   DNS: "https://en.wikipedia.org/wiki/Domain_Name_System",
 
   // CTF Categories
