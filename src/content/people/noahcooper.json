@@ -4,6 +4,10 @@
   "image": "/src/content/people/_images/noahcooper.jpeg",
   "enrollments": [
     {
+      "year": 2026,
+      "role": "General Executive"
+    },
+    {
       "year": 2025,
       "role": "President"
     },

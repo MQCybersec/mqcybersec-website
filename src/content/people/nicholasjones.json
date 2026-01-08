@@ -1,0 +1,32 @@
+{
+  "name": "Nicholas Jones",
+  "description": "",
+  "enrollments": [
+    {
+      "year": 2026,
+      "role": "General Executive"
+    }
+  ],
+  "socials": [
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/in/jonesn2004/",
+      "icon": "fa-brands:linkedin-in"
+    },
+    {
+      "platform": "Discord",
+      "url": "https://discordapp.com/users/635626364782772244",
+      "icon": "fa-brands:discord"
+    },
+    {
+      "platform": "Website",
+      "url": "https://nickotine.dev/",
+      "icon": "mdi:home"
+    },
+    {
+      "platform": "Mastodon",
+      "url": "https://infosec.exchange/@nickotine",
+      "icon": "fa-brands:mastodon"
+    }
+  ]
+}

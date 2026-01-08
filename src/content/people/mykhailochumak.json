@@ -1,0 +1,27 @@
+{
+  "name": "Mykhailo Chumak",
+  "description": "Hey there! I’m Mykhailo, but you probably know me as Misha. I began paving my way into IT since 2021 by learning web dev and React framework. This brings me here today - when I’m passionate about penetration testing and network security.",
+  "enrollments": [
+    {
+      "year": 2026,
+      "role": "General Executive"
+    }
+  ],
+  "socials": [
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/in/mykhailo-chumak-43a13b352",
+      "icon": "fa-brands:linkedin-in"
+    },
+    {
+      "platform": "Discord",
+      "url": "https://discord.com/users/1096179033567404102",
+      "icon": "fa-brands:discord"
+    },
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/mc._.ua",
+      "icon": "fa-brands:instagram"
+    }
+  ]
+}
