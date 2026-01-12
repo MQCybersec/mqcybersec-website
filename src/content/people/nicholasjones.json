@@ -14,11 +14,6 @@
       "icon": "fa-brands:linkedin-in"
     },
     {
-      "platform": "Discord",
-      "url": "https://discordapp.com/users/635626364782772244",
-      "icon": "fa-brands:discord"
-    },
-    {
       "platform": "Website",
       "url": "https://nickotine.dev/",
       "icon": "mdi:home"
@@ -27,6 +22,11 @@
       "platform": "Mastodon",
       "url": "https://infosec.exchange/@nickotine",
       "icon": "fa-brands:mastodon"
+    },
+    {
+      "platform": "Bluesky",
+      "url": "https://bsky.app/profile/nickotine.dev",
+      "icon": "fa6-brands:bluesky"
     }
   ]
 }
