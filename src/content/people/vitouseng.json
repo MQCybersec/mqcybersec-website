@@ -3,8 +3,12 @@
   "image": "/src/content/people/_images/vitouseng.jpg",
   "enrollments": [
     {
+      "year": 2026,
+      "role": "Social Media Lead"
+    },
+    {
       "year": 2025,
-      "role": "Social Media Manager"
+      "role": "Social Media Lead"
     }
   ]
 }

@@ -2,12 +2,33 @@
   "name": "Manav Thobhani",
   "enrollments": [
     {
+      "year": 2026,
+      "role": "Secretary"
+    },
+    {
       "year": 2025,
       "role": "Secretary"
     },
     {
       "year": 2024,
       "role": "General Executive"
+    }
+  ],
+  "socials": [
+    {
+      "platform": "LinkedIn",
+      "url": "https://linkedin.com/in/manav-thobhani",
+      "icon": "fa-brands:linkedin-in"
+    },
+    {
+      "platform": "Github",
+      "url": "https://github.com/MT1218",
+      "icon": "fa-brands:github"
+    },
+    {
+      "platform": "Website",
+      "url": "https://mt1218.github.io/",
+      "icon": "mdi:home"
     }
   ]
 }
